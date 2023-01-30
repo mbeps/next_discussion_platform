@@ -25,5 +25,6 @@ export const theme = extendTheme({
   },
   components: {
     // UI components offered by Chakra
+    Button,
   },
 });
