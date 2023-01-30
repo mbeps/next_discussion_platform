@@ -1,27 +1,61 @@
-import { authModalState } from '@/atoms/authModalAtom';
-import { Input, Button, Flex, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { Input, Button, Flex, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-const Signup:React.FC = () => {
-	const setAuthModalState = useSetRecoilState(authModalState);
-	const [signUpForm, setSignUpForm] = useState({
+const SignUp = () => {
+  const setaAuthModalState = useSetRecoilState(authModalState); // Set global state
+  const [signUpForm, setSignUpForm] = useState({
     email: "", // Initially empty email
     password: "", // Initially empty password
-	conformPassword: "",
+    confirmPassword: "", // Initially empty confirm password
   });
+  const [error, setError] = useState(""); // Initially empty error
+  const [
+    createUserWithEmailAndPassword, // returns a function that returns the user, loading or error
+    user,
+    loading,
+    userError,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
-  const onSubmit = () => {};
+  /**
+   * This function is used as the event handler for a form submission.
+   * It will prevent the page from refreshing.
+   * Checks if the password and confirm password fields match.
+   * If they do not match, an error message is set and the function returns without creating a new user.
+   * If the passwords match, a new user is created using the email and password provided in the form.
+   * @param event (React.FormEvent): the submit event triggered by the form
+   * @returns None
+   */
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the page from refreshing
+    if (error) setError(""); // If there is an error, clear it
+    if (signUpForm.password !== signUpForm.confirmPassword) {
+      // If the password and confirm password don't match
+      setError("Passwords don't match"); // Set error
+      return; // Return so that the function doesn't continue
+    }
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); // Create user with email and password
+  }; // Function to execute when the form is submitted
 
+  /**
+   * Function to execute when the form is changed (when email and password are typed).
+   * Multiple inputs use the same onChange function.
+   * @param event(React.ChangeEvent<HTMLInputElement>) - the event that is triggered when the form is changed
+   */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Update form state
     setSignUpForm((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
+      ...prev, // Spread previous state because we don't want to lose the other input's value
+      [event.target.name]: event.target.value, // Catch the name of the input that was changed and update the corresponding state
     }));
   };
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <Input
         required
         name="email"
@@ -44,6 +78,7 @@ const Signup:React.FC = () => {
           border: "1px solid",
         }}
       />
+
       <Input
         required
         name="password"
@@ -66,7 +101,8 @@ const Signup:React.FC = () => {
           border: "1px solid",
         }}
       />
-	  <Input
+
+      <Input
         required
         name="confirmPassword"
         placeholder="Confirm Password"
@@ -88,7 +124,24 @@ const Signup:React.FC = () => {
           border: "1px solid",
         }}
       />
-      <Button width="100%" height="36px" mt={2} mb={2} type="submit">
+
+      {/* If there is error than the error is shown */}
+
+      <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
+        {error ||
+          FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
+
+      <Button
+        width="100%"
+        height="36px"
+        mt={2}
+        mb={2}
+        type="submit"
+        isLoading={loading} // If loading (from Firebase) is true, show loading spinner
+      >
+        {" "}
+        {/* When the form is submitted, execute onSubmit function */}
         Sign Up
       </Button>
 
@@ -99,7 +152,7 @@ const Signup:React.FC = () => {
           fontWeight={700}
           cursor="pointer"
           onClick={() =>
-            setAuthModalState((prev) => ({
+            setaAuthModalState((prev) => ({
               ...prev,
               view: "login",
             }))
@@ -110,5 +163,6 @@ const Signup:React.FC = () => {
       </Flex>
     </form>
   );
-}
-export default Signup;
+};
+
+export default SignUp;
