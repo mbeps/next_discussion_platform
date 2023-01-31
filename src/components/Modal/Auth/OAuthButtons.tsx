@@ -7,6 +7,15 @@ import {
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
+/**
+ * Displays third party authentication providers, in this case Google and GitHub. 
+ * When a provider is clicked:
+ *  - A new account is created if the user does not already exist
+ *  - Signed in if it is an existing user
+ *  - An error is displayed if the user already exist with a different provider. 
+ * @returns 
+ * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
+ */
 const OAuthButtons: React.FC = ({}) => {
   const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] =
     useSignInWithGoogle(auth);

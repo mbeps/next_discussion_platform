@@ -8,6 +8,15 @@ type RightContentProps = {
   user: any;
 };
 
+/**
+ * Right content is a section of the navbar which dynamically adjusts based on state. 
+ * If the user is not authenticated, the right content will display log in and sign up buttons. 
+ * If the user is authenticated, the right content will display the log out button. 
+ * @param {user} - to manage state and adjust the UI based on said state
+ * @returns 
+ * @requires ./AuthButtons
+ * @requires ./LogOutButton
+ */
 const RightContent: React.FC<RightContentProps> = ({ user }) => {
   return (
     <>

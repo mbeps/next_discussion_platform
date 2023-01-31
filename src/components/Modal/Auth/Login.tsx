@@ -1,13 +1,25 @@
-import React, { useState } from "react";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
-import { useSetRecoilState } from "recoil";
-import { authModalState, AuthModalState } from "../../../atoms/authModalAtom";
+import React, { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 type LoginProps = {};
 
+/**
+ * Allows the user to input the log in credentials (email and password) to log into the site. 
+ * Contains 2 input fields, `Email` and `Password` and a log in button. 
+ * 
+ * If the credentials are correct, the user is signed in. 
+ * If the credentials are incorrect, error messages are displayed. 
+ * 
+ * Buttons for resetting the password and signing up are present. 
+ * Clicking these buttons would change the modal to the appropriate view. 
+ * @returns Log in components view for modal. 
+ * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
+ */
 const Login: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState); // Set global state
   const [loginForm, setLoginForm] = useState({
@@ -32,8 +44,8 @@ const Login: React.FC<LoginProps> = () => {
 
   /**
    * Function to execute when the form is changed (when email and password are typed).
-   * Multiple inputs use the same onChange function.
-   * @param event(React.ChangeEvent<HTMLInputElement>) - the event that is triggered when the form is changed
+   * Multiple inputs use the same `onChange` function.
+   * @param event (React.ChangeEvent<HTMLInputElement>) - the event that is triggered when the form is changed
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Update form state

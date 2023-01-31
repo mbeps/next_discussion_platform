@@ -3,6 +3,10 @@ import { Button } from '@chakra-ui/react';
 import { signOut } from 'firebase/auth';
 import React from 'react';
 
+/**
+ * Displays a log out button which signs out the currently logged in user. 
+ * @returns Log out button
+ */
 const LogOutButton:React.FC = () => {
 	
 	return (

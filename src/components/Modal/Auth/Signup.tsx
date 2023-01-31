@@ -6,6 +6,16 @@ import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
+/**
+ * Allows the user to create an account by inputting the required credentials (email and password). 
+ * There are 2 password fields to ensure that the user inputs the correct password. 
+ * If the 2 passwords do not match, the account is not created and an error is displayed. 
+ * If the email already exists, the account is not created and an error is displayed. 
+ * 
+ * A button to log in instead is available which would switch the modal to the log in view when clicked. 
+ * @returns Sign up components view for modal.
+ * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
+ */
 const SignUp = () => {
   const setAuthModalState = useSetRecoilState(authModalState); // Set global state
   const [signUpForm, setSignUpForm] = useState({
