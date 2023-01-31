@@ -7,7 +7,7 @@ import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const SignUp = () => {
-  const setaAuthModalState = useSetRecoilState(authModalState); // Set global state
+  const setAuthModalState = useSetRecoilState(authModalState); // Set global state
   const [signUpForm, setSignUpForm] = useState({
     email: "", // Initially empty email
     password: "", // Initially empty password
@@ -152,7 +152,7 @@ const SignUp = () => {
           fontWeight={700}
           cursor="pointer"
           onClick={() =>
-            setaAuthModalState((prev) => ({
+            setAuthModalState((prev) => ({
               ...prev,
               view: "login",
             }))
