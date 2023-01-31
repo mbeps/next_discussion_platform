@@ -9,6 +9,14 @@ type AuthInputsProps = {
 	
 };
 
+/**
+ * Checks what the current view of the authentication modal state is. 
+ * If the state is `login`, the the modal will display the log in view. 
+ * If the state is `signup`, the modal will display the sign up view.  
+ * @returns log in or sign up components views
+ * @requires ./Login - log in view 
+ * @requires ./Signup - sign up view 
+ */
 const AuthInputs:React.FC<AuthInputsProps> = () => {
 	const modalState = useRecoilValue(authModalState);
 

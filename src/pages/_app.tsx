@@ -5,9 +5,11 @@ import Layout from "@/components/Layout/Layout";
 import { RecoilRoot } from "recoil";
 
 /**
- * Represents the entire application
+ * Represents the entire application. 
+ * `RecoilRoot` allows the entire app (children) to be able to manage its state via Recoil. 
+ * `ChakraProvider` allows the entire app (children) to be able to use Chakra UI. 
  * @param param0 - every page and component is a child of this component
- * @returns
+ * @returns App component
  */
 export default function App({ Component, pageProps }: AppProps) {
   return (

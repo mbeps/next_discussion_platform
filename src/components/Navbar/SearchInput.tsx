@@ -6,10 +6,17 @@ type SearchInputProps = {
   // user:
 };
 
+/**
+ * Search bar which would allow the user to carry out searches on the site.
+ * Search bar dynamically resizes depending on the screen size.
+ * It will use all the available space of the parent component (navbar).
+ * @returns Search component
+ * @see https://chakra-ui.com/docs/components/input/usage
+ */
 const SearchInput: React.FC<SearchInputProps> = () => {
   return (
     // flexGrow uses the remaining space in the navbar
-    <Flex flexGrow={1} mr={2} align='center'>
+    <Flex flexGrow={1} mr={2} align="center">
       <InputGroup>
         <InputLeftElement
           pointerEvents="none"
