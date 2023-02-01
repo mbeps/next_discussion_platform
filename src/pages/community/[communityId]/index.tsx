@@ -1,4 +1,5 @@
 import { Community } from "@/atoms/communitiesAtom";
+import NotFound from "@/components/Community/NotFound";
 import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "@firebase/firestore";
 import { GetServerSidePropsContext } from "next";
@@ -10,6 +11,9 @@ type CommunityPageProps = {
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
+  if (!communityData) {
+    return <NotFound />;
+  }
   return <div>Welcome to {communityData.id}</div>;
 };
 
@@ -25,12 +29,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        communityData: JSON.parse(
-          safeJsonStringift({
-            id: communityDoc.id,
-            ...communityDoc.data(),
-          })
-        ),
+        communityData: communityDoc.exists()
+          ? JSON.parse(
+              safeJsonStringift({
+                id: communityDoc.id,
+                ...communityDoc.data(),
+              })
+            )
+          : "",
       },
     };
   } catch (error) {
