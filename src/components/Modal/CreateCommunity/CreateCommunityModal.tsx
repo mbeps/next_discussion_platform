@@ -16,7 +16,13 @@ import {
   Flex,
   Icon,
 } from "@chakra-ui/react";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
@@ -70,20 +76,34 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       // check if community exists by using document reference
       // takes firestore object, name of collection in db, and the id (community names are unique)
       const communityDocRef = doc(firestore, "communities", communityName);
-      const communityDoc = await getDoc(communityDocRef);
+      /**
+       * if one transaction fails they all fail
+       */
+      await runTransaction(firestore, async (transaction) => {
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(
+            `The community ${communityName} is already taken. Try a different name! `
+          );
+        }
 
-      if (communityDoc.exists()) {
-        throw new Error(
-          `The community ${communityName} is already taken. Try a different name! `
+        // create community
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType,
+        });
+
+        // create community snippet on user
+        transaction.set(
+          // path: collection/document/collection/...
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          {
+            communityId: communityName,
+            isAdmin: true,
+          }
         );
-      }
-
-      // create community
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType,
       });
     } catch (error: any) {
       console.log("Error: handleCreateCommunity", error);
