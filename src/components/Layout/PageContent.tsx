@@ -1,7 +1,13 @@
 import { Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from "react";
 
-type PageContentProps = {};
+/**
+ * Children components that can exist that are rendered.
+ * These can include React components, pages, etc.
+ */
+type PageContentProps = {
+  children: ReactNode;
+};
 
 // children in this case is an array taking 2 components (left and right)
 // check if the children exist before rendering
