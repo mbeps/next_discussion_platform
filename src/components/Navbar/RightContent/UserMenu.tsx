@@ -18,15 +18,28 @@ import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
 import { auth } from "@/firebase/clientApp";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
+import { communityState } from "@/atoms/communitiesAtom";
 
 type UserMenuProps = {
   user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  const resetCommunityState = useResetRecoilState(communityState);
   const setAuthModalState = useSetRecoilState(authModalState);
+
+  /**
+   * Signs the user out of the app.
+   * Once logged out, the state of the current logged in user is cleared.
+   * This means that the community state is also reset updating the UI.
+   */
+  const logout = async () => {
+    await signOut(auth);
+    // clear community state so that after logging out the button subscribe button resets
+    resetCommunityState();
+  };
 
   return (
     <Menu>
@@ -58,7 +71,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                   mr={2}
                 >
                   <Text fontWeight={700}>
-                    {user?.displayName || user.email?.split('@')[0]}
+                    {user?.displayName || user.email?.split("@")[0]}
                   </Text>
                   {/* <Flex>
                     <Icon as={IoSparkles} color='brand.100' mr={1}/>
@@ -93,7 +106,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             <MenuItem
               fontSize="10pt"
               fontWeight={700}
-              onClick={() => signOut(auth)}
+              onClick={logout}
               _hover={{
                 bg: "red.500",
                 color: "white",
