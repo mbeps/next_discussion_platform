@@ -14,8 +14,8 @@ export interface AuthModalState {
 
 /**
  * Describes the default state of the authentication modal.
- * By default, the modal is closed and 
- * if no state is specified, it will open in the log in view.  
+ * By default, the modal is closed and
+ * if no state is specified, it will open in the log in view.
  */
 const defaultModalState: AuthModalState = {
   open: false,
@@ -23,11 +23,9 @@ const defaultModalState: AuthModalState = {
 };
 
 /**
- * Atom which describes the state of the authentication modal. 
- * The atom has the state options defined by `AuthModalState` and 
- * uses the default state defined in `AuthModalState`. 
- * @requires AuthModalState
- * @requires defaultModalState
+ * Atom which describes the state of the authentication modal.
+ * @requires AuthModalState - state definition
+ * @requires defaultModalState - default state
  * @see https://recoiljs.org/docs/basic-tutorial/atoms/
  */
 export const authModalState = atom<AuthModalState>({

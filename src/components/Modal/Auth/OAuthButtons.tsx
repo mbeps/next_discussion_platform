@@ -1,19 +1,21 @@
 import { Button, Flex, Image, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { User } from "firebase/auth";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import {
   useSignInWithGoogle,
   useSignInWithGithub,
 } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase/clientApp";
+import { auth, firestore } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 /**
- * Displays third party authentication providers, in this case Google and GitHub. 
+ * Displays third party authentication providers, in this case Google and GitHub.
  * When a provider is clicked:
  *  - A new account is created if the user does not already exist
  *  - Signed in if it is an existing user
- *  - An error is displayed if the user already exist with a different provider. 
- * @returns 
+ *  - An error is displayed if the user already exist with a different provider.
+ * @returns
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const OAuthButtons: React.FC = ({}) => {
@@ -57,8 +59,24 @@ const OAuthButtons: React.FC = ({}) => {
       </Button>
 
       {/* If there is error than the error is shown */}
-      {errorGoogle && <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">{FIREBASE_ERRORS[errorGoogle?.message as keyof typeof FIREBASE_ERRORS]}</Text>}
-      {errorGitHub && <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">{FIREBASE_ERRORS[errorGitHub?.message as keyof typeof FIREBASE_ERRORS]}</Text>}
+      {errorGoogle && (
+        <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
+          {
+            FIREBASE_ERRORS[
+              errorGoogle?.message as keyof typeof FIREBASE_ERRORS
+            ]
+          }
+        </Text>
+      )}
+      {errorGitHub && (
+        <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
+          {
+            FIREBASE_ERRORS[
+              errorGitHub?.message as keyof typeof FIREBASE_ERRORS
+            ]
+          }
+        </Text>
+      )}
     </Flex>
   );
 };
