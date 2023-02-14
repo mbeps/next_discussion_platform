@@ -8,6 +8,15 @@ type HeaderProps = {
   communityData: Community;
 };
 
+/**
+ * Displays a community header which is responsive.
+ * Community header contains:
+ *    - Community logo
+ *    - Community name
+ *    - Subscribe and unsubscribe button
+ * @param {communityData}
+ * @returns (React.FC) - header component
+ */
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
   const { communityStateValue, onJoinOrLeaveCommunity, loading } =
     useCommunityData();

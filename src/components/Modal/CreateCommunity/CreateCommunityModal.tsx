@@ -28,43 +28,85 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
+/**
+ * Controls whether the modal is open or closed by its state.
+ * Handles closing the modal.
+ */
 type CreateCommunityModalProps = {
   open: boolean;
   handleClose: () => void;
 };
 
+/**
+ * Modal for creating communities.
+ * @param {open, handleClose} - control whether modal is opened or closed
+ * @returns (React.FC) - modal component
+ */
 const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   open,
   handleClose,
 }) => {
   const [user] = useAuthState(auth);
-  const communityNameLengthLimit = 25;
+  const communityNameLengthLimit = 25; // community names are 25 characters long
   const [communityName, setCommunityName] = useState("");
   const [charRemaining, setCharRemaining] = useState(communityNameLengthLimit);
   const [communityType, setCommunityType] = useState("public");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Handles changes in the input element which takes the name of the community to be created.
+   *
+   * If the community name entered is above the limit:
+   *    - Exists if the community name is too long (above the limit).
+   *
+   * If the community name entered is within the limit:
+   *    - Updates the state of `communityName` which allows the creation of the community with the inputted name
+   *    - Updates the number of characters remaining based on the number of characters used so far.
+   * @param event
+   * @returns
+   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > communityNameLengthLimit) return; // community is not created if the name is above the limit
-    setCommunityName(event.target.value);
+    // TODO: do not allow spaces
+    setCommunityName(event.target.value); // updates the state of `communityName`
     setCharRemaining(communityNameLengthLimit - event.target.value.length); // computing remaining characters for community names
   };
 
+  /**
+   * Only 1 checkbox can be toggled as only 1 community type can be created.
+   * If a community type checkbox is toggled,
+   * toggling another checkbox would untoggle the previous one.
+   * @param event (React.ChangeEvent<HTMLInputElement>) - change in HTML input field
+   */
   const onCommunityTypeChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCommunityType(event.target.name);
   };
 
+  /**
+   * Creates a new community in Firestore with the given community name and privacy type,
+   * and adds the current user as the community creator and member.
+   *
+   * Does not allow creating a community if:
+   *    - It contains special characters
+   *    - If the the name is too short
+   *    - If the name is already taken
+   *
+   * @async
+   * @throws {Error} If the community name contains special characters or is too short, or if the community name is already taken.
+   * @returns {void}
+   */
   const handleCreateCommunity = async () => {
     if (error) setError("");
-    // validate community (character limit and not already existing)
-    const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    // prevents community from being created if it has special characters
+    const format: RegExp = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     if (format.test(communityName)) {
       setError("Community name can only contain letters and numbers");
       return;
     }
+    // prevents community from being created if its too short
     if (communityName.length < 3) {
       setError("Community name must be at least 3 characters long");
       return;
@@ -148,6 +190,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 mt={1}
                 color={charRemaining === 0 ? "red" : "gray.500"}
               >
+                {/* Updates the remaining characters in real time
+                The colour changes to red if the limit is hit */}
                 {charRemaining} Characters remaining
               </Text>
               <Text fontSize="9pt" color="red" pt={1}>
@@ -157,6 +201,10 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 <Text fontWeight={600} fontSize={15}>
                   Community Type
                 </Text>
+
+                {/* Contains community types that can be created
+                Only 1 community type can be created hence only 1 box can be checked
+                Checking another box (community type)  */}
                 <Stack spacing={2}>
                   <Checkbox
                     name="public"

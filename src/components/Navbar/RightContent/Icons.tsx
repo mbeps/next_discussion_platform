@@ -14,6 +14,7 @@ const icons: React.FC = () => {
   return (
     <Flex>
       <Flex
+        // Not visible on mobile screen sizes
         display={{ base: "none", md: "flex" }}
         align="center"
         borderRight="1px solid"
@@ -86,7 +87,7 @@ const icons: React.FC = () => {
         </Flex>
 
         <Flex
-          display={{base: 'none', md: 'flex'}}
+          display={{ base: "none", md: "flex" }}
           mr={1.5}
           ml={1.5}
           padding={1}

@@ -11,6 +11,17 @@ type PageContentProps = {
 
 // children in this case is an array taking 2 components (left and right)
 // check if the children exist before rendering
+/**
+ * Creates a layout for for main contents page.
+ * The page is separated into 2 sections:
+ *    - Left: main content such as the list of posts
+ *    - Right: extra content such as community descriptions, etc
+ *
+ * The layout is responsive which means that in mobile screen sizes,
+ * the right layout will be removed.
+ * @param {children}
+ * @returns page layout
+ */
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
   return (
     <Flex justify="center" p="16px 0px" border="1px solid red">

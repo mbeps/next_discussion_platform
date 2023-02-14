@@ -16,6 +16,14 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
+/**
+ * Checks whether a user is subscribed to a community.
+ * Contains the current community state (`communitiesState`).
+ * Contains functionality to subscribe or unsubscribe to a community.
+ * @returns communityStateValue (CommunityState) - object containing the current community state, including the user's community snippets
+ * @returns onJoinOrLeaveCommunity (() => void) - function that handles subscribing or unsubscribing a community
+ * @returns loading (boolean) - indicating whether a community operation is currently in progress
+ */
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
   const [communityStateValue, setCommunityStateValue] =
@@ -24,10 +32,20 @@ const useCommunityData = () => {
   const [error, setError] = useState("");
   const setAuthModalState = useSetRecoilState(authModalState);
 
+  /**
+   * Handles the user subscribing or unsubscribing to a community.
+   * If the user is not currently authenticated, the authentication modal is opened.
+   * If the user is already subscribed, then the function will unsubscribe the user from the community.
+   * If the user is not subscribed, then the function will subscribe the user to the community.
+   * @param communityData (Community) - object is an object representing the community being joined or left
+   * @param isJoined (boolean) - indicates whether the user is currently a member of the community
+   * @returns null
+   */
   const onJoinOrLeaveCommunity = (
     communityData: Community,
     isJoined: boolean
   ) => {
+    // open the authentication modal if the user is not logged in
     if (!user) {
       setAuthModalState({ open: true, view: "login" });
       return;
@@ -42,9 +60,15 @@ const useCommunityData = () => {
     joinCommunity(communityData);
   };
 
+  /**
+   * Checks whether the user is subscribed to the community.
+   * @async
+   * @throws {error} - failed to fetch required data
+   */
   const getMySnippets = async () => {
     setLoading(true);
     try {
+      // fetch document storing the snippets representing subscriptions
       const snippetDocs = await getDocs(
         collection(firestore, `users/${user?.uid}/communitySnippets`)
       );
@@ -60,6 +84,12 @@ const useCommunityData = () => {
     setLoading(false);
   };
 
+  /**
+   * Subscribes the currently authenticated user to the community.
+   *
+   * @param communityData (Community) - community to which the user is subscribed to
+   * @throws error - error in subscribing to a community
+   */
   const joinCommunity = async (communityData: Community) => {
     try {
       const batch = writeBatch(firestore);
@@ -70,7 +100,7 @@ const useCommunityData = () => {
         // no `isAdmin` as when joining a community user is not automatically an admin
       };
 
-      // create a new community snippet
+      // create a new community snippet into the user document (subscription)
       batch.set(
         doc(
           firestore,
@@ -98,6 +128,11 @@ const useCommunityData = () => {
     setLoading(false);
   };
 
+  /**
+   * Unsubscribes the currently authenticated user from the community
+   * @param communityId (Community) - community from which the user is unsubscribed from
+   * @throws error - error in subscribing to a community
+   */
   const leaveCommunity = async (communityId: string) => {
     try {
       const batch = writeBatch(firestore);

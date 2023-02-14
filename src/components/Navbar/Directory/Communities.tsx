@@ -5,10 +5,17 @@ import { GrAdd } from "react-icons/gr";
 
 type CommunitiesProps = {};
 
+/**
+ * Option in the community directory.
+ * This option will open the community creation modal.
+ * @requires ./Directory - child of directory
+ * @returns
+ */
 const Communities: React.FC<CommunitiesProps> = () => {
   const [open, setOpen] = useState(false); // modal initially closed
   return (
     <>
+      {/* Sets the state of the community creation modal to true which opens the modal */}
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
       <MenuItem
         width="100%"

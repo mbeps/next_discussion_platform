@@ -4,6 +4,16 @@ import React from "react";
 import { TiHome } from "react-icons/ti";
 import Communities from "./Communities";
 
+/**
+ * Displays a menu item for community.
+ * It displays the option to create a community (opens the community create modal).
+ * The directory button itself is responsive:
+ *    - Only icon is shown on mobile
+ *    - Both icon and community name are shown on desktop
+ * todo: Displays a list of all communities the user is subscribed to.
+ * @requires ./Communities - community creation modal
+ * @returns (React.FC) - community directory menu
+ */
 const UserMenu: React.FC = () => {
   return (
     <Menu>
@@ -35,6 +45,7 @@ const UserMenu: React.FC = () => {
         </Flex>
       </MenuButton>
       <MenuList>
+        {/* Communities menu to open the community creation modal */}
         <Communities />
       </MenuList>
     </Menu>

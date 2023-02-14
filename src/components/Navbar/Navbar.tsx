@@ -12,9 +12,22 @@ import SearchInput from "./SearchInput";
  * 	- Logo which is visible on mobile and desktop sizes
  * 	- Logo name which is visible only on desktop sizes
  * 	- Search bar which is visible on mobile and desktop sizes and resizes dynamically
+ *  - Directory of communities that the user is subscribed to (only displayed when authenticated)
+ *
+ *
+ * Navbar changes depending on whether the user is authenticated.
+ * If the user is authenticated, it will display the:
+ *  - User menu with name or username
+ *  - Buttons (create post, notifications, messages, etc)
+ *  - Community directory menu which would display all the subscribed communities and create community option
+ *
+ * If the user is not authenticated, it will display the:
+ *  - Authentication buttons (log in and sing up)
+ *  - User menu with different options
  * @returns navbar component
- * @requires ./RightContent/RightContent
- * @requires ./SearchInput
+ * @requires ./RightContent - content displaying authentication buttons or actions
+ * @requires ./SearchInput - Search field
+ * @requires ./Directory - showing community menu button
  */
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth); // will be passed to child components
@@ -41,8 +54,9 @@ const Navbar: React.FC = () => {
           alt="Website text logo"
         />
       </Flex>
+      {/* Community directory only visible when user is logged in */}
       {user && <Directory />}
-      <SearchInput user={user}/>
+      <SearchInput user={user} />
       {/* Changes depending on whether user is authenticated or not */}
       <RightContent user={user} />
     </Flex>
