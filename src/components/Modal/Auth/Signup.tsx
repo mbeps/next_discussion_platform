@@ -34,9 +34,10 @@ const SignUp = () => {
   /**
    * This function is used as the event handler for a form submission.
    * It will prevent the page from refreshing.
-   * Checks if the password and confirm password fields match.
-   * If they do not match, an error message is set and the function returns without creating a new user.
-   * If the passwords match, a new user is created using the email and password provided in the form.
+   * Checks if the password and confirm password fields match and the password requirements are met:
+   *    - If they do not match, an error message is set and the function returns without creating a new user.
+   *    - If the password does not meet the requirements, an error message is set and the function returns without creating a new user.
+   *    - If the passwords match and the password meets the requirements, a new user is created using the email and password provided in the form.
    * @param event (React.FormEvent): the submit event triggered by the form
    * @returns None
    */
@@ -48,6 +49,23 @@ const SignUp = () => {
       setError("Passwords don't match"); // Set error
       return; // Return so that the function doesn't continue
     }
+    if (signUpForm.password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    if (!/\d/.test(signUpForm.password)) {
+      setError("Password must contain at least 1 number");
+      return;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(signUpForm.password)) {
+      setError("Password must contain at least 1 special character");
+      return;
+    }
+    if (!/[A-Z]/.test(signUpForm.password)) {
+      setError("Password must contain at least 1 capital letter");
+      return;
+    }
+
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password); // Create user with email and password
   }; // Function to execute when the form is submitted
 
