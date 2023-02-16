@@ -64,6 +64,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       {/* Actual menu button that opens the menu of options */}
       <MenuButton
         cursor="pointer"
+        height="100%"
         padding="0px 6px"
         borderRadius={4}
         _hover={{
