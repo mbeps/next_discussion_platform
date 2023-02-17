@@ -1,11 +1,33 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import { Post } from "@/atoms/postsAtom";
+import { firestore, storage } from "@/firebase/clientApp";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Flex,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
+import { User } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import ImageUpload from "./PostForm/ImageUpload";
 import TextInputs from "./PostForm/TextInputs";
 import TabItem from "./TabItem";
 
-type NewPostFormProps = {};
+type NewPostFormProps = {
+  user: User; // parent component checks user so additional checks aer not needed ut
+};
 
 // Tab items which are static (not react) hence outside
 const formTabs: FormTab[] = [
@@ -25,7 +47,8 @@ export type FormTab = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = () => {
+const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title); // formTabs[0] = Post
   const [textInputs, setTextInputs] = useState({
     title: "",
@@ -33,13 +56,53 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
   });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleCreatePost = async () => {};
+  const handleCreatePost = async () => {
+    const { communityId } = router.query;
+    // create a new post object
+    const newPost: Post = {
+      communityId: communityId as string,
+      creatorId: user?.uid,
+      creatorUsername: user.email!.split("@")[0],
+      title: textInputs.title,
+      body: textInputs.body,
+      numberOfComments: 0,
+      votes: 0,
+      createTime: serverTimestamp() as Timestamp,
+    };
+    setLoading(true);
+    try {
+      const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+      if (selectedFile) {
+        // check if user has uploaded a file
+        const imageRef = ref(storage, `posts/${postDocRef.id}/image`); // reference to where image is saved in Firebase storage
+        await uploadString(imageRef, selectedFile, "data_url"); // upload the actual image
+        const downloadURL = await getDownloadURL(imageRef); // get the link to the image
+        await updateDoc(postDocRef, {
+          // add image link to the posts in Firestore
+          imageURL: downloadURL,
+        });
+      }
+    } catch (error: any) {
+      console.log("Error: handleCreatePost", error.message);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+    // router.back();
+    // store the post object in db
+
+    // check for the selectedFile in case user uploaded file
+    // if file is uploaded, store in firebase storage
+    // get the link to file and store it to firestore
+    // redirect user back to communities page
+  };
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader: FileReader = new FileReader();
     // files in an array that can store multiple files if needed
     if (event.target.files?.[0]) {
-      fileReader.readAsDataURL(event.target.files[0]);
+      fileReader.readAsDataURL(event.target.files[0]); // passed to firebase storage
     }
 
     fileReader.onload = (readerEvent) => {
@@ -91,6 +154,15 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
           />
         )}
       </Flex>
+      {/* If there is an error display an alert */}
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <Text mr={2} fontWeight={600} color="red.500">
+            There has been an error when creating your post
+          </Text>
+        </Alert>
+      )}
     </Flex>
   );
 };

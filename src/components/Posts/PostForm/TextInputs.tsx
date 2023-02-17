@@ -58,7 +58,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
           padding="0px 30px"
           isDisabled={!textInputs.title} // if there is no text in the title field button is disabled
           isLoading={loading}
-          onClick={() => {}}
+          onClick={handleCreatePost}
         >
           Post
         </Button>
