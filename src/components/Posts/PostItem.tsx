@@ -1,15 +1,23 @@
 import { Post } from "@/atoms/postsAtom";
-import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Flex,
+  Icon,
+  Image,
+  Skeleton,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
-import { BsChat, BsBookmark } from "react-icons/bs";
+import { BsBookmark, BsChat } from "react-icons/bs";
 import { FiShare2 } from "react-icons/fi";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
-  IoArrowRedoOutline,
   IoArrowUpCircleOutline,
   IoArrowUpCircleSharp,
-  IoBookmarkOutline,
 } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 
@@ -18,7 +26,7 @@ type PostItemProps = {
   userIsCreator: boolean; // is the currently logged in user the creator of post
   userVoteValue?: number;
   onVote: () => {};
-  onDeletePost: () => {};
+  onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
 
@@ -31,10 +39,37 @@ const PostItem: React.FC<PostItemProps> = ({
   onSelectPost,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
+  const [error, setError] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
   const topText: string = `Author: ${post.creatorUsername} 
 		Time: ${post.createTime
       .toDate()
       .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
+  /**
+   * Will call the `handleDelete` from prop
+   * this one will provide error handling
+   * Each component may choose to the error handling differently
+   * Core functionality is shared
+   */
+  const handleDelete = async () => {
+    setLoadingDelete(true);
+    try {
+      const success: boolean = await onDeletePost(post);
+
+      if (!success) {
+        throw new Error("Post could not be deleted");
+      }
+
+      console.log("Post has been deleted successfully");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
+
   return (
     <Flex
       border="1px solid"
@@ -151,13 +186,27 @@ const PostItem: React.FC<PostItemProps> = ({
               borderRadius={5}
               _hover={{ bg: "gray.200" }}
               cursor="pointer"
-              onClick={onDeletePost}
+              onClick={handleDelete}
             >
-              <Icon as={MdOutlineDelete} mr={2} />
-              <Text fontSize="9pt">Delete</Text>
+              {loadingDelete ? (
+                <Spinner size="sm" />
+              ) : (
+                <>
+                  <Icon as={MdOutlineDelete} mr={2} />
+                  <Text fontSize="9pt">Delete</Text>
+                </>
+              )}
             </Flex>
           )}
         </Flex>
+        {error && (
+          <Alert status="error" borderRadius="0px 0px 10px 0px">
+            <AlertIcon />
+            <Text mr={2} fontWeight={600} color="red.500">
+              {error}
+            </Text>
+          </Alert>
+        )}
       </Flex>
     </Flex>
   );
