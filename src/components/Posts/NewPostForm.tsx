@@ -83,6 +83,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
           // add image link to the posts in Firestore
           imageURL: downloadURL,
         });
+        router.back();
       }
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
@@ -90,7 +91,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     } finally {
       setLoading(false);
     }
-    // router.back();
     // store the post object in db
 
     // check for the selectedFile in case user uploaded file
