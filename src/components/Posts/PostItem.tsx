@@ -30,7 +30,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onDeletePost,
   onSelectPost,
 }) => {
-  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(true);
   const topText: string = `Author: ${post.creatorUsername} 
 		Time: ${post.createTime
       .toDate()
