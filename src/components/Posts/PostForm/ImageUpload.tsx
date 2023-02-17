@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Image, Stack } from "@chakra-ui/react";
 import React, { useRef } from "react";
 
 type ImageUploadProps = {
@@ -18,31 +18,56 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const selectedFileRef = useRef<HTMLInputElement>(null);
 
   return (
-    <Flex justify="center" align="center" width="100%">
-      <Flex
-        justify="center"
-        align="center"
-        p={20}
-        border="1px dashed"
-        borderColor="red.200"
-        width="100%"
-        borderRadius={10}
-      >
-        <Button
-          onClick={() => {
-            selectedFileRef.current?.click();
-          }}
+    <Flex justify="center" direction="column" align="center" width="100%">
+      {selectedFile ? (
+        // If the image is uploaded
+        <>
+          <Image
+            src={selectedFile}
+            alt="Uploaded image for post"
+            maxWidth="400px"
+            maxHeight="400px"
+          />
+          <Stack direction="row" mt={4}>
+            <Button onClick={() => setSelectedTab("Post")} w="100%">
+              Back to Post
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setSelectedFile("")} // clearing image state removed uploaded image
+              w="100%"
+            >
+              Remove Content
+            </Button>
+          </Stack>
+        </>
+      ) : (
+        // if the image is not uploaded
+        <Flex
+          justify="center"
+          align="center"
+          p={20}
+          border="1px dashed"
+          borderColor="red.200"
+          width="100%"
+          borderRadius={10}
         >
-          Upload Content
-        </Button>
-        <input
-          type="file"
-          ref={selectedFileRef}
-          hidden
-          onChange={onSelectImage}
-        />
-        {/* <img src={selectedFile} /> */}
-      </Flex>
+          <Button
+            onClick={() => {
+              selectedFileRef.current?.click();
+            }}
+          >
+            Upload Content
+          </Button>
+          <input
+            type="file"
+            ref={selectedFileRef}
+            hidden
+            onChange={onSelectImage}
+          />
+          {/* <img src={selectedFile} /> */}
+        </Flex>
+      )}
     </Flex>
   );
 };
