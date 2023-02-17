@@ -34,6 +34,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
 
   const getPosts = async () => {
     try {
+      setLoading(true);
       const postsQuery = query(
         collection(firestore, "posts"),
         where("communityId", "==", communityData.id),
@@ -47,6 +48,8 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
       }));
     } catch (error: any) {
       console.log("Error: getPosts", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
