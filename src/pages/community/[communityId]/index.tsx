@@ -61,19 +61,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        communityData: communityDoc.exists()
-          ? JSON.parse(
-              safeJsonStringify({
-                id: communityDoc.id,
-                ...communityDoc.data(),
-              })
-            )
-          : "",
+        communityData: JSON.parse(
+          safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
+        ),
       },
     };
   } catch (error) {
     // todo: add error page
     console.log("Error: getServerSideProps", error);
+    return { props: {} };
   }
 }
 
