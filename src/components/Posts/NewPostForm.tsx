@@ -1,5 +1,6 @@
 import { Post } from "@/atoms/postsAtom";
 import { firestore, storage } from "@/firebase/clientApp";
+import useSelectFile from "@/hooks/useSelectFile";
 import {
   Alert,
   AlertDescription,
@@ -54,7 +55,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     title: "",
     body: "",
   });
-  const [selectedFile, setSelectedFile] = useState<string>();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -98,19 +99,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     // get the link to file and store it to firestore
     // redirect user back to communities page
   };
-  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileReader: FileReader = new FileReader();
-    // files in an array that can store multiple files if needed
-    if (event.target.files?.[0]) {
-      fileReader.readAsDataURL(event.target.files[0]); // passed to firebase storage
-    }
-
-    fileReader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setSelectedFile(readerEvent.target.result as string);
-      }
-    };
-  };
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -148,7 +136,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         {selectedTab === "Images & Videos" && (
           <ImageUpload
             selectedFile={selectedFile}
-            onSelectImage={onSelectImage}
+            onSelectImage={onSelectFile}
             setSelectedTab={setSelectedTab}
             setSelectedFile={setSelectedFile}
           />
