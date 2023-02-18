@@ -26,7 +26,6 @@ type AboutProps = {
 };
 
 const About: React.FC<AboutProps> = ({ communityData }) => {
-  const router = useRouter();
   const [user] = useAuthState(auth);
   const selectFileRef = useRef<HTMLInputElement>(null);
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
@@ -95,7 +94,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             </Flex>
           </Flex>
           {/* create post button */}
-          <Link href={`/community/${router.query.communityId}/submit`}>
+          <Link href={`/community/${communityData.id}/submit`}>
             <Button width="100%">Create Post</Button>
           </Link>
 
