@@ -155,16 +155,7 @@ const PostItem: React.FC<PostItemProps> = ({
             borderRadius={5}
             _hover={{ bg: "gray.200" }}
             cursor="pointer"
-          >
-            <Icon as={BsChat} mr={2} />
-            <Text fontSize="9pt">{post.numberOfComments}</Text>
-          </Flex>
-          <Flex
-            align="center"
-            p="8px 10px"
-            borderRadius={5}
-            _hover={{ bg: "gray.200" }}
-            cursor="pointer"
+            width="100px"
           >
             <Icon as={FiShare2} mr={2} />
             <Text fontSize="9pt">Share</Text>
@@ -175,6 +166,7 @@ const PostItem: React.FC<PostItemProps> = ({
             borderRadius={5}
             _hover={{ bg: "gray.200" }}
             cursor="pointer"
+            width="100px"
           >
             <Icon as={BsBookmark} mr={2} />
             <Text fontSize="9pt">Save</Text>
@@ -187,6 +179,7 @@ const PostItem: React.FC<PostItemProps> = ({
               _hover={{ bg: "gray.200" }}
               cursor="pointer"
               onClick={handleDelete}
+              width="100px"
             >
               {loadingDelete ? (
                 <Spinner size="sm" />
