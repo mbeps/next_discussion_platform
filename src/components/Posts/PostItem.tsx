@@ -25,7 +25,7 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean; // is the currently logged in user the creator of post
   userVoteValue?: number;
-  onVote: () => {};
+  onVote: (post: Post, vote: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
@@ -42,7 +42,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const [error, setError] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
-  const topText: string = `Author: ${post.creatorUsername} 
+  const topText: string = `Author: ${post.creatorUsername} |
 		Time: ${post.createTime
       .toDate()
       .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
@@ -97,10 +97,11 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "red.500" : "gray.500"}
           fontSize={22}
           cursor="pointer"
-          onClick={onVote}
+          onClick={() => onVote(post, 1, post.communityId)}
         />
+        {/* number of likes  */}
         <Text fontSize="12pt" color="gray.600">
-          {post.votes}
+          {post.voteStatus}
         </Text>
         {/* dislike button */}
         <Icon
@@ -112,7 +113,8 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === -1 ? "red.500" : "gray.500"}
           fontSize={22}
           cursor="pointer"
-          onClick={onVote}
+          onClick={() => onVote(post, -1, post.communityId)}
+          // onClick={onVote}
         />
       </Flex>
       {/* right side containing content  */}

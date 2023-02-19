@@ -85,7 +85,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         <Stack>
           <Flex width="100%" p={2} fontSize="10pt">
             <Flex direction="column" flexGrow={1}>
-              <Text fontWeight={700}>Clowns</Text>
+              <Text fontWeight={700}>Subscribers</Text>
               <Text>{communityData.numberOfMembers.toLocaleString()}</Text>
             </Flex>
             <Flex direction="column" flexGrow={1}>
