@@ -26,11 +26,21 @@ import ImageUpload from "./PostForm/ImageUpload";
 import TextInputs from "./PostForm/TextInputs";
 import TabItem from "./TabItem";
 
+/**
+ * Props for NewPostForm component.
+ * @param {user} - user object
+ */
 type NewPostFormProps = {
   user: User; // parent component checks user so additional checks aer not needed ut
 };
 
 // Tab items which are static (not react) hence outside
+/**
+ * Tabs for post creation form.
+ * Static array of objects which are used to dynamically create the navbar component.
+ * @param {title} - title of the tab
+ * @param {icon} - icon of the tab
+ */
 const formTabs: FormTab[] = [
   {
     title: "Post",
@@ -43,6 +53,11 @@ const formTabs: FormTab[] = [
   // more can be added which would dynamically be fitted into post creation navbar component
 ];
 
+/**
+ * Tab object.
+ * @param {title} - title of the tab
+ * @param {icon} - icon of the tab
+ */
 export type FormTab = {
   title: string;
   icon: typeof Icon.arguments;
@@ -71,10 +86,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       numberOfComments: 0,
       voteStatus: 0,
       createTime: serverTimestamp() as Timestamp,
-    };
+    }; // object representing the post
+
     setLoading(true);
+
     try {
-      const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+      const postDocRef = await addDoc(collection(firestore, "posts"), newPost); // add the post to Firestore
       if (selectedFile) {
         // check if user has uploaded a file
         const imageRef = ref(storage, `posts/${postDocRef.id}/image`); // reference to where image is saved in Firebase storage
@@ -84,7 +101,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
           // add image link to the posts in Firestore
           imageURL: downloadURL,
         });
-        router.back();
+        router.back(); // redirect user back to communities page after post is created
       }
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
@@ -99,6 +116,11 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     // get the link to file and store it to firestore
     // redirect user back to communities page
   };
+
+  /**
+   * Keeps track of the text inputs in the form and updates the state.
+   * @param event (React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) - event object
+   */
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -114,7 +136,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
       <Flex width="100%">
-        {/* 1 tab component which takes the formTab as prop */}
+        {/* create a tab item for each tab in the formTabs array */}
         {formTabs.map((item) => (
           <TabItem
             key={item.title}
@@ -125,6 +147,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         ))}
       </Flex>
       <Flex p={4}>
+        {/* Display the correct form based on the selected tab */}
         {selectedTab === "Post" && (
           <TextInputs
             textInputs={textInputs}
@@ -133,6 +156,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
             loading={loading}
           />
         )}
+        {/* Display the image upload form if the user has selected the Images & Videos tab */}
         {selectedTab === "Images & Videos" && (
           <ImageUpload
             selectedFile={selectedFile}

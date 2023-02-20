@@ -2,12 +2,26 @@ import { Flex, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { FormTab } from "./NewPostForm";
 
+/**
+ * TabItem component for displaying tabs at the top of the NewPostForm.
+ * @param item - FormTab object from NewPostForm
+ * @param selected - whether the tab is selected or not
+ * @param setSelectedTab - selecting a tab
+ */
 type TabItemProps = {
   item: FormTab;
   selected: boolean;
   setSelectedTab: (value: string) => void;
 };
 
+/**
+ * Displays tab buttons at the top of the NewPostForm.
+ * Allows the user to select a tab to display the form for that tab.
+ * @param {item} - FormTab object from NewPostForm
+ * @param {selected} - whether the tab is selected or not
+ * @param {setSelectedTab} - selecting a tab
+ * @returns (React.FC) - TabItem component for displaying tabs at the top of the NewPostForm.
+ */
 const TabItem: React.FC<TabItemProps> = ({
   item,
   selected,

@@ -22,17 +22,26 @@ import {
 } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 
+/**
+ * Props for PostItem component.
+ * @param {post} - post object
+ * @param {userIsCreator} - is the currently logged in user the creator of post
+ * @param {userVoteValue} - value of the vote of the currently logged in user
+ * @param {onVote} - function to handle voting
+ * @param {onDeletePost} - function to handle deleting post
+ * @param {onSelectPost} - function to handle selecting post
+ */
 type PostItemProps = {
   post: Post;
   userIsCreator: boolean; // is the currently logged in user the creator of post
-  userVoteValue?: number;
+  userVoteValue?: number; // value of the vote of the currently logged in user
   onVote: (
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
     vote: number,
     communityId: string
-  ) => void;
-  onDeletePost: (post: Post) => Promise<boolean>;
+  ) => void; // function to handle voting
+  onDeletePost: (post: Post) => Promise<boolean>; // function to handle deleting post
   onSelectPost?: (post: Post) => void; // optional because once a post is selected it cannot be reselected
 };
 
@@ -53,33 +62,40 @@ const PostItem: React.FC<PostItemProps> = ({
    */
   const singlePostPage = !onSelectPost;
 
+  /**
+   * Text to be displayed on top of the post.
+   * Displays the author and the time of creation.
+   */
   const topText: string = `Author: ${post.creatorUsername} |
 		Time: ${post.createTime
       .toDate()
       .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
 
   /**
-   * Will call the `handleDelete` from prop
-   * this one will provide error handling
-   * Each component may choose to the error handling differently
-   * Core functionality is shared
+   * Will call the `handleDelete` from prop (usePosts hook).
+   * This function provides the error handling for the delete functionality.
+   * Each component may choose to the error handling differently.
+   * Core functionality is shared.
+   * @param {event} - event object
    */
   const handleDelete = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    event.stopPropagation();
+    event.stopPropagation(); // stop event bubbling up to parent
     setLoadingDelete(true);
     try {
-      const success: boolean = await onDeletePost(post);
+      const success: boolean = await onDeletePost(post); // call the delete function from usePosts hook
 
       if (!success) {
-        throw new Error("Post could not be deleted");
+        // if the post was not deleted successfully
+        throw new Error("Post could not be deleted"); // throw error
       }
 
-      console.log("Post has been deleted successfully");
+      console.log("Post has been deleted successfully"); // log success
       // if the user deletes post from the single post page, they should be redirected to the post's community page
       if (singlePostPage) {
-        router.push(`/community/${post.communityId}`);
+        // if the post is on the single post page
+        router.push(`/community/${post.communityId}`); // redirect to the community page
       }
     } catch (error: any) {
       setError(error.message);

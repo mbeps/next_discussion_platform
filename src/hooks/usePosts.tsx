@@ -26,6 +26,17 @@ const usePosts = () => {
   const router = useRouter();
   // TODO: create postVote variable
 
+  /**
+   * Allows the user to vote on a post from the main page or single view post page.
+   * If the user is not authenticated, the login modal is opened.
+   * If the user has already voted on the post, the vote is removed.
+   * If the user has not voted on the post, the vote is added.
+   *
+   * @param event (React.MouseEvent<SVGElement, MouseEvent>) - event when clicking on the vote button
+   * @param post (Post) - post to be voted on
+   * @param vote (number) - vote value (1 or -1)
+   * @param communityId (string) - community id
+   */
   const onVote = async (
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
@@ -41,114 +52,127 @@ const usePosts = () => {
 
     // check for authentication
     if (!user?.uid) {
-      setAuthModalState({ open: true, view: "login" });
-      return;
+      // user is not authenticated
+      setAuthModalState({ open: true, view: "login" }); // open login modal
+      return; // exit function
     }
 
     try {
-      const { voteStatus } = post;
+      const { voteStatus } = post; // current vote status of post
       const existingVote = postStateValue.postVotes.find(
         (vote) => vote.postId === post.id
-      );
+      ); // existing vote on post
 
       const batch = writeBatch(firestore);
       // copy of state which are updated at the end
-      const updatedPost = { ...post };
-      const updatedPosts = [...postStateValue.posts];
-      let updatedPostVotes = [...postStateValue.postVotes];
-      let voteChange = vote;
+      const updatedPost = { ...post }; // copy of post
+      const updatedPosts = [...postStateValue.posts]; // copy of all posts
+      let updatedPostVotes = [...postStateValue.postVotes]; // copy of all post votes
+      let voteChange = vote; // change in vote status
       // new vote
       if (!existingVote) {
+        // user has not voted on post
         const postVoteRef = doc(
           collection(firestore, "users", `${user?.uid}/postVotes`)
-        );
+        ); // create new document in user collection
         const newVote: PostVote = {
           id: postVoteRef.id,
           postId: post.id!,
           communityId,
           voteValue: vote, // +1 or -1
-        };
+        }; // new vote object
 
-        batch.set(postVoteRef, newVote);
+        batch.set(postVoteRef, newVote); // add new vote to user collection
 
         // update ui state
-        updatedPost.voteStatus = voteStatus + vote;
-        updatedPostVotes = [...updatedPostVotes, newVote];
+        updatedPost.voteStatus = voteStatus + vote; // update vote status
+        updatedPostVotes = [...updatedPostVotes, newVote]; // add new vote to post votes
       } else {
         // existing vote
         const postVoteRef = doc(
           firestore,
           "users",
           `${user?.uid}/postVotes/${existingVote.id}`
-        );
+        ); // get reference to existing vote document
 
         // removing/undoing current vote
         if (existingVote.voteValue === vote) {
           // user tries to vote already voted vote
 
           // update vote +-1
-          updatedPost.voteStatus = voteStatus - vote;
+          updatedPost.voteStatus = voteStatus - vote; // update vote status
           updatedPostVotes = updatedPostVotes.filter(
             (vote) => vote.id !== existingVote.id
-          );
+          ); // remove vote from post votes
 
           // delete document from user (user document stores which posts were voted)
           batch.delete(postVoteRef);
 
-          voteChange *= -1;
+          voteChange *= -1; // update vote change
         } else {
           // user flipping vote (like to dislike or dislike to like)
           updatedPost.voteStatus = voteStatus + 2 * vote;
           const voteIndexPosition = postStateValue.postVotes.findIndex(
             (vote) => vote.id === existingVote.id
-          );
+          ); // get index of existing vote
 
           updatedPostVotes[voteIndexPosition] = {
             ...existingVote,
             voteValue: vote,
-          };
+          }; // update vote value
 
           // updating existing document
           batch.update(postVoteRef, {
             voteValue: vote,
-          });
+          }); // update vote value
           voteChange = 2 * vote;
         }
       }
       // updated firestore
-      const postRef = doc(firestore, "posts", post.id!);
-      batch.update(postRef, { voteStatus: voteStatus + voteChange });
-      await batch.commit();
+      const postRef = doc(firestore, "posts", post.id!); // get reference to post document
+      batch.update(postRef, { voteStatus: voteStatus + voteChange }); // update vote status
+      await batch.commit(); // commit batch
 
       // update ui state
       const postIndexPosition = postStateValue.posts.findIndex(
         (item) => item.id === post.id
-      );
+      ); // get index of post
       updatedPosts[postIndexPosition] = updatedPost;
       setPostStateValue((prev) => ({
         ...prev,
         posts: updatedPosts,
         postVotes: updatedPostVotes,
-      }));
+      })); // update posts and post votes state on the ui
 
       // allow voting when a post is currently selected
       if (postStateValue.selectedPost) {
         setPostStateValue((prev) => ({
           ...prev,
           selectedPost: updatedPost,
-        }));
+        })); // update selected post
       }
     } catch (error) {
       console.log("Error: onVote", error);
     }
   };
+
+  /**
+   * Redirects to post page and updates selected post state.
+   * @param post (Post) - post that was selected
+   */
   const onSelectPost = (post: Post) => {
     setPostStateValue((prev) => ({
       ...prev,
       selectedPost: post,
-    }));
-    router.push(`/community/${post.communityId}/comments/${post.id}`);
+    })); // update selected post
+    router.push(`/community/${post.communityId}/comments/${post.id}`); // redirect to post
   };
+
+  /**
+   * Deletes post. If post has an image, it is also deleted from storage.
+   * @param post (Post) - post that was selected
+   * @returns
+   */
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
       // check if post has image and delete it
@@ -156,7 +180,7 @@ const usePosts = () => {
         const imageRef = ref(storage, `posts/${post.id}/image`); // get reference to image
         await deleteObject(imageRef); // delete the image
 
-        // delete post
+        // delete post from firestore
         const postDocRef = doc(firestore, "posts", post.id!);
         await deleteDoc(postDocRef);
 
@@ -166,15 +190,16 @@ const usePosts = () => {
           posts: prev.posts.filter((item) => item.id !== post.id),
         }));
       }
-      return true;
+      return true; // post was deleted
     } catch (error) {
-      return false;
+      return false; // post was not deleted
     }
   };
+
   /**
    * Fetches community status.
    * When reloading, the community status is no longer stored in state.
-   * @param communityId `
+   * @param communityId (string) - id of the community
    */
   const getCommunityPostVotes = async (communityId: string) => {
     const postVotesQuery = query(

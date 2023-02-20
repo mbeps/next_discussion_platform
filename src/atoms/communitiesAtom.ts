@@ -2,13 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
 
 /**
- * Interface representing a community. 
- * Community:   id: string;
-      - `creatorId`: string;
-      - `numberOfMembers`: number;
-      - `privacyType`: "public" | "restricted" | "private";
-      - `createdAt`: Timestamp;
-      - `imageURL`: string;
+ * Interface representing a community.
  */
 export interface Community {
   id: string;

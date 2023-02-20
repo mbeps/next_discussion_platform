@@ -21,10 +21,24 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useSetRecoilState } from "recoil";
 
+/**
+ * Props for About component.
+ */
 type AboutProps = {
   communityData: Community;
 };
 
+/**
+ * About component displaying:
+ *    - The number of subscribers in the community
+ *    - Date when the community was created
+ *    - Button for creating a new post
+ *
+ * Additional elements are displayed if the current user is an admin:
+ *    - Button for changing image
+ * @param {communityData} - data required to be displayed
+ * @returns (React.FC<AboutProps>) - About component
+ */
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
   const selectFileRef = useRef<HTMLInputElement>(null);
@@ -32,19 +46,24 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
 
+  /**
+   * Allows admin to change the image of the community.
+   * @returns null if no file is selected
+   */
   const onUpdateImage = async () => {
     if (!selectedFile) {
+      // if no file is selected, do nothing
       return;
     }
-    setUploadingImage(true);
+    setUploadingImage(true); // set uploading image to true
 
     try {
-      const imageRef = ref(storage, `communities/${communityData.id}/image`);
-      await uploadString(imageRef, selectedFile, "data_url");
-      const downloadURL = await getDownloadURL(imageRef);
+      const imageRef = ref(storage, `communities/${communityData.id}/image`); // create reference to image in storage
+      await uploadString(imageRef, selectedFile, "data_url"); // upload image to storage
+      const downloadURL = await getDownloadURL(imageRef); // get download url of image
       await updateDoc(doc(firestore, "communities", communityData.id), {
         imageURL: downloadURL,
-      });
+      }); // update imageURL in firestore
 
       setCommunityStateValue((prev) => ({
         ...prev,
@@ -52,15 +71,16 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
           ...prev.currentCommunity,
           imageURL: downloadURL,
         } as Community,
-      }));
+      })); // update imageURL in recoil state
     } catch (error) {
       console.log("Error: onUploadImage", error);
     } finally {
-      setUploadingImage(false);
+      setUploadingImage(false); // set uploading image to false
     }
   };
 
   return (
+    // sticky position for the about section
     <Box position="sticky" top="50px">
       <Flex
         justify="space-between"
@@ -76,6 +96,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         <Icon as={HiOutlineDotsHorizontal} />
       </Flex>
 
+      {/* about section */}
       <Flex
         direction="column"
         p={3}
@@ -85,9 +106,12 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         <Stack>
           <Flex width="100%" p={2} fontSize="10pt">
             <Flex direction="column" flexGrow={1}>
+              {/* number of subscribers and date created */}
               <Text fontWeight={700}>Subscribers</Text>
               <Text>{communityData.numberOfMembers.toLocaleString()}</Text>
             </Flex>
+
+            {/* when the community was created */}
             <Flex direction="column" flexGrow={1}>
               <Text fontWeight={700}>Created</Text>
               <Text>{communityData.createdAt && "Not Working :("}</Text>
@@ -104,6 +128,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               <Divider />
               <Stack fontSize="10pt" spacing={1}>
                 <Text fontWeight={600}>Admin</Text>
+                {/* change image button */}
                 <Flex align="center" justify="space-between">
                   <Text
                     color="red.500"
@@ -113,14 +138,17 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                   >
                     Change Image
                   </Text>
+                  {/* image preview */}
                   {communityData?.imageURL || selectedFile ? (
+                    // selected image
                     <Image
                       borderRadius="full"
                       boxSize="40px"
                       src={selectedFile || communityData?.imageURL}
-                      alt="Dan Abramov"
+                      alt="Selected image"
                     />
                   ) : (
+                    // default image
                     <Image
                       src="/images/logo.svg"
                       height="40px"
@@ -128,8 +156,10 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                     />
                   )}
                 </Flex>
+                {/* save changes button */}
                 {selectedFile &&
                   (uploadingImage ? (
+                    // while image is loading show spinner for loading
                     <Spinner />
                   ) : (
                     <Text cursor="pointer" onClick={onUpdateImage}>

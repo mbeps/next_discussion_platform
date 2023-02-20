@@ -32,6 +32,9 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     onSelectPost,
   } = usePosts();
 
+  /**
+   * Gets all posts in the community.
+   */
   const getPosts = async () => {
     try {
       setLoading(true);
@@ -39,13 +42,13 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         collection(firestore, "posts"),
         where("communityId", "==", communityData.id),
         orderBy("createTime", "desc")
-      );
-      const postDocs = await getDocs(postsQuery);
-      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      ); // get all posts in community
+      const postDocs = await getDocs(postsQuery); // get all posts in community
+      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // get all posts in community
       setPostStateValue((prev) => ({
         ...prev,
         posts: posts as Post[],
-      }));
+      })); // set posts in state
     } catch (error: any) {
       console.log("Error: getPosts", error.message);
     } finally {
@@ -53,15 +56,20 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     }
   };
 
+  /**
+   * Gets all votes in the community when component mounts (page loads).
+   */
   useEffect(() => {
     getPosts();
   }, []);
 
   return (
     <>
+      {/* If loading is true, display the post loader component */}
       {loading ? (
         <PostLoader />
       ) : (
+        // If the posts are available, display the post item components
         <Stack>
           {/* For each post (item) iterebly create a post car component */}
           {postStateValue.posts.map((item) => (

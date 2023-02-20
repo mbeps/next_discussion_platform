@@ -1,6 +1,13 @@
 import { Button, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
 import React from "react";
 
+/**
+ * Props for TextInputs component.
+ *    - `textInputs` - object containing the title and body of the post
+ *    - `onChange` - function to handle changes in the input fields
+ *    - `handleCreatePost` - function to handle creating a new post
+ *    - `loading` - boolean to indicate if the post is being created
+ */
 type TextInputsProps = {
   textInputs: {
     title: string;
@@ -13,6 +20,12 @@ type TextInputsProps = {
   loading: boolean;
 };
 
+/**
+ * Sub-component of `NewPostForm` component.
+ * Allows user to enter the title and body of the post.
+ * @param {textInputs, onChange, handleCreatePost, loading} - required props
+ * @returns
+ */
 const TextInputs: React.FC<TextInputsProps> = ({
   textInputs,
   onChange,
@@ -21,6 +34,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
 }) => {
   return (
     <Stack spacing={3} width="100%">
+      {/* Title  of the post*/}
       <Input
         name="title"
         placeholder="Title"
@@ -36,6 +50,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
           borderColor: "red.500",
         }}
       />
+      {/* Body of the post */}
       <Textarea
         name="body"
         placeholder="Text (optional)"
@@ -53,6 +68,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
         }}
       />
       <Flex justify="flex-end">
+        {/* Button for creating a new post */}
         <Button
           height="34px"
           padding="0px 30px"

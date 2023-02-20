@@ -12,6 +12,12 @@ import { useSetRecoilState } from "recoil";
 
 type CreatePostProps = {};
 
+/**
+ * Component for creating a new post.
+ * Redirects the user to the create post page.
+ * If the user is not logged in, the authentication modal is opened.
+ * @returns (React.FC<CreatePostProps>) - CreatePostLink component
+ */
 const CreatePostLink: React.FC<CreatePostProps> = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
@@ -20,12 +26,13 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
   const onClick = () => {
     // check if the user is logged in as post cannot be created without user
     if (!user) {
-      setAuthModalState({ open: true, view: "login" });
-      return;
+      // if user is not logged in
+      setAuthModalState({ open: true, view: "login" }); // open login modal
+      return; // exit function
     }
-    const { communityId } = router.query;
+    const { communityId } = router.query; // get community id from router
     // redirect user to following link
-    router.push(`/community/${communityId}/submit`);
+    router.push(`/community/${communityId}/submit`); // redirect user to create post page
   };
 
   return (
@@ -41,6 +48,7 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
       mb={4}
     >
       <Icon as={IoIosCreate} fontSize={36} color="gray.300" mr={4} />
+      {/* Input for creating a new post */}
       <Input
         placeholder="Create Post"
         fontSize="10pt"

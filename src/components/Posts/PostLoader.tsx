@@ -5,6 +5,11 @@ type PostLoaderItemProps = {
   height: string;
 };
 
+/**
+ * Displays a post loader item of the given height.
+ * @param {height} - height of the post loader
+ * @returns
+ */
 const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
   return (
     <Box padding="10px 10px" boxShadow="lg" bg="white" borderRadius={10}>
@@ -15,6 +20,11 @@ const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
   );
 };
 
+/**
+ * Component to display a post loader while the post is being loaded.
+ * @returns (React.FC) - PostLoader component
+ * @requires PostLoaderItem - actual post loader item of the given height
+ */
 const PostLoader: React.FC = () => {
   return (
     <Stack spacing={6}>

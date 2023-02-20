@@ -1,6 +1,9 @@
 import { Button, Flex, Image, Stack } from "@chakra-ui/react";
 import React, { useRef } from "react";
 
+/**
+ * Props for ImageUpload component.
+ */
 type ImageUploadProps = {
   selectedFile?: string; // user does not need to upload a file
   onSelectImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,6 +11,16 @@ type ImageUploadProps = {
   setSelectedFile: (value: string) => void; // clear image and select a new one
 };
 
+/**
+ * Sub-component of `NewPostForm` component.
+ * Allows user to upload an image to be used in the post.
+ * Initially, the user is presented with a button to upload an image.
+ * After the image is uploaded, the user is presented with the image and two buttons:
+ *   - Back to Post: returns to the post section
+ *   - Remove Content: removes the image and returns to the upload button
+ * @param {selectedFile, onSelectImage, setSelectedTab, setSelectedFile} - required props
+ * @returns (React.FC<ImageUploadProps>) - ImageUpload component
+ */
 const ImageUpload: React.FC<ImageUploadProps> = ({
   selectedFile,
   onSelectImage,
@@ -52,6 +65,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           width="100%"
           borderRadius={10}
         >
+          {/* Upload button */}
           <Button
             onClick={() => {
               selectedFileRef.current?.click();
@@ -59,6 +73,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           >
             Upload Content
           </Button>
+          {/* Hidden input */}
           <input
             type="file"
             ref={selectedFileRef}
