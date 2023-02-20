@@ -13,7 +13,8 @@ import {
 } from "@firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import { useEffect } from "react";
+import { Router, useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -22,9 +23,22 @@ const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const currentCommunity = useRecoilValue(communityState).currentCommunity;
   const setAuthModalState = useSetRecoilState(authModalState);
+  const router = useRouter();
   // TODO: create postVote variable
 
-  const onVote = async (post: Post, vote: number, communityId: string) => {
+  const onVote = async (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: string
+  ) => {
+    /**
+     * Voting on a post from the main page causes the post to be opened in single view.
+     * This is because the voting buttons are children of the post item component which calls the redirection.
+     * This prevents the parent from being called preventing the post from being opened.
+     */
+    event.stopPropagation();
+
     // check for authentication
     if (!user?.uid) {
       setAuthModalState({ open: true, view: "login" });
@@ -116,11 +130,25 @@ const usePosts = () => {
         posts: updatedPosts,
         postVotes: updatedPostVotes,
       }));
+
+      // allow voting when a post is currently selected
+      if (postStateValue.selectedPost) {
+        setPostStateValue((prev) => ({
+          ...prev,
+          selectedPost: updatedPost,
+        }));
+      }
     } catch (error) {
       console.log("Error: onVote", error);
     }
   };
-  const onSelectPost = () => {};
+  const onSelectPost = (post: Post) => {
+    setPostStateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
+    router.push(`/community/${post.communityId}/comments/${post.id}`);
+  };
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
       // check if post has image and delete it

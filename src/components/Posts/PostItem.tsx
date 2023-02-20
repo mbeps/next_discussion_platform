@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { BsBookmark, BsChat } from "react-icons/bs";
 import { FiShare2 } from "react-icons/fi";
@@ -25,9 +26,14 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean; // is the currently logged in user the creator of post
   userVoteValue?: number;
-  onVote: (post: Post, vote: number, communityId: string) => void;
+  onVote: (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: string
+  ) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
-  onSelectPost: () => void;
+  onSelectPost?: (post: Post) => void; // optional because once a post is selected it cannot be reselected
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -41,6 +47,11 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const router = useRouter();
+  /**
+   * If there is no selected post then post is already selected
+   */
+  const singlePostPage = !onSelectPost;
 
   const topText: string = `Author: ${post.creatorUsername} |
 		Time: ${post.createTime
@@ -53,7 +64,10 @@ const PostItem: React.FC<PostItemProps> = ({
    * Each component may choose to the error handling differently
    * Core functionality is shared
    */
-  const handleDelete = async () => {
+  const handleDelete = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
     setLoadingDelete(true);
     try {
       const success: boolean = await onDeletePost(post);
@@ -63,6 +77,10 @@ const PostItem: React.FC<PostItemProps> = ({
       }
 
       console.log("Post has been deleted successfully");
+      // if the user deletes post from the single post page, they should be redirected to the post's community page
+      if (singlePostPage) {
+        router.push(`/community/${post.communityId}`);
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -74,20 +92,21 @@ const PostItem: React.FC<PostItemProps> = ({
     <Flex
       border="1px solid"
       bg="white"
-      borderColor="gray.500"
-      borderRadius={10}
-      _hover={{ borderColor: "gray.500" }}
-      cursor="pointer"
-      onClick={onSelectPost}
+      // borderColor="gray.500"
+      borderColor={singlePostPage ? "gray.300" : "gray.500"}
+      borderRadius={singlePostPage ? "10px 10px 0px 0px" : "10px"}
+      _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
+      cursor={singlePostPage ? "unset" : "pointer"}
+      onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
     >
       {/* left side containing like, dislike and vote number */}
       <Flex
         direction="column"
         align="center"
-        bg="gray.100"
+        bg={singlePostPage ? "none" : "gray.100"}
         p={2}
         width="40px"
-        borderRadius="10px 0px 0px 10px"
+        borderRadius={singlePostPage ? "0" : "10px 0px 0px 10px"}
       >
         {/* like button */}
         <Icon
@@ -97,7 +116,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "red.500" : "gray.500"}
           fontSize={22}
           cursor="pointer"
-          onClick={() => onVote(post, 1, post.communityId)}
+          onClick={(event) => onVote(event, post, 1, post.communityId)}
         />
         {/* number of likes  */}
         <Text fontSize="12pt" color="gray.600">
@@ -113,7 +132,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === -1 ? "red.500" : "gray.500"}
           fontSize={22}
           cursor="pointer"
-          onClick={() => onVote(post, -1, post.communityId)}
+          onClick={(event) => onVote(event, post, -1, post.communityId)}
           // onClick={onVote}
         />
       </Flex>
