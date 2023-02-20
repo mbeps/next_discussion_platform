@@ -1,7 +1,9 @@
 import { Post } from "@/atoms/postsAtom";
+import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
 import PostItem from "@/components/Posts/PostItem";
 import { auth, firestore } from "@/firebase/clientApp";
+import useCommunityData from "@/hooks/useCommunityData";
 import usePosts from "@/hooks/usePosts";
 import { doc, getDoc } from "@firebase/firestore";
 import { useRouter } from "next/router";
@@ -11,6 +13,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const PostPage: React.FC = () => {
   const { postStateValue, setPostStateValue, onDeletePost, onVote } =
     usePosts();
+  const { communityStateValue } = useCommunityData();
   const [user] = useAuthState(auth);
   const router = useRouter();
 
@@ -60,7 +63,9 @@ const PostPage: React.FC = () => {
           />
         )}
       </>
-
+      {communityStateValue.currentCommunity && (
+        <About communityData={communityStateValue.currentCommunity} />
+      )}
       {/* Left */}
       <></>
     </PageContent>
