@@ -28,12 +28,30 @@ import { useSetRecoilState } from "recoil";
 import CommentInput from "./CommentInput";
 import CommentItem, { Comment } from "./CommentItem";
 
+/**
+ * Required props for Comments component
+ * @param user - User object from firebase
+ * @param selectedPost - Post object from firebase
+ * @param communityId - id of the community
+ */
 type CommentsProps = {
   user: User;
   selectedPost: Post | null;
   communityId: string;
 };
 
+/**
+ * Displays all the comments for a post.
+ * Allows user to create, edit and delete comments.
+ *
+ * If there are no comments, displays a message.
+ * Show loading skeleton while fetching comments.
+ * If everything is loaded, show the comments.
+ * @param {user} - User object from firebase
+ * @param {selectedPost} - Post object from firebase
+ * @param {communityId} - id of the community
+ * @returns (React.FC) - Comments component
+ */
 const Comments: React.FC<CommentsProps> = ({
   user,
   selectedPost,
@@ -46,12 +64,16 @@ const Comments: React.FC<CommentsProps> = ({
   const [loadingDelete, setLoadingDelete] = useState("");
   const setPostState = useSetRecoilState(postState);
 
+  /**
+   * Creates a new comment for the selected post.
+   * Also updates the number of comments in the post document.
+   */
   const onCreateComment = async () => {
     setCreateLoading(true);
     try {
       const batch = writeBatch(firestore);
 
-      const commentDocRef = doc(collection(firestore, "comments"));
+      const commentDocRef = doc(collection(firestore, "comments")); // create new comment document
 
       const newComment: Comment = {
         id: commentDocRef.id,
@@ -62,14 +84,14 @@ const Comments: React.FC<CommentsProps> = ({
         postTitle: selectedPost?.title!,
         text: commentText,
         createdAt: serverTimestamp() as Timestamp,
-      };
+      }; // create new comment object with data to be stored in firestore
 
-      batch.set(commentDocRef, newComment);
+      batch.set(commentDocRef, newComment); // add new comment to batch
 
-      const postDocRef = doc(firestore, "posts", selectedPost?.id as string);
+      const postDocRef = doc(firestore, "posts", selectedPost?.id as string); // get post document
       batch.update(postDocRef, {
         numberOfComments: increment(1),
-      });
+      }); // update number of comments in post document
       await batch.commit();
 
       setCommentText(""); // once comment is submitted clear comment box
@@ -80,25 +102,31 @@ const Comments: React.FC<CommentsProps> = ({
           ...prev.selectedPost,
           numberOfComments: prev.selectedPost?.numberOfComments! + 1,
         } as Post,
-      }));
+      })); // update number of comments in post state
     } catch (error) {
       console.log("Error: OnCreateComment", error);
     } finally {
       setCreateLoading(false);
     }
   };
+
+  /**
+   * Deletes a comment.
+   * Also updates the number of comments in the post document.
+   * @param comment (Comment) - comment object to be deleted
+   */
   const onDeleteComment = async (comment: Comment) => {
     setLoadingDelete(comment.id);
     try {
       const batch = writeBatch(firestore);
 
-      const commentDocRef = doc(firestore, "comments", comment.id);
-      batch.delete(commentDocRef);
+      const commentDocRef = doc(firestore, "comments", comment.id); // get comment document
+      batch.delete(commentDocRef); // delete comment document
 
-      const postDocRef = doc(firestore, "posts", selectedPost?.id!);
+      const postDocRef = doc(firestore, "posts", selectedPost?.id!); // get post document
       batch.update(postDocRef, {
         numberOfComments: increment(-1),
-      });
+      }); // update number of comments in post document
 
       await batch.commit();
 
@@ -108,9 +136,9 @@ const Comments: React.FC<CommentsProps> = ({
           ...prev.selectedPost,
           numberOfComments: prev.selectedPost?.numberOfComments! - 1,
         } as Post,
-      }));
+      })); // update number of comments in post state
 
-      setComments((prev) => prev.filter((item) => item.id !== comment.id));
+      setComments((prev) => prev.filter((item) => item.id !== comment.id)); // remove comment from comments state
     } catch (error) {
       console.log("Error: onDeleteComment");
     } finally {
@@ -137,6 +165,10 @@ const Comments: React.FC<CommentsProps> = ({
     }
   };
 
+  /**
+   * Fetch comments for the selected post when selected post changes.
+   * If there is no selected post then do not fetch comments.
+   */
   useEffect(() => {
     if (!selectedPost) {
       return;
