@@ -1,19 +1,26 @@
+import { communityState } from "@/atoms/communitiesAtom";
 import { Post, postState, PostVote } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
   collection,
   deleteDoc,
   doc,
+  query,
   updateDoc,
+  where,
   writeBatch,
 } from "@firebase/firestore";
+import { getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const usePosts = () => {
   const [user] = useAuthState(auth);
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
+  const currentCommunity = useRecoilValue(communityState).currentCommunity;
+  // TODO: create postVote variable
 
   const onVote = async (post: Post, vote: number, communityId: string) => {
     // check for authentication
@@ -129,6 +136,39 @@ const usePosts = () => {
       return false;
     }
   };
+  /**
+   * Fetches community status.
+   * When reloading, the community status is no longer stored in state.
+   * @param communityId `
+   */
+  const getCommunityPostVotes = async (communityId: string) => {
+    const postVotesQuery = query(
+      collection(firestore, "users", `${user?.uid}/postVotes`),
+      where("communityId", "==", communityId)
+    );
+
+    const postVoteDocs = await getDocs(postVotesQuery);
+    const postVotes = postVoteDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setPostStateValue((prev) => ({
+      ...prev,
+      postVotes: postVotes as PostVote[],
+    }));
+  };
+
+  /**
+   * Every time page reloads, the community votes are fetched.
+   * @requires getCommunityPostVotes()
+   */
+  useEffect(() => {
+    if (!user || !currentCommunity?.id) {
+      return;
+    }
+    getCommunityPostVotes(currentCommunity?.id);
+  }, [user, currentCommunity]);
+
   return {
     postStateValue,
     setPostStateValue,
