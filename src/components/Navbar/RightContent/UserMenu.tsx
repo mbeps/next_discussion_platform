@@ -45,7 +45,6 @@ type UserMenuProps = {
  * @returns React user menu component
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-  const resetCommunityState = useResetRecoilState(communityState);
   const setAuthModalState = useSetRecoilState(authModalState);
 
   /**
@@ -56,7 +55,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const logout = async () => {
     await signOut(auth);
     // clear community state so that after logging out the button subscribe button resets
-    resetCommunityState();
   };
 
   return (
