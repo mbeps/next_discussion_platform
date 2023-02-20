@@ -28,9 +28,17 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <Box height="50%" bg="red.500" />
       <Flex justify="center" bg="white" flexGrow={1}>
         <Flex width="95%" maxWidth="860px" align="center">
-          {communityData.imageURL ? (
+          {/* using state instead of fetching from db as no refresh of the page is required */}
+          {communityStateValue.currentCommunity?.imageURL ? (
             // If community has image then display the image
-            <Image />
+            <Image
+              src={communityStateValue.currentCommunity.imageURL}
+              borderRadius="full"
+              boxSize="66px"
+              alt="Community icons"
+              color="red.500"
+              border="3px solid white"
+            />
           ) : (
             // If the community has no image, show this default preset one
             <Icon

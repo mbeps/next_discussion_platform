@@ -2,13 +2,7 @@ import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
 
 /**
- * Interface representing a community. 
- * Community:   id: string;
-      - `creatorId`: string;
-      - `numberOfMembers`: number;
-      - `privacyType`: "public" | "restricted" | "private";
-      - `createdAt`: Timestamp;
-      - `imageURL`: string;
+ * Interface representing a community.
  */
 export interface Community {
   id: string;
@@ -35,7 +29,7 @@ export interface CommunitySnippet {
  */
 interface CommunityState {
   mySnippets: CommunitySnippet[]; // stores a list of community snippets
-  // visitedCommunity // cache so that data is not refetched
+  currentCommunity?: Community; // user is not always in a community hence optional
 }
 
 /**

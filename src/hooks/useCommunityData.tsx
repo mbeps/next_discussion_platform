@@ -8,10 +8,12 @@ import { auth, firestore } from "@/firebase/clientApp";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   increment,
   writeBatch,
 } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -31,6 +33,7 @@ const useCommunityData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const setAuthModalState = useSetRecoilState(authModalState);
+  const router = useRouter();
 
   /**
    * Handles the user subscribing or unsubscribing to a community.
@@ -128,6 +131,23 @@ const useCommunityData = () => {
     setLoading(false);
   };
 
+  const getCommunityData = async (communityId: string) => {
+    try {
+      const communityDocRef = doc(firestore, "communities", communityId);
+      const communityDoc = await getDoc(communityDocRef);
+
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: {
+          id: communityDoc.id,
+          ...communityDoc.data(),
+        } as Community,
+      }));
+    } catch (error) {
+      console.log("Error: getCommunityData", error);
+    }
+  };
+
   /**
    * Unsubscribes the currently authenticated user from the community
    * @param communityId (Community) - community from which the user is unsubscribed from
@@ -165,11 +185,25 @@ const useCommunityData = () => {
 
   /**
    * Every time the user changes, it will check again.
+   * Clears all the user data when the user logs out.
    */
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: [],
+      }));
+      return;
+    }
     getMySnippets();
   }, [user]);
+
+  useEffect(() => {
+    const { communityId } = router.query;
+    if (communityId && !communityStateValue.currentCommunity) {
+      getCommunityData(communityId as string);
+    }
+  }, [communityStateValue.currentCommunity, router.query]);
 
   return {
     communityStateValue,
