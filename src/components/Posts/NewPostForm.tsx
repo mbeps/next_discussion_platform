@@ -69,7 +69,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       title: textInputs.title,
       body: textInputs.body,
       numberOfComments: 0,
-      votes: 0,
+      voteStatus: 0,
       createTime: serverTimestamp() as Timestamp,
     };
     setLoading(true);
