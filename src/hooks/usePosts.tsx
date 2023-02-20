@@ -32,7 +32,7 @@ const usePosts = () => {
       // new vote
       if (!existingVote) {
         const postVoteRef = doc(
-          collection(firestore, "users", `${user?.uid}/postVote`)
+          collection(firestore, "users", `${user?.uid}/postVotes`)
         );
         const newVote: PostVote = {
           id: postVoteRef.id,
