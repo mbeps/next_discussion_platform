@@ -3,6 +3,14 @@ import { Flex, Textarea, Button, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import React from "react";
 
+/**
+ * Required props for CommentInput component
+ * @param {commentText} - text of the comment
+ * @param {setCommentText} - function to set the comment text
+ * @param {user} - User object from firebase
+ * @param {createLoading} - is the comment being created
+ * @param {onCreateComment} - function to handle creating comment
+ */
 type CommentInputProps = {
   commentText: string;
   setCommentText: (value: string) => void;
@@ -11,6 +19,23 @@ type CommentInputProps = {
   onCreateComment: (commentText: string) => void;
 };
 
+/**
+ * Input box for creating a comment by inputting text.
+ * The component displays:
+ *    - Textarea for inputting comment text
+ *    - Button for creating the comment
+ *
+ * If the user is not logged in, the component displays:
+ *    - Text prompting the user to log in or sign up
+ *    - AuthButtons component
+ *
+ * @param {commentText} - text of the comment
+ * @param {setCommentText} - function to set the comment text
+ * @param {user} - User object from firebase
+ * @param {createLoading} - is the comment being created
+ * @param {onCreateComment} - function to handle creating comment
+ * @returns (React.FC<CommentInputProps>) - CommentInput component
+ */
 const CommentInput: React.FC<CommentInputProps> = ({
   commentText,
   setCommentText,
@@ -21,6 +46,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   return (
     <Flex direction="column" position="relative">
       {user ? (
+        // If the user is logged in, display the comment input box
         <>
           <Text color="gray.600" mb={1}>
             Comment as {user?.email?.split("@")[0]}
@@ -65,6 +91,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
           </Flex>
         </>
       ) : (
+        // If the user is not logged in, display the login/signup prompt
         <Flex
           align="center"
           justify="space-between"
