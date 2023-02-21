@@ -23,6 +23,8 @@ import PostLoader from "@/components/Posts/PostLoader";
 import { Stack } from "@chakra-ui/react";
 import PostItem from "@/components/Posts/PostItem";
 import useCommunityData from "@/hooks/useCommunityData";
+import Recommendations from "@/components/Community/Recommendations";
+import PersonalHome from "@/components/Community/PersonalHome";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -176,8 +178,10 @@ export default function Home() {
           </Stack>
         )}
       </>
-
-      <></>
+      <Stack spacing={2}>
+        <Recommendations />
+        <PersonalHome />
+      </Stack>
     </PageContent>
   );
 }
