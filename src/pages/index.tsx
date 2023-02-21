@@ -8,20 +8,28 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { communityState } from "@/atoms/communitiesAtom";
-import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import usePosts from "@/hooks/usePosts";
 import { Post } from "@/atoms/postsAtom";
 import CreatePostLink from "@/components/Community/CreatePostLink";
 import PostLoader from "@/components/Posts/PostLoader";
 import { Stack } from "@chakra-ui/react";
 import PostItem from "@/components/Posts/PostItem";
+import useCommunityData from "@/hooks/useCommunityData";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, loadingUser] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const communityStateValue = useRecoilValue(communityState);
+  const { communityStateValue } = useCommunityData();
   const {
     setPostStateValue,
     postStateValue,
@@ -30,9 +38,39 @@ export default function Home() {
     onDeletePost,
   } = usePosts();
 
-  const buildUserHomeFeed = () => {};
+  const buildUserHomeFeed = async () => {
+    setLoading(true);
 
-  const buildNoUserHomeFeed = async () => {
+    try {
+      if (communityStateValue.mySnippets.length) {
+        const myCommunityIds = communityStateValue.mySnippets.map(
+          (snippet) => snippet.communityId
+        );
+        const postQuery = query(
+          collection(firestore, "posts"),
+          where("communityId", "in", myCommunityIds),
+          limit(10)
+        );
+        const postDocs = await getDocs(postQuery);
+        const posts = postDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setPostStateValue((prev) => ({
+          ...prev,
+          posts: posts as Post[],
+        }));
+      } else {
+        buildGenericHomeFeed();
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const buildGenericHomeFeed = async () => {
     setLoading(true);
     try {
       const postQuery = query(
@@ -48,7 +86,7 @@ export default function Home() {
         posts: posts as Post[],
       }));
     } catch (error) {
-      console.log("Error: buildNoUserHomeFeed", error);
+      console.log("Error: buildGenericHomeFeed", error);
     } finally {
       setLoading(false);
     }
@@ -57,13 +95,23 @@ export default function Home() {
   const getUserPostVotes = () => {};
 
   /**
+   * Loads the home feed for authenticated users.
+   * Runs when the community snippets have been fetched when the user
+   */
+  useEffect(() => {
+    if (communityStateValue.mySnippets) {
+      buildUserHomeFeed();
+    }
+  }, [communityStateValue.snippetFetched]);
+
+  /**
    * Loads the home feed for unauthenticated users.
    * Runs when there is no user and the system is no longer attempting to fetch a user.
    * While the system is attempting to fetch user, the user is null.
    */
   useEffect(() => {
     if (!user && !loadingUser) {
-      buildNoUserHomeFeed();
+      buildGenericHomeFeed();
     }
   }, [user, loadingUser]);
 
