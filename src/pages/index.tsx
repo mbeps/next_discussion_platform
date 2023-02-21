@@ -17,7 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 import usePosts from "@/hooks/usePosts";
-import { Post } from "@/atoms/postsAtom";
+import { Post, PostVote } from "@/atoms/postsAtom";
 import CreatePostLink from "@/components/Community/CreatePostLink";
 import PostLoader from "@/components/Posts/PostLoader";
 import { Stack } from "@chakra-ui/react";
@@ -92,7 +92,25 @@ export default function Home() {
     }
   };
 
-  const getUserPostVotes = () => {};
+  const getUserPostVotes = async () => {
+    try {
+      const postIds = postStateValue.posts.map((post) => post.id);
+      const postVotesQuery = query(
+        collection(firestore, `users/${user?.uid}/postVotes`),
+        where("postId", "in", postIds)
+      );
+      const postVoteDocs = await getDocs(postVotesQuery);
+      const postVotes = postVoteDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setPostStateValue((prev) => ({
+        ...prev,
+        postVotes: postVotes as PostVote[],
+      }));
+    } catch (error) {}
+  };
 
   /**
    * Loads the home feed for authenticated users.
@@ -114,6 +132,22 @@ export default function Home() {
       buildGenericHomeFeed();
     }
   }, [user, loadingUser]);
+
+  /**
+   * Posts need to exist before trying to fetch votes for posts
+   */
+  useEffect(() => {
+    if (user && postStateValue.posts.length) {
+      getUserPostVotes();
+
+      return () => {
+        setPostStateValue((prev) => ({
+          ...prev,
+          postVotes: [],
+        }));
+      };
+    }
+  }, [user, postStateValue.posts]);
 
   return (
     <PageContent>
