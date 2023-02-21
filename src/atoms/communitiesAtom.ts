@@ -30,6 +30,7 @@ export interface CommunitySnippet {
 interface CommunityState {
   mySnippets: CommunitySnippet[]; // stores a list of community snippets
   currentCommunity?: Community; // user is not always in a community hence optional
+  snippetFetched: boolean;
 }
 
 /**
@@ -37,6 +38,7 @@ interface CommunityState {
  */
 const defaultCommunityState: CommunityState = {
   mySnippets: [],
+  snippetFetched: false,
 };
 
 /**

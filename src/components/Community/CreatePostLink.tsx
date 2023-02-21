@@ -1,5 +1,6 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
+import useDirectory from "@/hooks/useDirectory";
 import { Flex, Icon, Input } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,6 +23,7 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const { toggleMenuOpen } = useDirectory();
 
   const onClick = () => {
     // check if the user is logged in as post cannot be created without user
@@ -31,8 +33,16 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
       return; // exit function
     }
     const { communityId } = router.query; // get community id from router
-    // redirect user to following link
-    router.push(`/community/${communityId}/submit`); // redirect user to create post page
+
+    if (communityId) {
+      // if the user is in a community then can post
+      // redirect user to following link
+      router.push(`/community/${communityId}/submit`); // redirect user to create post page
+      return;
+    } else {
+      // if the user is not in a community then post cannot be made
+      toggleMenuOpen(); // open the menu to select a community
+    }
   };
 
   return (

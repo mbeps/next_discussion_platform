@@ -32,6 +32,7 @@ import TabItem from "./TabItem";
  */
 type NewPostFormProps = {
   user: User; // parent component checks user so additional checks aer not needed ut
+  communityImageURL?: string;
 };
 
 // Tab items which are static (not react) hence outside
@@ -63,7 +64,10 @@ export type FormTab = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+const NewPostForm: React.FC<NewPostFormProps> = ({
+  user,
+  communityImageURL,
+}) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title); // formTabs[0] = Post
   const [textInputs, setTextInputs] = useState({
@@ -79,6 +83,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     // create a new post object
     const newPost: Post = {
       communityId: communityId as string,
+      communityImageURL: communityImageURL || "",
       creatorId: user?.uid,
       creatorUsername: user.email!.split("@")[0],
       title: textInputs.title,

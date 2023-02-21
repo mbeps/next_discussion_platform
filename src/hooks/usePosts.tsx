@@ -175,21 +175,22 @@ const usePosts = () => {
    */
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
-      // check if post has image and delete it
       if (post.imageURL) {
-        const imageRef = ref(storage, `posts/${post.id}/image`); // get reference to image
-        await deleteObject(imageRef); // delete the image
-
-        // delete post from firestore
-        const postDocRef = doc(firestore, "posts", post.id!);
-        await deleteDoc(postDocRef);
-
-        // update recoil state to update the UI
-        setPostStateValue((prev) => ({
-          ...prev,
-          posts: prev.posts.filter((item) => item.id !== post.id),
-        }));
+        // delete the image if it exists
+        const imageRef = ref(storage, `posts/${post.id}/image`);
+        await deleteObject(imageRef);
       }
+
+      // delete post from firestore
+      const postDocRef = doc(firestore, "posts", post.id!);
+      await deleteDoc(postDocRef);
+
+      // update recoil state to remove the deleted post
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: prev.posts.filter((item) => item.id !== post.id),
+      }));
+
       return true; // post was deleted
     } catch (error) {
       return false; // post was not deleted

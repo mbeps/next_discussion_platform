@@ -5,6 +5,7 @@ import {
   Flex,
   Icon,
   Image,
+  Link,
   Skeleton,
   Spinner,
   Stack,
@@ -19,6 +20,7 @@ import {
   IoArrowDownCircleSharp,
   IoArrowUpCircleOutline,
   IoArrowUpCircleSharp,
+  IoPeopleCircleOutline,
 } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 
@@ -43,6 +45,7 @@ type PostItemProps = {
   ) => void; // function to handle voting
   onDeletePost: (post: Post) => Promise<boolean>; // function to handle deleting post
   onSelectPost?: (post: Post) => void; // optional because once a post is selected it cannot be reselected
+  isHomePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -52,6 +55,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
+  isHomePage,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState(false);
@@ -109,7 +113,7 @@ const PostItem: React.FC<PostItemProps> = ({
       border="1px solid"
       bg="white"
       // borderColor="gray.500"
-      borderColor={singlePostPage ? "white" : "gray.500"}
+      borderColor={singlePostPage ? "white" : "gray.300"}
       borderRadius={singlePostPage ? "10px 10px 0px 0px" : "10px"}
       _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
       cursor={singlePostPage ? "unset" : "pointer"}
@@ -155,8 +159,41 @@ const PostItem: React.FC<PostItemProps> = ({
       {/* right side containing content  */}
       <Flex direction="column" width="100%">
         <Stack spacing={1} p="10px">
-          <Stack direction="row" spacing={0.5} align="center" fontSize="9pt">
+          <Stack
+            direction="row"
+            spacing={0.5}
+            align="center"
+            fontSize="9pt"
+            borderRadius="full"
+            boxSize="18px"
+            mr={2}
+            width="100%"
+          >
             {/* Check whether home page to decide whether to display community image */}
+            {isHomePage && (
+              <>
+                {post.communityImageURL ? (
+                  <Image src={post.communityImageURL} alt="Community logo" />
+                ) : (
+                  <Icon
+                    as={IoPeopleCircleOutline}
+                    mr={1}
+                    fontSize="18pt"
+                    color="red.500"
+                  />
+                )}
+                <Link href={`/community/${post.communityId}`}>
+                  <Text
+                    fontWeight={700}
+                    _hover={{ textDecoration: "underline" }}
+                    pr={2}
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {post.communityId}
+                  </Text>
+                </Link>
+              </>
+            )}
             <Text>{topText}</Text>
           </Stack>
           {/* post title */}
