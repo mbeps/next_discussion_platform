@@ -4,7 +4,7 @@ import { User } from "firebase/auth";
 import React from "react";
 
 type SearchInputProps = {
-  user?: User | null
+  user?: User | null;
 };
 
 /**
@@ -14,16 +14,16 @@ type SearchInputProps = {
  * @returns Search component
  * @see https://chakra-ui.com/docs/components/input/usage
  */
-const SearchInput: React.FC<SearchInputProps> = ({user}) => {
+const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
   return (
     // flexGrow uses the remaining space in the navbar
     // navbar limit is 600px when the user is logged in and automatic when not logged in
-    <Flex flexGrow={1} maxWidth={user ? 'auto' : '600px'} mr={2} align="center">
+    <Flex flexGrow={1} maxWidth={user ? "auto" : "600px"} mr={2} align="center">
       <InputGroup>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<SearchIcon color="gray.400" mb={1} />}
-        />
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.400" mb={1} />
+        </InputLeftElement>
+
         <Input
           placeholder="Search"
           fontSize="10pt"
