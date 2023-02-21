@@ -100,7 +100,8 @@ const useCommunityData = () => {
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
         imageURL: communityData.imageURL || "",
-        // no `isAdmin` as when joining a community user is not automatically an admin
+        // if the creator of community re-subscribes to the community
+        isAdmin: user?.uid === communityData.creatorId,
       };
 
       // create a new community snippet into the user document (subscription)
