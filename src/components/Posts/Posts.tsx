@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Community } from "@/atoms/communitiesAtom";
 import { Post } from "@/atoms/postsAtom";
 import { auth, firestore } from "@/firebase/clientApp";

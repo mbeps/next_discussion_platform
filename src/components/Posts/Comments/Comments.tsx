@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Post, postState } from "@/atoms/postsAtom";
 import { firestore } from "@/firebase/clientApp";
 import {
