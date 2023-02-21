@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { communityState } from "@/atoms/communitiesAtom";
 import {
   DirectoryMenuItem,
