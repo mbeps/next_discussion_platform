@@ -56,7 +56,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
   userId,
 }) => {
   return (
-    <Flex outline="1px solid" borderColor="gray.300" borderRadius={10}>
+    <Flex
+      border="1px solid"
+      bg="white"
+      borderColor="gray.300"
+      borderRadius={10}
+    >
       <Flex m={2}>
         <Box>
           <Icon as={CgProfile} fontSize={30} color="gray.300" mr={2} />
