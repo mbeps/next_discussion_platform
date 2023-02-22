@@ -42,7 +42,10 @@ type AboutProps = {
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
   const selectFileRef = useRef<HTMLInputElement>(null);
-  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
+    300,
+    300
+  );
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
 
@@ -169,7 +172,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                 <input
                   id="file-upload"
                   type="file"
-                  accept="image/x-png,image/gif,image/jpeg"
+                  accept="image/png,image/gif,image/jpeg"
                   hidden
                   ref={selectFileRef}
                   onChange={onSelectFile}

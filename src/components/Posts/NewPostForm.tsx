@@ -74,7 +74,10 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     title: "",
     body: "",
   });
-  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
+    3000,
+    3000
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
