@@ -173,7 +173,13 @@ const PostItem: React.FC<PostItemProps> = ({
             {isHomePage && (
               <>
                 {post.communityImageURL ? (
-                  <Image src={post.communityImageURL} alt="Community logo" />
+                  <Image
+                    borderRadius="full"
+                    boxSize="18px"
+                    src={post.communityImageURL}
+                    mr={2}
+                    alt="Community logo"
+                  />
                 ) : (
                   <Icon
                     as={IoPeopleCircleOutline}
