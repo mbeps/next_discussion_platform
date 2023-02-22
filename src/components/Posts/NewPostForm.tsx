@@ -109,8 +109,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           // add image link to the posts in Firestore
           imageURL: downloadURL,
         });
-        router.back(); // redirect user back to communities page after post is created
       }
+      router.push(`/community/${communityId}`); // redirect user back to communities page after post is created
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
       setError(true);
