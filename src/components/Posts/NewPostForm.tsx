@@ -139,7 +139,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   };
 
   return (
-    <Flex direction="column" bg="white" borderRadius={4} mt={2}>
+    <Flex direction="column" bg="white" borderRadius={10} mt={2}>
       <Flex width="100%">
         {/* create a tab item for each tab in the formTabs array */}
         {formTabs.map((item) => (
@@ -161,8 +161,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
             loading={loading}
           />
         )}
-        {/* Display the image upload form if the user has selected the Images & Videos tab */}
-        {selectedTab === "Images & Videos" && (
+        {/* Display the image upload form if the user has selected the Images tab */}
+        {selectedTab === "Images" && (
           <ImageUpload
             selectedFile={selectedFile}
             onSelectImage={onSelectFile}
