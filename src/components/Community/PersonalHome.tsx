@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { Button, Flex, Icon, Stack, Text, Image } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
 import { communityState } from "@/atoms/communitiesAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import CreateCommunityModal from "../Modal/CreateCommunity/CreateCommunityModal";
+import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/clientApp";
+import useDirectory from "@/hooks/useDirectory";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import useCallCreatePost from "@/hooks/useCallCreatePost";
 
 const PersonalHome: React.FC = () => {
   const [open, setOpen] = useState(false); // modal initially closed
   const mySnippets = useRecoilValue(communityState).mySnippets;
+
+  const { onClick } = useCallCreatePost();
 
   return (
     <>
@@ -46,7 +54,9 @@ const PersonalHome: React.FC = () => {
             <Text fontSize="9pt">
               Home page personalized based on your subscribed communities.
             </Text>
-            <Button height="30px">Create Post</Button>
+            <Button height="30px" onClick={onClick}>
+              Create Post
+            </Button>
             <Button
               variant="outline"
               height="30px"
