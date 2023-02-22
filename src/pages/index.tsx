@@ -52,6 +52,7 @@ export default function Home() {
         const postQuery = query(
           collection(firestore, "posts"),
           where("communityId", "in", myCommunityIds),
+          orderBy("voteStatus", "desc"),
           limit(10)
         );
         const postDocs = await getDocs(postQuery);
