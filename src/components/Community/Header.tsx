@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
   );
   return (
     <Flex direction="column" width="100%" height="120px">
-      <Box height="50%" bg="red.500" />
+      <Box height="30%" bg="red.500" />
       <Flex justify="center" bg="white" flexGrow={1}>
         <Flex width="95%" maxWidth="860px" align="center">
           {/* using state instead of fetching from db as no refresh of the page is required */}
