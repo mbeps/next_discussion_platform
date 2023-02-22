@@ -48,7 +48,7 @@ const formTabs: FormTab[] = [
     icon: IoDocumentText,
   },
   {
-    title: "Images & Videos",
+    title: "Images",
     icon: IoImageOutline,
   },
   // more can be added which would dynamically be fitted into post creation navbar component
