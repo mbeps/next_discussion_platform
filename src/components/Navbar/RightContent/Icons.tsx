@@ -10,6 +10,28 @@ import {
   IoVideocamOutline,
 } from "react-icons/io5";
 
+type IconProps = {
+  as: React.ElementType;
+  fontSize: number;
+};
+
+const IconItem: React.FC<IconProps> = ({ as: Icon, fontSize }) => {
+  return (
+    <Flex
+      mr={1.5}
+      ml={1.5}
+      padding={1}
+      cursor="pointer"
+      borderRadius={4}
+      _hover={{
+        bg: "gray.200",
+      }}
+    >
+      <Icon fontSize={fontSize} />
+    </Flex>
+  );
+};
+
 const icons: React.FC = () => {
   return (
     <Flex>
@@ -20,85 +42,16 @@ const icons: React.FC = () => {
         borderRight="1px solid"
         borderColor="gray.200"
       >
-        <Flex
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={BsArrowUpRightCircle} fontSize={20} />
-        </Flex>
+        <IconItem as={BsArrowUpRightCircle} fontSize={20} />
 
-        <Flex
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={IoFilterCircleOutline} fontSize={22} />
-        </Flex>
+        <IconItem as={IoFilterCircleOutline} fontSize={22} />
 
-        <Flex
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={IoVideocamOutline} fontSize={22} />
-        </Flex>
+        <IconItem as={IoVideocamOutline} fontSize={22} />
       </Flex>
       <>
-        <Flex
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={BsChatDots} fontSize={20} />
-        </Flex>
-
-        <Flex
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={IoNotificationsOutline} fontSize={20} />
-        </Flex>
-
-        <Flex
-          display={{ base: "none", md: "flex" }}
-          mr={1.5}
-          ml={1.5}
-          padding={1}
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{
-            bg: "gray.200",
-          }}
-        >
-          <Icon as={GrAdd} fontSize={20} />
-        </Flex>
+        {/* Always visible */}
+        <IconItem as={GrAdd} fontSize={20} />
+        <IconItem as={IoNotificationsOutline} fontSize={20} />
       </>
     </Flex>
   );
