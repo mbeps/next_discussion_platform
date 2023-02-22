@@ -36,7 +36,7 @@ import CommentItem, { Comment } from "./CommentItem";
  * @param communityId - id of the community
  */
 type CommentsProps = {
-  user: User;
+  user?: User;
   selectedPost: Post | null;
   communityId: string;
 };
@@ -78,8 +78,8 @@ const Comments: React.FC<CommentsProps> = ({
 
       const newComment: Comment = {
         id: commentDocRef.id,
-        creatorId: user.uid,
-        creatorDisplayText: user.email!.split("@")[0],
+        creatorId: user!.uid,
+        creatorDisplayText: user!.email!.split("@")[0],
         communityId,
         postId: selectedPost?.id!,
         postTitle: selectedPost?.title!,
@@ -223,7 +223,7 @@ const Comments: React.FC<CommentsProps> = ({
                     comment={comment}
                     onDeleteComment={onDeleteComment}
                     loadingDelete={loadingDelete === comment.id}
-                    userId={user.uid}
+                    userId={user?.uid}
                   />
                 ))}
               </>

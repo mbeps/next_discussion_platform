@@ -12,8 +12,13 @@ import {
   Text,
   Spinner,
 } from "@chakra-ui/react";
-import { doc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
@@ -42,7 +47,10 @@ type AboutProps = {
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
   const selectFileRef = useRef<HTMLInputElement>(null);
-  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
+    300,
+    300
+  );
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
 
@@ -76,6 +84,32 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
       console.log("Error: onUploadImage", error);
     } finally {
       setUploadingImage(false); // set uploading image to false
+    }
+  };
+
+  /**
+   * Deletes the image of the community.
+   * @param communityId (string) - id of the community
+   */
+  const onDeleteImage = async (communityId: string) => {
+    try {
+      const imageRef = ref(storage, `communities/${communityId}/image`); // create reference to image in storage
+      await deleteObject(imageRef);
+      // await deleteDoc(doc(firestore, "communities", communityId)); // delete image from storage
+      await updateDoc(doc(firestore, "communities", communityId), {
+        imageURL: "",
+      }); // update imageURL in firestore
+
+      // updates the state to change the ui
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: {
+          ...prev.currentCommunity,
+          imageURL: "",
+        } as Community,
+      })); // update imageURL in recoil state
+    } catch (error) {
+      console.log("Error: onDeleteImage", error);
     }
   };
 
@@ -127,7 +161,12 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             <>
               <Divider />
               <Stack fontSize="10pt" spacing={1}>
-                <Text fontWeight={600}>Admin</Text>
+                <Text fontWeight={600} fontSize="12pt">
+                  Admin
+                </Text>
+                <Text fontWeight={600} color="gray.500">
+                  Community Image Settings
+                </Text>
                 {/* change image button */}
                 <Flex align="center" justify="space-between">
                   <Text
@@ -169,12 +208,24 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                 <input
                   id="file-upload"
                   type="file"
-                  accept="image/x-png,image/gif,image/jpeg"
+                  accept="image/png,image/gif,image/jpeg"
                   hidden
                   ref={selectFileRef}
                   onChange={onSelectFile}
                 />
               </Stack>
+              {/* delete image button */}
+              {communityData?.imageURL && (
+                <Text
+                  fontSize="10pt"
+                  color="red.500"
+                  cursor="pointer"
+                  _hover={{ textDecoration: "underline" }}
+                  onClick={() => onDeleteImage(communityData.id)}
+                >
+                  Delete Image
+                </Text>
+              )}
             </>
           )}
         </Stack>

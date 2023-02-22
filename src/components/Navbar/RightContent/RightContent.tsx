@@ -16,7 +16,7 @@ type RightContentProps = {
  * If the user is not authenticated, the right content will display log in and sign up buttons.
  * If the user is authenticated, the right content will display:
  *  -
- * @param {user} - to manage state and adjust the UI based on said state
+ * @param {User} - to manage state and adjust the UI based on said state
  * @returns
  * @requires ./AuthButtons - log in and sign up buttons
  * @requires ./UserMenu - user menu which changed depending on whether user is authenticated

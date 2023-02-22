@@ -18,7 +18,7 @@ type CommentItemProps = {
   comment: Comment;
   onDeleteComment: (comment: Comment) => void;
   loadingDelete: boolean;
-  userId: string;
+  userId?: string;
 };
 
 /**

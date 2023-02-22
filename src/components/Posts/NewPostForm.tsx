@@ -48,7 +48,7 @@ const formTabs: FormTab[] = [
     icon: IoDocumentText,
   },
   {
-    title: "Images & Videos",
+    title: "Images",
     icon: IoImageOutline,
   },
   // more can be added which would dynamically be fitted into post creation navbar component
@@ -74,7 +74,10 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     title: "",
     body: "",
   });
-  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
+    3000,
+    3000
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -106,8 +109,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           // add image link to the posts in Firestore
           imageURL: downloadURL,
         });
-        router.back(); // redirect user back to communities page after post is created
       }
+      router.push(`/community/${communityId}`); // redirect user back to communities page after post is created
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
       setError(true);
@@ -139,7 +142,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   };
 
   return (
-    <Flex direction="column" bg="white" borderRadius={4} mt={2}>
+    <Flex direction="column" bg="white" borderRadius={10} mt={2}>
       <Flex width="100%">
         {/* create a tab item for each tab in the formTabs array */}
         {formTabs.map((item) => (
@@ -161,8 +164,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
             loading={loading}
           />
         )}
-        {/* Display the image upload form if the user has selected the Images & Videos tab */}
-        {selectedTab === "Images & Videos" && (
+        {/* Display the image upload form if the user has selected the Images tab */}
+        {selectedTab === "Images" && (
           <ImageUpload
             selectedFile={selectedFile}
             onSelectImage={onSelectFile}
