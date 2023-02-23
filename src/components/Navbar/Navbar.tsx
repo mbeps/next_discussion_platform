@@ -44,6 +44,13 @@ const Navbar: React.FC = () => {
       position="sticky"
       top="0px"
       zIndex="999"
+      // Rounded props
+      border="1px solid"
+      borderColor="gray.300"
+      borderRadius={10}
+      mt={1}
+      mr={1}
+      ml={1}
     >
       <Flex
         align="center"
