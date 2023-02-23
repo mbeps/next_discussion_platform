@@ -50,23 +50,24 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
               bg="white"
             />
           )}
-
-          <Flex padding="10px 16px">
+          <Flex padding="10px 16px" width="100%">
             <Flex direction="column" mr={6}>
               <Text fontWeight={800} fontSize="16pt">
                 {communityData.id}
               </Text>
             </Flex>
-            <Button
-              variant={isJoined ? "outline" : "solid"}
-              height="30px"
-              pr={{ base: 2, md: 6 }}
-              pl={{ base: 2, md: 6 }}
-              isLoading={loading}
-              onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
-            >
-              {isJoined ? "Unsubscribe" : "Subscribe"}
-            </Button>
+            <Flex direction="column" flexGrow={1} align="end" justify="end">
+              <Button
+                variant={isJoined ? "outline" : "solid"}
+                height="30px"
+                pr={{ base: 2, md: 6 }}
+                pl={{ base: 2, md: 6 }}
+                isLoading={loading}
+                onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
+              >
+                {isJoined ? "Unsubscribe" : "Subscribe"}
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
