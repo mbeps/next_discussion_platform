@@ -26,6 +26,7 @@ const SubmitPostPage: React.FC = () => {
           <NewPostForm
             user={user}
             communityImageURL={communityStateValue.currentCommunity?.imageURL}
+            currentCommunity={communityStateValue.currentCommunity}
           />
         )}
       </>

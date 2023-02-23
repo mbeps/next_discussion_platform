@@ -1,15 +1,8 @@
+import { Community } from "@/atoms/communitiesAtom";
 import { Post } from "@/atoms/postsAtom";
 import { firestore, storage } from "@/firebase/clientApp";
 import useSelectFile from "@/hooks/useSelectFile";
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Flex,
-  Icon,
-  Text,
-} from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -22,6 +15,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import ImageUpload from "./PostForm/ImageUpload";
 import TextInputs from "./PostForm/TextInputs";
 import TabItem from "./TabItem";
@@ -33,6 +27,7 @@ import TabItem from "./TabItem";
 type NewPostFormProps = {
   user: User; // parent component checks user so additional checks aer not needed ut
   communityImageURL?: string;
+  currentCommunity?: Community;
 };
 
 // Tab items which are static (not react) hence outside
@@ -67,6 +62,7 @@ export type FormTab = {
 const NewPostForm: React.FC<NewPostFormProps> = ({
   user,
   communityImageURL,
+  currentCommunity,
 }) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title); // formTabs[0] = Post
@@ -80,6 +76,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const communityLink = `/community/${currentCommunity?.id}`;
 
   const handleCreatePost = async () => {
     const { communityId } = router.query;
@@ -110,7 +108,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           imageURL: downloadURL,
         });
       }
-      router.push(`/community/${communityId}`); // redirect user back to communities page after post is created
+      router.push(communityLink); // redirect user back to communities page after post is created
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
       setError(true);
@@ -154,6 +152,19 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           />
         ))}
       </Flex>
+      <Button
+        variant="outline"
+        mt={4}
+        ml={4}
+        mr={4}
+        justifyContent="left"
+        width="fit-content"
+        onClick={() => router.push(communityLink)}
+      >
+        <Icon as={MdOutlineArrowBackIos} mr={2} />
+        {`Back to ${currentCommunity?.id}`}
+      </Button>
+
       <Flex p={4}>
         {/* Display the correct form based on the selected tab */}
         {selectedTab === "Post" && (

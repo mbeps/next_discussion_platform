@@ -60,8 +60,8 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
             <Button
               variant={isJoined ? "outline" : "solid"}
               height="30px"
-              pr={6}
-              pl={6}
+              pr={{ base: 2, md: 6 }}
+              pl={{ base: 2, md: 6 }}
               isLoading={loading}
               onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
             >
