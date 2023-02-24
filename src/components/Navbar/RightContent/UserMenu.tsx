@@ -22,6 +22,7 @@ import { auth } from "@/firebase/clientApp";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
 import { communityState } from "@/atoms/communitiesAtom";
+import CustomMenuButton from "@/components/Menu/CustomMenuButton";
 
 type UserMenuProps = {
   user?: User | null;
@@ -147,37 +148,3 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   );
 };
 export default UserMenu;
-
-interface CustomMenuButtonProps {
-  icon: React.ReactElement;
-  text: string;
-  onClick: () => void;
-}
-
-const CustomMenuButton: React.FC<CustomMenuButtonProps> = ({
-  icon,
-  text,
-  onClick,
-}) => {
-  return (
-    <MenuItem
-      fontSize="10pt"
-      fontWeight={700}
-      onClick={onClick}
-      height="40px"
-      borderRadius={10}
-      alignContent="center"
-      _hover={{
-        bg: "gray.300",
-        color: "black",
-      }}
-    >
-      <Flex align="center">
-        <Icon fontSize={20} mr={2} mt={1}>
-          {icon}
-        </Icon>
-        {text}
-      </Flex>
-    </MenuItem>
-  );
-};
