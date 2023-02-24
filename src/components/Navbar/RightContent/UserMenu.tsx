@@ -9,6 +9,7 @@ import {
   Flex,
   MenuDivider,
   Text,
+  Stack,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
 import React from "react";
@@ -107,63 +108,76 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList>
-        {user ? (
-          // If the user is logged in
-          <>
-            {/* Profile option */}
-            <MenuItem
-              fontSize="10pt"
-              fontWeight={700}
-              _hover={{
-                bg: "red.500",
-                color: "white",
-              }}
-            >
-              <Flex align="center">
-                <Icon fontSize={20} mr={2} as={CgProfile} />
-                Profile
-              </Flex>
-            </MenuItem>
-            <MenuDivider />
-            {/* Log out option */}
-            <MenuItem
-              fontSize="10pt"
-              fontWeight={700}
-              onClick={logout}
-              _hover={{
-                bg: "red.500",
-                color: "white",
-              }}
-            >
-              <Flex align="center">
-                <Icon fontSize={20} mr={2} as={MdOutlineLogin} />
-                Log Out
-              </Flex>
-            </MenuItem>
-          </>
-        ) : (
-          // If user is not logged in
-          <>
-            {/* Log out button */}
-            <MenuItem
-              fontSize="10pt"
-              fontWeight={700}
-              onClick={() => setAuthModalState({ open: true, view: "login" })}
-              _hover={{
-                bg: "red.500",
-                color: "white",
-              }}
-            >
-              <Flex align="center">
-                <Icon fontSize={20} mr={2} as={MdOutlineLogin} />
-                Log In / Sign Up
-              </Flex>
-            </MenuItem>
-          </>
-        )}
+      <MenuList borderRadius={10} mt={2}>
+        <Flex justifyContent="center">
+          <Stack spacing={1} width="95%">
+            {user ? (
+              // If the user is logged in
+              <>
+                {/* Profile option */}
+                <CustomMenuButton
+                  icon={<CgProfile />}
+                  text="Profile"
+                  onClick={() => console.log("Profile clicked")}
+                />
+
+                <CustomMenuButton
+                  icon={<MdOutlineLogin />}
+                  text="Log Out"
+                  onClick={logout}
+                />
+              </>
+            ) : (
+              // If user is not logged in
+              <>
+                {/* Log out button */}
+                <CustomMenuButton
+                  icon={<MdOutlineLogin />}
+                  text="Log In / Sign Up"
+                  onClick={() =>
+                    setAuthModalState({ open: true, view: "login" })
+                  }
+                />
+              </>
+            )}
+          </Stack>
+        </Flex>
       </MenuList>
     </Menu>
   );
 };
 export default UserMenu;
+
+interface CustomMenuButtonProps {
+  icon: React.ReactElement;
+  text: string;
+  onClick: () => void;
+}
+
+const CustomMenuButton: React.FC<CustomMenuButtonProps> = ({
+  icon,
+  text,
+  onClick,
+}) => {
+  return (
+    <MenuItem
+      fontSize="10pt"
+      fontWeight={700}
+      onClick={onClick}
+      height="40px"
+      borderRadius={10}
+      alignContent="center"
+      _hover={{
+        bg: "gray.300",
+        color: "black",
+      }}
+    >
+      <Flex align="center">
+        <Icon fontSize={20} mr={2} mt={1}>
+          {icon}
+        </Icon>
+        {text}
+      </Flex>
+    </MenuItem>
+  );
+};
