@@ -23,6 +23,23 @@ const Communities: React.FC<CommunitiesProps> = () => {
     <>
       {/* Sets the state of the community creation modal to true which opens the modal */}
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
+      <MenuItem
+        fontSize="10pt"
+        fontWeight={700}
+        height="40px"
+        borderRadius={10}
+        alignContent="center"
+        _hover={{
+          bg: "gray.300",
+          color: "black",
+        }}
+        onClick={() => setOpen(true)}
+      >
+        <Flex align="center">
+          <Icon fontSize={20} mr={2} as={GrAdd} />
+          Create Community
+        </Flex>
+      </MenuItem>
       <Box>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           PRIVILEGED
@@ -45,17 +62,6 @@ const Communities: React.FC<CommunitiesProps> = () => {
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           SUBSCRIBED COMMUNITIES
         </Text>
-        <MenuItem
-          width="100%"
-          fontSize="10pt"
-          _hover={{ bg: "gray.100" }}
-          onClick={() => setOpen(true)}
-        >
-          <Flex align="center">
-            <Icon fontSize={20} mr={2} as={GrAdd} />
-            Create Community
-          </Flex>
-        </MenuItem>
         {mySnippets.map((snippet) => (
           <MenuListItem
             key={snippet.communityId}

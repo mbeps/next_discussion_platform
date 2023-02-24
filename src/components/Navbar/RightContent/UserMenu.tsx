@@ -22,6 +22,7 @@ import { auth } from "@/firebase/clientApp";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
 import { communityState } from "@/atoms/communitiesAtom";
+import CustomMenuButton from "@/components/Menu/CustomMenuButton";
 
 type UserMenuProps = {
   user?: User | null;
@@ -72,39 +73,37 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         }}
       >
         <Flex align="center">
-          <Flex align="center">
-            {user ? (
-              // If user is logged in
-              <>
-                <Icon
-                  fontSize={24}
-                  mr={1}
-                  color="gray.300"
-                  as={MdAccountCircle}
-                />
+          {user ? (
+            // If user is logged in
+            <>
+              <Icon
+                fontSize={24}
+                mr={1}
+                color="gray.300"
+                as={MdAccountCircle}
+              />
 
-                <Flex
-                  direction="column"
-                  display={{ base: "none", lg: "flex" }}
-                  fontSize="8pt"
-                  align="flex-start"
-                  mr={2}
-                >
-                  <Text fontWeight={700}>
-                    {/* Displays name and surname if available or generates username from email (name before `@`) */}
-                    {user?.displayName || user.email?.split("@")[0]}
-                  </Text>
-                  {/* <Flex>
+              <Flex
+                direction="column"
+                display={{ base: "none", lg: "flex" }}
+                fontSize="8pt"
+                align="flex-start"
+                mr={2}
+              >
+                <Text fontWeight={700}>
+                  {/* Displays name and surname if available or generates username from email (name before `@`) */}
+                  {user?.displayName || user.email?.split("@")[0]}
+                </Text>
+                {/* <Flex>
                     <Icon as={IoSparkles} color='brand.100' mr={1}/>
                     <Text color='gray.400'>1 KARMA</Text>
                   </Flex> */}
-                </Flex>
-              </>
-            ) : (
-              // If user is not logged in
-              <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
-            )}
-          </Flex>
+              </Flex>
+            </>
+          ) : (
+            // If user is not logged in
+            <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
+          )}
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
@@ -147,37 +146,3 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   );
 };
 export default UserMenu;
-
-interface CustomMenuButtonProps {
-  icon: React.ReactElement;
-  text: string;
-  onClick: () => void;
-}
-
-const CustomMenuButton: React.FC<CustomMenuButtonProps> = ({
-  icon,
-  text,
-  onClick,
-}) => {
-  return (
-    <MenuItem
-      fontSize="10pt"
-      fontWeight={700}
-      onClick={onClick}
-      height="40px"
-      borderRadius={10}
-      alignContent="center"
-      _hover={{
-        bg: "gray.300",
-        color: "black",
-      }}
-    >
-      <Flex align="center">
-        <Icon fontSize={20} mr={2} mt={1}>
-          {icon}
-        </Icon>
-        {text}
-      </Flex>
-    </MenuItem>
-  );
-};

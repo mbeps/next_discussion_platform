@@ -22,9 +22,17 @@ const MenuListItem: React.FC<MenuListItemProps> = ({
 
   return (
     <MenuItem
-      width="100%"
+      mt={1}
+      mb={1}
       fontSize="10pt"
-      _hover={{ bg: "gray.300" }}
+      fontWeight={700}
+      height="40px"
+      borderRadius={10}
+      alignContent="center"
+      _hover={{
+        bg: "gray.300",
+        color: "black",
+      }}
       onClick={() =>
         onSelectMenuItem({
           displayText,
