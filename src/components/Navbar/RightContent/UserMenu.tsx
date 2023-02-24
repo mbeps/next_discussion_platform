@@ -73,39 +73,37 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         }}
       >
         <Flex align="center">
-          <Flex align="center">
-            {user ? (
-              // If user is logged in
-              <>
-                <Icon
-                  fontSize={24}
-                  mr={1}
-                  color="gray.300"
-                  as={MdAccountCircle}
-                />
+          {user ? (
+            // If user is logged in
+            <>
+              <Icon
+                fontSize={24}
+                mr={1}
+                color="gray.300"
+                as={MdAccountCircle}
+              />
 
-                <Flex
-                  direction="column"
-                  display={{ base: "none", lg: "flex" }}
-                  fontSize="8pt"
-                  align="flex-start"
-                  mr={2}
-                >
-                  <Text fontWeight={700}>
-                    {/* Displays name and surname if available or generates username from email (name before `@`) */}
-                    {user?.displayName || user.email?.split("@")[0]}
-                  </Text>
-                  {/* <Flex>
+              <Flex
+                direction="column"
+                display={{ base: "none", lg: "flex" }}
+                fontSize="8pt"
+                align="flex-start"
+                mr={2}
+              >
+                <Text fontWeight={700}>
+                  {/* Displays name and surname if available or generates username from email (name before `@`) */}
+                  {user?.displayName || user.email?.split("@")[0]}
+                </Text>
+                {/* <Flex>
                     <Icon as={IoSparkles} color='brand.100' mr={1}/>
                     <Text color='gray.400'>1 KARMA</Text>
                   </Flex> */}
-                </Flex>
-              </>
-            ) : (
-              // If user is not logged in
-              <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
-            )}
-          </Flex>
+              </Flex>
+            </>
+          ) : (
+            // If user is not logged in
+            <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
+          )}
           <ChevronDownIcon />
         </Flex>
       </MenuButton>

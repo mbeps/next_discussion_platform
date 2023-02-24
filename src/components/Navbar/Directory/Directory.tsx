@@ -8,6 +8,7 @@ import {
   MenuList,
   Text,
   Image,
+  Stack,
 } from "@chakra-ui/react";
 import React from "react";
 import { TiHome } from "react-icons/ti";
@@ -46,6 +47,7 @@ const UserMenu: React.FC = () => {
           width={{ base: "auto", lg: "200px" }}
         >
           <Flex align="center">
+            {/* if community is selected */}
             {directoryState.selectedMenuItem.imageURL ? (
               <Image
                 src={directoryState.selectedMenuItem.imageURL}
@@ -71,9 +73,13 @@ const UserMenu: React.FC = () => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList>
-        {/* Communities menu to open the community creation modal */}
-        <Communities />
+      <MenuList borderRadius={10} mt={2}>
+        <Flex justifyContent="center">
+          <Stack spacing={1} width="95%">
+            {/* Communities menu to open the community creation modal */}
+            <Communities />
+          </Stack>
+        </Flex>
       </MenuList>
     </Menu>
   );
