@@ -25,8 +25,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { ChangeEvent, FC, ReactElement, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { IconType } from "react-icons";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
@@ -167,7 +168,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     <>
       <Modal isOpen={open} onClose={handleClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius={10}>
           <ModalHeader
             display="flex"
             flexDirection="column"
@@ -191,7 +192,18 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 value={communityName}
                 placeholder="Community Name"
                 onChange={handleChange}
-                // borderColor='red.400'
+                fontSize="10pt"
+                _placeholder={{ color: "gray.500" }}
+                _hover={{
+                  bg: "white",
+                  border: "1px solid",
+                  borderColor: "red.500",
+                }}
+                _focus={{
+                  outline: "none",
+                  border: "1px solid",
+                  borderColor: "red.500",
+                }}
               />
               <Text
                 fontSize="9pt"
@@ -214,51 +226,30 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 Only 1 community type can be created hence only 1 box can be checked
                 Checking another box (community type)  */}
                 <Stack spacing={2}>
-                  <Checkbox
+                  <CommunityTypeOption
                     name="public"
+                    icon={BsFillPersonFill}
+                    label="Public"
+                    description="Everyone can view and post"
                     isChecked={communityType === "public"}
                     onChange={onCommunityTypeChange}
-                  >
-                    <Flex align="center">
-                      <Icon as={BsFillPersonFill} color="gray.500" mr={2} />
-                      <Text fontSize="10pt" mr={1}>
-                        Public
-                      </Text>
-                      <Text fontSize="8pt" color="gray.500" pt={1}>
-                        Everyone can view and post
-                      </Text>
-                    </Flex>
-                  </Checkbox>
-                  <Checkbox
+                  />
+                  <CommunityTypeOption
                     name="restricted"
+                    icon={BsFillEyeFill}
+                    label="Restricted"
+                    description="Everyone can view but only subscribers can post"
                     isChecked={communityType === "restricted"}
                     onChange={onCommunityTypeChange}
-                  >
-                    <Flex align="center">
-                      <Icon as={BsFillEyeFill} color="gray.500" mr={2} />
-                      <Text fontSize="10pt" mr={1}>
-                        Restricted
-                      </Text>
-                      <Text fontSize="8pt" color="gray.500" pt={1}>
-                        Everyone can view but only subscribers can post
-                      </Text>
-                    </Flex>
-                  </Checkbox>
-                  <Checkbox
+                  />
+                  <CommunityTypeOption
                     name="private"
+                    icon={HiLockClosed}
+                    label="Private"
+                    description="Only subscribers can view and post"
                     isChecked={communityType === "private"}
                     onChange={onCommunityTypeChange}
-                  >
-                    <Flex align="center">
-                      <Icon as={HiLockClosed} color="gray.500" mr={2} />
-                      <Text fontSize="10pt" mr={1}>
-                        Private
-                      </Text>
-                      <Text fontSize="8pt" color="gray.500" pt={1}>
-                        Only subscribers can view and post
-                      </Text>
-                    </Flex>
-                  </Checkbox>
+                  />
                 </Stack>
               </Box>
             </ModalBody>
@@ -287,3 +278,40 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   );
 };
 export default CreateCommunityModal;
+
+type CommunityTypeOptionProps = {
+  name: string;
+  icon: IconType;
+  label: string;
+  description: string;
+  isChecked: boolean;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+};
+
+const CommunityTypeOption: FC<CommunityTypeOptionProps> = ({
+  name,
+  icon,
+  label,
+  description,
+  isChecked,
+  onChange,
+}) => {
+  return (
+    <Checkbox
+      name={name}
+      isChecked={isChecked}
+      onChange={onChange}
+      colorScheme="red"
+    >
+      <Flex align="center">
+        <Icon as={icon} color="gray.500" mr={2} />
+        <Text fontSize="10pt" mr={1}>
+          {label}
+        </Text>
+        <Text fontSize="8pt" color="gray.500" pt={1}>
+          {description}
+        </Text>
+      </Flex>
+    </Checkbox>
+  );
+};
