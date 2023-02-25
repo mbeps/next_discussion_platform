@@ -195,8 +195,8 @@ const Comments: React.FC<CommentsProps> = ({
           onCreateComment={onCreateComment}
         />
       </Flex>
-      <Divider mb={4} />
-      <Stack spacing={4} m={2}>
+      <Divider mb={6} />
+      <Stack spacing={4} m={4} ml={10}>
         {fetchLoading ? (
           <>
             {[0, 1, 2, 3].map((item) => (
