@@ -1,10 +1,11 @@
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import InputField from "./InputField";
 
 /**
  * Allows the user to create an account by inputting the required credentials (email and password).
@@ -146,42 +147,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-interface InputFieldProps {
-  name: string;
-  placeholder: string;
-  type: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-}
-
-const InputField: React.FC<InputFieldProps> = ({
-  name,
-  placeholder,
-  type,
-  onChange,
-}) => {
-  return (
-    <Input
-      required
-      name={name}
-      placeholder={placeholder}
-      type={type}
-      mb={2}
-      onChange={onChange}
-      fontSize="10pt"
-      bg="gray.50"
-      _placeholder={{ color: "gray.500" }}
-      _hover={{
-        bg: "white",
-        borderColor: "red.400",
-        border: "1px solid",
-      }}
-      _focus={{
-        outline: "none",
-        bg: "white",
-        borderColor: "gray.500",
-        border: "1px solid",
-      }}
-    />
-  );
-};
