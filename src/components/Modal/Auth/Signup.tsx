@@ -83,6 +83,12 @@ const SignUp = () => {
     }));
   };
 
+  const isButtonDisabled = () => {
+    return (
+      !signUpForm.email || !signUpForm.password || !signUpForm.confirmPassword
+    );
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <InputField
@@ -120,6 +126,7 @@ const SignUp = () => {
         mb={2}
         type="submit"
         isLoading={loading} // If loading (from Firebase) is true, show loading spinner
+        isDisabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}

@@ -56,6 +56,13 @@ const Login: React.FC<LoginProps> = () => {
     }));
   };
 
+  const isButtonDisabled = () => {
+    return (
+      !loginForm.email || !loginForm.password
+      // signUpForm.confirmPassword !== signUpForm.password
+    );
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <InputField
@@ -83,6 +90,7 @@ const Login: React.FC<LoginProps> = () => {
         mb={2}
         type="submit"
         isLoading={loading}
+        isDisabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}
