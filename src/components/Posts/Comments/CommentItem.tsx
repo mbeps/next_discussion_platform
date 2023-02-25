@@ -79,8 +79,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
             cursor="pointer"
             color="gray.500"
           >
-            <Icon as={IoArrowUpCircleOutline} fontSize="16pt" />
-            <Icon as={IoArrowDownCircleOutline} fontSize="16pt" />
             {userId === comment.creatorId && (
               <>
                 <Text fontSize="10pt" _hover={{ color: "red.500" }}>
