@@ -18,10 +18,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
   return (
     // flexGrow uses the remaining space in the navbar
     // navbar limit is 600px when the user is logged in and automatic when not logged in
-    <Flex flexGrow={1} maxWidth={user ? "auto" : "600px"} mr={2} align="center">
+    <Flex flexGrow={1} maxWidth={user ? "auto" : "auto"} mr={2} align="center">
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <SearchIcon color="gray.400" mb={1} />
+          <SearchIcon color="gray.400" />
         </InputLeftElement>
 
         <Input
@@ -38,9 +38,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
             border: "1px solid",
             borderColor: "red.500",
           }}
-          height="34px"
+          height="40px"
           //todo: make height automatic based on the height of the navbar
           bg="gray.100"
+          borderRadius={10}
         />
       </InputGroup>
     </Flex>

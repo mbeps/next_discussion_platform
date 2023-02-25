@@ -38,8 +38,8 @@ const Navbar: React.FC = () => {
   return (
     <Flex
       bg="white"
-      height="44px"
-      padding="6px 12px"
+      height="50px"
+      padding="6px 10px"
       justify={{ md: "space-between" }}
       position="sticky"
       top="0px"
@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       border="1px solid"
       borderColor="gray.300"
       borderRadius={10}
-      m={1}
+      m={{ base: 1, md: 1.5 }}
     >
       <Flex
         align="center"

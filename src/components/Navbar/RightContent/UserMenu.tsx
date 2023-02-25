@@ -66,7 +66,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         cursor="pointer"
         height="100%"
         padding="0px 6px"
-        borderRadius={4}
+        borderRadius={10}
         _hover={{
           outline: "1px solid",
           outlineColor: "gray.200",
