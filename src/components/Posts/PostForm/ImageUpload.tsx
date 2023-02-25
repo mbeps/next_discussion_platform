@@ -38,8 +38,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           <Image
             src={selectedFile}
             alt="Uploaded image for post"
-            maxWidth="400px"
+            maxWidth="90%"
             maxHeight="400px"
+            borderRadius={10}
           />
           <Stack direction="row" mt={4}>
             <Button onClick={() => setSelectedTab("Post")} w="100%">
