@@ -33,7 +33,7 @@ const UserMenu: React.FC = () => {
         onClick={toggleMenuOpen}
         cursor="pointer"
         padding="0px 6px"
-        borderRadius={4}
+        borderRadius={10}
         mr={2}
         ml={{ base: 0, md: 2 }}
         _hover={{

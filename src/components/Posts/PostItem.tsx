@@ -218,9 +218,11 @@ const PostItem: React.FC<PostItemProps> = ({
                 <Skeleton height="300px" width="100%" borderRadius={10} />
               )}
               <Image
+                mt={4}
                 src={post.imageURL}
                 alt="Image for post"
                 maxHeight="450px"
+                maxWidth="90%"
                 borderRadius="10px"
                 display={loadingImage ? "none" : "unset"}
                 onLoad={() => setLoadingImage(false)}
