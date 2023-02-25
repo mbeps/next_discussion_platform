@@ -84,73 +84,25 @@ const SignUp = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <Input
-        required
+      <InputField
         name="email"
         placeholder="Email"
         type="email"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
-      <Input
-        required
+      <InputField
         name="password"
         placeholder="Password"
         type="password"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
-      <Input
-        required
+      <InputField
         name="confirmPassword"
         placeholder="Confirm Password"
         type="password"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
       {/* If there is error than the error is shown */}
@@ -194,3 +146,42 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+interface InputFieldProps {
+  name: string;
+  placeholder: string;
+  type: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+const InputField: React.FC<InputFieldProps> = ({
+  name,
+  placeholder,
+  type,
+  onChange,
+}) => {
+  return (
+    <Input
+      required
+      name={name}
+      placeholder={placeholder}
+      type={type}
+      mb={2}
+      onChange={onChange}
+      fontSize="10pt"
+      bg="gray.50"
+      _placeholder={{ color: "gray.500" }}
+      _hover={{
+        bg: "white",
+        borderColor: "red.400",
+        border: "1px solid",
+      }}
+      _focus={{
+        outline: "none",
+        bg: "white",
+        borderColor: "gray.500",
+        border: "1px solid",
+      }}
+    />
+  );
+};
