@@ -153,7 +153,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
         );
       });
 
-      router.push(`community/${communityName}`);
+      router.push(`/community/${communityName}`);
       handleClose();
       toggleMenuOpen();
     } catch (error: any) {
