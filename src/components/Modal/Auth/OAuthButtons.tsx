@@ -1,5 +1,6 @@
-import { Button, Flex, Image, Text } from "@chakra-ui/react";
-import { User } from "firebase/auth";
+import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import { FirebaseError } from "@firebase/app";
+import { AuthError, User } from "firebase/auth";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,60 +26,75 @@ const OAuthButtons: React.FC = ({}) => {
     useSignInWithGithub(auth);
 
   return (
-    <Flex direction="column" width="100%" mb={2} mt={2}>
+    <Stack direction="column" spacing={1} width="100%" mb={2} mt={2}>
       {/* Google */}
-      <Button
-        variant="oauth"
-        mb={2}
+
+      <AuthButton
+        provider="Google"
         isLoading={loadingGoogle}
         onClick={() => signInWithGoogle()}
-      >
-        <Image
-          src="/images/google.png"
-          alt="Continue with Google"
-          mr={2}
-          height="20px"
-        />
-        Google
-      </Button>
+        image="/images/google.png"
+      />
 
       {/* GitHub */}
-      <Button
-        variant="oauth"
-        mb={2}
+      <AuthButton
+        provider="GitHub"
         isLoading={loadingGitHub}
         onClick={() => signInWithGithub()}
-      >
-        <Image
-          src="/images/github.png"
-          alt="Continue with GitHub"
-          mr={2}
-          height="20px"
-        />
-        GitHub
-      </Button>
+        image="/images/github.png"
+      />
 
       {/* If there is error than the error is shown */}
-      {errorGoogle && (
-        <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
-          {
-            FIREBASE_ERRORS[
-              errorGoogle?.message as keyof typeof FIREBASE_ERRORS
-            ]
-          }
-        </Text>
-      )}
-      {errorGitHub && (
-        <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
-          {
-            FIREBASE_ERRORS[
-              errorGitHub?.message as keyof typeof FIREBASE_ERRORS
-            ]
-          }
-        </Text>
-      )}
-    </Flex>
+      <>
+        <ErrorMessage error={errorGoogle} />
+        <ErrorMessage error={errorGitHub} />
+      </>
+    </Stack>
   );
 };
 
 export default OAuthButtons;
+
+interface AuthButtonProps {
+  provider: string;
+  isLoading: boolean;
+  onClick: () => void;
+  image: string;
+}
+
+const AuthButton: React.FC<AuthButtonProps> = ({
+  provider,
+  isLoading,
+  onClick,
+  image,
+}) => {
+  return (
+    <Button
+      flexGrow={1}
+      variant="oauth"
+      mb={2}
+      isLoading={isLoading}
+      onClick={onClick}
+    >
+      <Image
+        src={image}
+        alt={`Continue with ${provider}`}
+        mr={2}
+        height="20px"
+      />
+      {provider}
+    </Button>
+  );
+};
+
+interface ErrorMessageProps {
+  error: AuthError | undefined;
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
+  return error ? (
+    <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
+      {FIREBASE_ERRORS[error.message as keyof typeof FIREBASE_ERRORS]}
+    </Text>
+  ) : null;
+};
