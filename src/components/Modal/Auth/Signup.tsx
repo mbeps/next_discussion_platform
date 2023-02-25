@@ -1,10 +1,11 @@
-import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import InputField from "./InputField";
 
 /**
  * Allows the user to create an account by inputting the required credentials (email and password).
@@ -82,75 +83,33 @@ const SignUp = () => {
     }));
   };
 
+  const isButtonDisabled = () => {
+    return (
+      !signUpForm.email || !signUpForm.password || !signUpForm.confirmPassword
+    );
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <Input
-        required
+      <InputField
         name="email"
         placeholder="Email"
         type="email"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
-      <Input
-        required
+      <InputField
         name="password"
         placeholder="Password"
         type="password"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
-      <Input
-        required
+      <InputField
         name="confirmPassword"
         placeholder="Confirm Password"
         type="password"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
       {/* If there is error than the error is shown */}
@@ -167,6 +126,7 @@ const SignUp = () => {
         mb={2}
         type="submit"
         isLoading={loading} // If loading (from Firebase) is true, show loading spinner
+        isDisabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}

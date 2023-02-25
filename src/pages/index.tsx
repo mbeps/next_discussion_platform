@@ -174,7 +174,7 @@ export default function Home() {
                   )?.voteValue
                 }
                 userIsCreator={user?.uid === post.creatorId}
-                isHomePage={true}
+                showCommunityImage={true}
               />
             ))}
           </Stack>

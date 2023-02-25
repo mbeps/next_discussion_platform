@@ -77,6 +77,7 @@ const PostPage: React.FC = () => {
               )?.voteValue
             }
             userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
+            showCommunityImage={true}
           />
         )}
 

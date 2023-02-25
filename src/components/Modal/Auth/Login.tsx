@@ -5,19 +5,20 @@ import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import InputField from "./InputField";
 
 type LoginProps = {};
 
 /**
- * Allows the user to input the log in credentials (email and password) to log into the site. 
- * Contains 2 input fields, `Email` and `Password` and a log in button. 
- * 
- * If the credentials are correct, the user is signed in. 
- * If the credentials are incorrect, error messages are displayed. 
- * 
- * Buttons for resetting the password and signing up are present. 
- * Clicking these buttons would change the modal to the appropriate view. 
- * @returns Log in components view for modal. 
+ * Allows the user to input the log in credentials (email and password) to log into the site.
+ * Contains 2 input fields, `Email` and `Password` and a log in button.
+ *
+ * If the credentials are correct, the user is signed in.
+ * If the credentials are incorrect, error messages are displayed.
+ *
+ * Buttons for resetting the password and signing up are present.
+ * Clicking these buttons would change the modal to the appropriate view.
+ * @returns Log in components view for modal.
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const Login: React.FC<LoginProps> = () => {
@@ -55,52 +56,27 @@ const Login: React.FC<LoginProps> = () => {
     }));
   };
 
+  const isButtonDisabled = () => {
+    return (
+      !loginForm.email || !loginForm.password
+      // signUpForm.confirmPassword !== signUpForm.password
+    );
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <Input
-        required
+      <InputField
         name="email"
         placeholder="Email"
         type="email"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
-      <Input
-        required
+      <InputField
         name="password"
         placeholder="Password"
         type="password"
-        mb={2}
         onChange={onChange}
-        fontSize="10pt"
-        bg="gray.50"
-        _placeholder={{ color: "gray.500" }}
-        _hover={{
-          bg: "white",
-          borderColor: "red.400",
-          border: "1px solid",
-        }}
-        _focus={{
-          outline: "none",
-          bg: "white",
-          borderColor: "gray.500",
-          border: "1px solid",
-        }}
       />
 
       <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
@@ -114,6 +90,7 @@ const Login: React.FC<LoginProps> = () => {
         mb={2}
         type="submit"
         isLoading={loading}
+        isDisabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}

@@ -45,7 +45,7 @@ type PostItemProps = {
   ) => void; // function to handle voting
   onDeletePost: (post: Post) => Promise<boolean>; // function to handle deleting post
   onSelectPost?: (post: Post) => void; // optional because once a post is selected it cannot be reselected
-  isHomePage?: boolean;
+  showCommunityImage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -55,7 +55,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
-  isHomePage,
+  showCommunityImage,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState(false);
@@ -170,7 +170,7 @@ const PostItem: React.FC<PostItemProps> = ({
             width="100%"
           >
             {/* Check whether home page to decide whether to display community image */}
-            {isHomePage && (
+            {showCommunityImage && (
               <>
                 {post.communityImageURL ? (
                   <Image
