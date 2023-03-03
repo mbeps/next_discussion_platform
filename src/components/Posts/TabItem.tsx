@@ -29,6 +29,7 @@ const TabItem: React.FC<TabItemProps> = ({
 }) => {
   return (
     <Flex
+      m={2}
       justify="center"
       align="center"
       fontWeight={800}
@@ -39,9 +40,9 @@ const TabItem: React.FC<TabItemProps> = ({
       cursor="pointer"
       _hover={{ bg: "gray.50" }}
       color={selected ? "red.500" : "gray.500"}
-      borderWidth={selected ? "0px 1px 2px 0px" : "0px 1px 1px 0px"}
-      borderBottomColor={selected ? "red.500" : "gray.200"}
-      borderRightColor="gray.200"
+      borderWidth="1px"
+      borderColor={selected ? "red.500" : "gray.200"}
+      borderRadius={10}
       onClick={() => setSelectedTab(item.title)}
     >
       <Flex align="center" height="20px" mr={2}>
