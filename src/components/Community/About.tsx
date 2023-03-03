@@ -115,7 +115,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
 
   return (
     // sticky position for the about section
-    <Box position="sticky" top="50px">
+    <Box position="sticky" top="60px">
       <Flex
         justify="space-between"
         align="center"
