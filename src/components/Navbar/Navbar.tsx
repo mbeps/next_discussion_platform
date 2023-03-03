@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
       padding="6px 10px"
       justify={{ md: "space-between" }}
       position="sticky"
-      top="0px"
+      top="4px"
       zIndex="999"
       // Rounded props
       border="1px solid"

@@ -1,5 +1,5 @@
 import useDirectory from "@/hooks/useDirectory";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Icon,
@@ -70,7 +70,15 @@ const UserMenu: React.FC = () => {
               </Text>
             </Flex>
           </Flex>
-          <ChevronDownIcon />
+          {directoryState.isOpen ? (
+            <>
+              <ChevronUpIcon />
+            </>
+          ) : (
+            <>
+              <ChevronDownIcon />
+            </>
+          )}
         </Flex>
       </MenuButton>
       <MenuList borderRadius={10} mt={2}>

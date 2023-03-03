@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Menu,
   MenuButton,
@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { MdAccountCircle } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { IoSparkles } from "react-icons/io5";
@@ -48,6 +48,15 @@ type UserMenuProps = {
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const toggle = () => {
+    if (isMenuOpen) {
+      setMenuOpen(false);
+    } else {
+      setMenuOpen(true);
+    }
+  };
 
   /**
    * Signs the user out of the app.
@@ -63,6 +72,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     <Menu>
       {/* Actual menu button that opens the menu of options */}
       <MenuButton
+        onClick={() => {
+          toggle();
+        }}
         cursor="pointer"
         height="100%"
         padding="0px 6px"
@@ -104,7 +116,16 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             // If user is not logged in
             <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
           )}
-          <ChevronDownIcon />
+
+          {isMenuOpen ? (
+            <>
+              <ChevronUpIcon />
+            </>
+          ) : (
+            <>
+              <ChevronDownIcon />
+            </>
+          )}
         </Flex>
       </MenuButton>
       <MenuList borderRadius={10} mt={2}>
