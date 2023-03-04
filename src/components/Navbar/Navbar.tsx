@@ -58,16 +58,14 @@ const Navbar: React.FC = () => {
         cursor="pointer"
       >
         {/* Logo which is always visible */}
-        <Image src="/images/logo.svg" height="30px" alt="Website logo" />
+        <Image src="/images/logo.svg" height="30px" alt="Website logo" ml={1} />
 
         {/* Logo name not visible on mobile */}
         <Image
           src="/images/logo_text.svg"
-          height="46px"
+          height="30px"
           display={{ base: "none", md: "unset" }}
           alt="Website text logo"
-          mt={2}
-          ml={2}
         />
       </Flex>
       {/* Community directory only visible when user is logged in */}
