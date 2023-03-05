@@ -29,7 +29,6 @@ const TabItem: React.FC<TabItemProps> = ({
 }) => {
   return (
     <Flex
-      m={2}
       justify="center"
       align="center"
       fontWeight={800}
