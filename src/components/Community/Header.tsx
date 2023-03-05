@@ -29,44 +29,23 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <Flex justify="center" bg="white" flexGrow={1}>
         <Flex width="95%" maxWidth="1200px" align="center">
           {/* using state instead of fetching from db as no refresh of the page is required */}
-          {communityStateValue.currentCommunity?.imageURL ? (
-            // If community has image then display the image
-            <Image
-              src={communityStateValue.currentCommunity.imageURL}
-              borderRadius="full"
-              boxSize="66px"
-              alt="Community icons"
-              color="red.500"
-              border="3px solid white"
-            />
-          ) : (
-            // If the community has no image, show this default preset one
-            <Icon
-              as={HiArrowCircleUp}
-              fontSize={64}
-              color="red.500"
-              border="3px solid white"
-              borderRadius="full"
-              bg="white"
-            />
-          )}
-          <Flex padding="10px 16px" width="100%">
-            <Flex direction="column" mr={6}>
-              <Text fontWeight={800} fontSize="16pt">
-                {communityData.id}
-              </Text>
-            </Flex>
-            <Flex direction="column" flexGrow={1} align="end" justify="end">
-              <Button
-                variant={isJoined ? "outline" : "solid"}
-                height="30px"
-                pr={{ base: 2, md: 6 }}
-                pl={{ base: 2, md: 6 }}
-                isLoading={loading}
+          <CommunityIcon
+            imageURL={communityStateValue.currentCommunity?.imageURL}
+          />
+
+          <Flex padding="10px 16px" width="100%" border="1px solid green">
+            <CommunityName id={communityData.id} />
+            <Flex
+              direction="column"
+              flexGrow={1}
+              align="end"
+              justify="end"
+              border="1px solid blue"
+            >
+              <JoinOrLeaveButton
+                isJoined={isJoined}
                 onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
-              >
-                {isJoined ? "Unsubscribe" : "Subscribe"}
-              </Button>
+              />
             </Flex>
           </Flex>
         </Flex>
@@ -75,3 +54,65 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
   );
 };
 export default Header;
+
+type CommunityIconProps = {
+  imageURL?: string;
+};
+
+const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
+  return imageURL ? (
+    <Image
+      src={imageURL}
+      borderRadius="full"
+      boxSize="66px"
+      alt="Community icons"
+      color="red.500"
+      border="3px solid white"
+    />
+  ) : (
+    <Icon
+      as={HiArrowCircleUp}
+      fontSize={64}
+      color="red.500"
+      border="3px solid white"
+      borderRadius="full"
+      bg="white"
+    />
+  );
+};
+
+type CommunityNameProps = {
+  id: string;
+};
+
+const CommunityName: React.FC<CommunityNameProps> = ({ id }) => {
+  return (
+    <Flex direction="column" mr={6}>
+      <Text fontWeight={800} fontSize="16pt">
+        {id}
+      </Text>
+    </Flex>
+  );
+};
+
+type JoinOrLeaveButtonProps = {
+  isJoined: boolean;
+  onClick: () => void;
+};
+
+export const JoinOrLeaveButton: React.FC<JoinOrLeaveButtonProps> = ({
+  isJoined,
+  onClick,
+}) => {
+  return (
+    <Button
+      variant={isJoined ? "outline" : "solid"}
+      height="30px"
+      pr={{ base: 2, md: 6 }}
+      pl={{ base: 2, md: 6 }}
+      onClick={onClick}
+    >
+      {isJoined ? "Unsubscribe" : "Subscribe"}
+    </Button>
+  );
+};
