@@ -33,15 +33,9 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
             imageURL={communityStateValue.currentCommunity?.imageURL}
           />
 
-          <Flex padding="10px 16px" width="100%" border="1px solid green">
+          <Flex padding="10px 16px" width="100%">
             <CommunityName id={communityData.id} />
-            <Flex
-              direction="column"
-              flexGrow={1}
-              align="end"
-              justify="end"
-              border="1px solid blue"
-            >
+            <Flex direction="column" flexGrow={1} align="end" justify="end">
               <JoinOrLeaveButton
                 isJoined={isJoined}
                 onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
