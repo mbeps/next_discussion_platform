@@ -7,19 +7,19 @@ import {
   Divider,
   Flex,
   Icon,
-  Stack,
   Image,
-  Text,
   Spinner,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { User } from "@firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadString,
 } from "firebase/storage";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -46,13 +46,100 @@ type AboutProps = {
  */
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
-  const selectFileRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  return (
+    // sticky position for the about section
+    <Box position="sticky" top="60px">
+      <AboutHeaderBar communityName={communityData.id} />
+
+      {/* about section */}
+      <Flex
+        direction="column"
+        p={3}
+        bg="white"
+        borderRadius="0px 0px 10px 10px"
+      >
+        <Stack>
+          <AboutCommunity communityData={communityData} />
+          <Button
+            width="100%"
+            onClick={() => {
+              router.push(`/community/${communityData.id}/submit`);
+            }}
+          >
+            Create Post
+          </Button>
+
+          {/* upload icon for community if user is admin */}
+          <AdminSectionAbout user={user} communityData={communityData} />
+        </Stack>
+      </Flex>
+    </Box>
+  );
+};
+export default About;
+
+interface AboutHeaderBarProps {
+  communityName: string;
+}
+
+const AboutHeaderBar: React.FC<AboutHeaderBarProps> = ({ communityName }) => (
+  <Flex
+    justify="space-between"
+    align="center"
+    bg="red.500"
+    color="white"
+    p={3}
+    borderRadius="10px 10px 0px 0px"
+  >
+    <Text fontSize="10pt" fontWeight={700}>
+      About {communityName}
+    </Text>
+    <Icon as={HiOutlineDotsHorizontal} />
+  </Flex>
+);
+
+interface AboutCommunityProps {
+  communityData: Community;
+}
+
+const AboutCommunity: React.FC<AboutCommunityProps> = ({ communityData }) => (
+  <Flex width="100%" p={2} fontSize="10pt">
+    <Flex direction="column" flexGrow={1}>
+      {/* number of subscribers and date created */}
+      <Text fontWeight={700}>Subscribers</Text>
+      <Text>{communityData.numberOfMembers.toLocaleString()}</Text>
+    </Flex>
+
+    {/* when the community was created */}
+    <Flex direction="column" flexGrow={1}>
+      <Text fontWeight={700}>Created</Text>
+      <Text>
+        {communityData.createdAt &&
+          // new Date(communityData.createdAt).toLocaleDateString()
+          "Not working :("}
+      </Text>
+    </Flex>
+  </Flex>
+);
+
+interface AdminSectionAboutProps {
+  user: User | null | undefined;
+  communityData: Community;
+}
+
+const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
+  user,
+  communityData,
+}) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
     300,
     300
   );
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const selectFileRef = useRef<HTMLInputElement>(null);
   const setCommunityStateValue = useSetRecoilState(communityState);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   /**
    * Allows admin to change the image of the community.
@@ -73,13 +160,14 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         imageURL: downloadURL,
       }); // update imageURL in firestore
 
+      // update imageURL in recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         currentCommunity: {
           ...prev.currentCommunity,
           imageURL: downloadURL,
         } as Community,
-      })); // update imageURL in recoil state
+      }));
     } catch (error) {
       console.log("Error: onUploadImage", error);
     } finally {
@@ -112,125 +200,79 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
       console.log("Error: onDeleteImage", error);
     }
   };
-
   return (
-    // sticky position for the about section
-    <Box position="sticky" top="60px">
-      <Flex
-        justify="space-between"
-        align="center"
-        bg="red.500"
-        color="white"
-        p={3}
-        borderRadius="10px 10px 0px 0px"
-      >
-        <Text fontSize="10pt" fontWeight={700}>
-          About Circus
-        </Text>
-        <Icon as={HiOutlineDotsHorizontal} />
-      </Flex>
-
-      {/* about section */}
-      <Flex
-        direction="column"
-        p={3}
-        bg="white"
-        borderRadius="0px 0px 10px 10px"
-      >
-        <Stack>
-          <Flex width="100%" p={2} fontSize="10pt">
-            <Flex direction="column" flexGrow={1}>
-              {/* number of subscribers and date created */}
-              <Text fontWeight={700}>Subscribers</Text>
-              <Text>{communityData.numberOfMembers.toLocaleString()}</Text>
-            </Flex>
-
-            {/* when the community was created */}
-            <Flex direction="column" flexGrow={1}>
-              <Text fontWeight={700}>Created</Text>
-              <Text>{communityData.createdAt && "Not Working :("}</Text>
-            </Flex>
-          </Flex>
-          {/* create post button */}
-          <Link href={`/community/${communityData.id}/submit`}>
-            <Button width="100%">Create Post</Button>
-          </Link>
-
-          {/* upload icon for community if user is admin */}
-          {user?.uid === communityData?.creatorId && (
-            <>
-              <Divider />
-              <Stack fontSize="10pt" spacing={1}>
-                <Text fontWeight={600} fontSize="12pt">
-                  Admin
-                </Text>
-                <Text fontWeight={600} color="gray.500">
-                  Community Image Settings
-                </Text>
-                {/* change image button */}
-                <Flex align="center" justify="space-between">
-                  <Text
-                    color="red.500"
-                    cursor="pointer"
-                    _hover={{ textDecoration: "underline" }}
-                    onClick={() => selectFileRef.current?.click()}
-                  >
-                    Change Image
-                  </Text>
-                  {/* image preview */}
-                  {communityData?.imageURL || selectedFile ? (
-                    // selected image
-                    <Image
-                      borderRadius="full"
-                      boxSize="40px"
-                      src={selectedFile || communityData?.imageURL}
-                      alt="Selected image"
-                    />
-                  ) : (
-                    // default image
-                    <Image
-                      src="/images/logo.svg"
-                      height="40px"
-                      alt="Website logo"
-                    />
-                  )}
-                </Flex>
-                {/* save changes button */}
-                {selectedFile &&
-                  (uploadingImage ? (
-                    // while image is loading show spinner for loading
-                    <Spinner />
-                  ) : (
-                    <Text cursor="pointer" onClick={onUpdateImage}>
-                      Save Changes
-                    </Text>
-                  ))}
-                <input
-                  id="file-upload"
-                  type="file"
-                  accept="image/png,image/gif,image/jpeg"
-                  hidden
-                  ref={selectFileRef}
-                  onChange={onSelectFile}
+    <>
+      {user?.uid === communityData?.creatorId && (
+        <>
+          <Divider />
+          <Stack fontSize="10pt" spacing={1}>
+            <Text fontWeight={600} fontSize="12pt">
+              Admin
+            </Text>
+            <Text fontWeight={600} color="gray.500">
+              Community Image Settings
+            </Text>
+            {/* change image button */}
+            <Flex align="center" justify="space-between">
+              <Text
+                color="red.500"
+                cursor="pointer"
+                _hover={{ textDecoration: "underline" }}
+                onClick={() => selectFileRef.current?.click()}
+              >
+                Change Image
+              </Text>
+              {/* image preview */}
+              {communityData?.imageURL || selectedFile ? (
+                // selected image
+                <Image
+                  borderRadius="full"
+                  boxSize="40px"
+                  src={selectedFile || communityData?.imageURL}
+                  alt="Selected image"
                 />
-              </Stack>
-              {/* delete image button */}
-              {communityData?.imageURL && (
-                <Text
-                  fontSize="10pt"
-                  color="red.500"
-                  cursor="pointer"
-                  _hover={{ textDecoration: "underline" }}
-                  onClick={() => onDeleteImage(communityData.id)}
-                >
-                  Delete Image
-                </Text>
+              ) : (
+                // default image
+                <Image
+                  src="/images/logo.svg"
+                  height="40px"
+                  alt="Website logo"
+                />
               )}
-            </>
+            </Flex>
+            {/* save changes button */}
+            {selectedFile &&
+              (uploadingImage ? (
+                // while image is loading show spinner for loading
+                <Spinner />
+              ) : (
+                <Text cursor="pointer" onClick={onUpdateImage}>
+                  Save Changes
+                </Text>
+              ))}
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/png,image/gif,image/jpeg"
+              hidden
+              ref={selectFileRef}
+              onChange={onSelectFile}
+            />
+          </Stack>
+          {/* delete image button */}
+          {communityData?.imageURL && (
+            <Text
+              fontSize="10pt"
+              color="red.500"
+              cursor="pointer"
+              _hover={{ textDecoration: "underline" }}
+              onClick={() => onDeleteImage(communityData.id)}
+            >
+              Delete Image
+            </Text>
           )}
-        </Stack>
-      </Flex>
-    </Box>
+        </>
+      )}
+    </>
   );
 };
-export default About;
