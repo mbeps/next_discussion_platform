@@ -1,35 +1,50 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import useDirectory from "@/hooks/useDirectory";
 import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Box,
-  Text,
-  Input,
-  Stack,
+  Button,
   Checkbox,
   Flex,
   Icon,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import {
-  doc,
-  getDoc,
-  runTransaction,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FC, ReactElement, useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IconType } from "react-icons";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
+
+const COMMUNITY_TYPE_OPTIONS = [
+  {
+    name: "public",
+    icon: BsFillPersonFill,
+    label: "Public",
+    description: "Everyone can view and post",
+  },
+  {
+    name: "restricted",
+    icon: BsFillEyeFill,
+    label: "Restricted",
+    description: "Everyone can view but only subscribers can post",
+  },
+  {
+    name: "private",
+    icon: HiLockClosed,
+    label: "Private",
+    description: "Only subscribers can view and post",
+  },
+];
 
 /**
  * Controls whether the modal is open or closed by its state.
@@ -181,76 +196,22 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
           <Box pl={3} pr={3}>
             <ModalCloseButton />
             <ModalBody display="flex" flexDirection="column" padding="10px 0px">
-              <Text fontWeight={600} fontSize={15}>
-                Name
-              </Text>
-              <Text fontSize={11} color="gray.500">
-                Community names cannot be changed
-              </Text>
-              <Input
-                mt={2}
-                value={communityName}
-                placeholder="Community Name"
-                onChange={handleChange}
-                fontSize="10pt"
-                _placeholder={{ color: "gray.500" }}
-                _hover={{
-                  bg: "white",
-                  border: "1px solid",
-                  borderColor: "red.500",
-                }}
-                _focus={{
-                  outline: "none",
-                  border: "1px solid",
-                  borderColor: "red.500",
-                }}
+              <CommunityNameSection
+                communityName={communityName}
+                handleChange={handleChange}
+                charRemaining={charRemaining}
+                error={error}
               />
-              <Text
-                fontSize="9pt"
-                mt={1}
-                color={charRemaining === 0 ? "red" : "gray.500"}
-              >
-                {/* Updates the remaining characters in real time
-                The colour changes to red if the limit is hit */}
-                {charRemaining} Characters remaining
-              </Text>
-              <Text fontSize="9pt" color="red" pt={1}>
-                {error}
-              </Text>
               <Box mt={4} mb={4}>
                 <Text fontWeight={600} fontSize={15}>
                   Community Type
                 </Text>
 
-                {/* Contains community types that can be created
-                Only 1 community type can be created hence only 1 box can be checked
-                Checking another box (community type)  */}
-                <Stack spacing={2}>
-                  <CommunityTypeOption
-                    name="public"
-                    icon={BsFillPersonFill}
-                    label="Public"
-                    description="Everyone can view and post"
-                    isChecked={communityType === "public"}
-                    onChange={onCommunityTypeChange}
-                  />
-                  <CommunityTypeOption
-                    name="restricted"
-                    icon={BsFillEyeFill}
-                    label="Restricted"
-                    description="Everyone can view but only subscribers can post"
-                    isChecked={communityType === "restricted"}
-                    onChange={onCommunityTypeChange}
-                  />
-                  <CommunityTypeOption
-                    name="private"
-                    icon={HiLockClosed}
-                    label="Private"
-                    description="Only subscribers can view and post"
-                    isChecked={communityType === "private"}
-                    onChange={onCommunityTypeChange}
-                  />
-                </Stack>
+                <CommunityTypeOptions
+                  options={COMMUNITY_TYPE_OPTIONS}
+                  communityType={communityType}
+                  onCommunityTypeChange={onCommunityTypeChange}
+                />
               </Box>
             </ModalBody>
           </Box>
@@ -313,5 +274,100 @@ const CommunityTypeOption: FC<CommunityTypeOptionProps> = ({
         </Text>
       </Flex>
     </Checkbox>
+  );
+};
+
+interface CommunityTypeOptionsProps {
+  options: {
+    name: string;
+    icon: IconType;
+    label: string;
+    description: string;
+  }[];
+  communityType: string;
+  onCommunityTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+/**
+ * Contains community types that can be created
+ * Only 1 community type can be created hence only 1 box can be checked
+ * Checking another box (community type)
+ * @param param0
+ * @returns
+ */
+const CommunityTypeOptions: React.FC<CommunityTypeOptionsProps> = ({
+  options,
+  communityType,
+  onCommunityTypeChange,
+}) => {
+  return (
+    <div>
+      {options.map((option) => (
+        <CommunityTypeOption
+          key={option.name}
+          name={option.name}
+          icon={option.icon}
+          label={option.label}
+          description={option.description}
+          isChecked={communityType === option.name}
+          onChange={onCommunityTypeChange}
+        />
+      ))}
+    </div>
+  );
+};
+
+interface CommunityNameSectionProps {
+  communityName: string;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  charRemaining: number;
+  error: string;
+}
+
+const CommunityNameSection: React.FC<CommunityNameSectionProps> = ({
+  communityName,
+  handleChange,
+  charRemaining,
+  error,
+}) => {
+  return (
+    <Box>
+      <Text fontWeight={600} fontSize={15}>
+        Name
+      </Text>
+      <Text fontSize={11} color="gray.500">
+        Community names cannot be changed
+      </Text>
+      <Input
+        mt={2}
+        value={communityName}
+        placeholder="Community Name"
+        onChange={handleChange}
+        fontSize="10pt"
+        _placeholder={{ color: "gray.500" }}
+        _hover={{
+          bg: "white",
+          border: "1px solid",
+          borderColor: "red.500",
+        }}
+        _focus={{
+          outline: "none",
+          border: "1px solid",
+          borderColor: "red.500",
+        }}
+      />
+      <Text
+        fontSize="9pt"
+        mt={1}
+        color={charRemaining === 0 ? "red" : "gray.500"}
+      >
+        {/* Updates the remaining characters in real time
+        The colour changes to red if the limit is hit */}
+        {charRemaining} Characters remaining
+      </Text>
+      <Text fontSize="9pt" color="red" pt={1}>
+        {error}
+      </Text>
+    </Box>
   );
 };
