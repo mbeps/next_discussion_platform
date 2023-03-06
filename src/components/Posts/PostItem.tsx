@@ -292,7 +292,7 @@ const PostBody = ({ post, loadingImage, setLoadingImage }: PostBodyProps) => {
             src={post.imageURL}
             alt="Image for post"
             maxHeight="450px"
-            maxWidth="90%"
+            maxWidth="100%"
             borderRadius="10px"
             display={loadingImage ? "none" : "unset"}
             onLoad={() => setLoadingImage(false)}
