@@ -47,7 +47,6 @@ type UserMenuProps = {
  * @returns React user menu component
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-  const setAuthModalState = useSetRecoilState(authModalState);
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const toggle = () => {
@@ -57,6 +56,70 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       setMenuOpen(true);
     }
   };
+
+  return (
+    <Menu>
+      <UserMenuButton toggle={toggle} user={user} isMenuOpen={isMenuOpen} />
+      <UserMenuList user={user} />
+    </Menu>
+  );
+};
+export default UserMenu;
+
+interface UserMenuButtonProps {
+  toggle: () => void;
+  user: User | null | undefined;
+  isMenuOpen: boolean;
+}
+
+const UserMenuButton: React.FC<UserMenuButtonProps> = ({
+  toggle,
+  user,
+  isMenuOpen,
+}) => (
+  <MenuButton
+    onClick={toggle}
+    cursor="pointer"
+    height="100%"
+    padding="0px 6px"
+    borderRadius={10}
+    _hover={{
+      outline: "1px solid",
+      outlineColor: "gray.200",
+    }}
+  >
+    <Flex align="center">
+      {user ? (
+        <>
+          <Icon fontSize={24} mr={1} color="gray.300" as={MdAccountCircle} />
+
+          <Flex
+            direction="column"
+            display={{ base: "none", lg: "flex" }}
+            fontSize="8pt"
+            align="flex-start"
+            mr={2}
+          >
+            <Text fontWeight={700}>
+              {user?.displayName || user.email?.split("@")[0]}
+            </Text>
+          </Flex>
+        </>
+      ) : (
+        <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
+      )}
+
+      {isMenuOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+    </Flex>
+  </MenuButton>
+);
+
+interface UserMenuListProps {
+  user: User | null | undefined;
+}
+
+const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   /**
    * Signs the user out of the app.
@@ -69,101 +132,34 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   };
 
   return (
-    <Menu>
-      {/* Actual menu button that opens the menu of options */}
-      <MenuButton
-        onClick={() => {
-          toggle();
-        }}
-        cursor="pointer"
-        height="100%"
-        padding="0px 6px"
-        borderRadius={10}
-        _hover={{
-          outline: "1px solid",
-          outlineColor: "gray.200",
-        }}
-      >
-        <Flex align="center">
+    <MenuList borderRadius={10} mt={2}>
+      <Flex justifyContent="center">
+        <Stack spacing={1} width="95%">
           {user ? (
-            // If user is logged in
             <>
-              <Icon
-                fontSize={24}
-                mr={1}
-                color="gray.300"
-                as={MdAccountCircle}
+              <CustomMenuButton
+                icon={<CgProfile />}
+                text="Profile"
+                onClick={() => console.log("Profile clicked")}
               />
 
-              <Flex
-                direction="column"
-                display={{ base: "none", lg: "flex" }}
-                fontSize="8pt"
-                align="flex-start"
-                mr={2}
-              >
-                <Text fontWeight={700}>
-                  {/* Displays name and surname if available or generates username from email (name before `@`) */}
-                  {user?.displayName || user.email?.split("@")[0]}
-                </Text>
-                {/* <Flex>
-                    <Icon as={IoSparkles} color='brand.100' mr={1}/>
-                    <Text color='gray.400'>1 KARMA</Text>
-                  </Flex> */}
-              </Flex>
-            </>
-          ) : (
-            // If user is not logged in
-            <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
-          )}
-
-          {isMenuOpen ? (
-            <>
-              <ChevronUpIcon />
+              <CustomMenuButton
+                icon={<MdOutlineLogin />}
+                text="Log Out"
+                onClick={logout}
+              />
             </>
           ) : (
             <>
-              <ChevronDownIcon />
+              <CustomMenuButton
+                icon={<MdOutlineLogin />}
+                text="Log In / Sign Up"
+                onClick={() => setAuthModalState({ open: true, view: "login" })}
+              />
             </>
           )}
-        </Flex>
-      </MenuButton>
-      <MenuList borderRadius={10} mt={2}>
-        <Flex justifyContent="center">
-          <Stack spacing={1} width="95%">
-            {user ? (
-              // If the user is logged in
-              <>
-                {/* Profile option */}
-                <CustomMenuButton
-                  icon={<CgProfile />}
-                  text="Profile"
-                  onClick={() => console.log("Profile clicked")}
-                />
-
-                <CustomMenuButton
-                  icon={<MdOutlineLogin />}
-                  text="Log Out"
-                  onClick={logout}
-                />
-              </>
-            ) : (
-              // If user is not logged in
-              <>
-                {/* Log out button */}
-                <CustomMenuButton
-                  icon={<MdOutlineLogin />}
-                  text="Log In / Sign Up"
-                  onClick={() =>
-                    setAuthModalState({ open: true, view: "login" })
-                  }
-                />
-              </>
-            )}
-          </Stack>
-        </Flex>
-      </MenuList>
-    </Menu>
+        </Stack>
+      </Flex>
+    </MenuList>
   );
 };
-export default UserMenu;
