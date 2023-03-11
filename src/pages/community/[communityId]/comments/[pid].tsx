@@ -16,11 +16,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 /**
  * Displays a single post.
  * Contains:
- *    - PostItem component
- *    - About component
- *    - Comments component
+ *  - PostItem component
+ *  - About component
+ *  - Comments component
  *
- * @returns React.FC - Single post page with all components
+ * @returns {React.FC} - Single post page with all components
  */
 const PostPage: React.FC = () => {
   const { postStateValue, setPostStateValue, onDeletePost, onVote } =
@@ -34,7 +34,7 @@ const PostPage: React.FC = () => {
    * Refreshing the page or pasting link to the post loads an empty page.
    * This is because the community page was bypassed hence the state is empty.
    * If the state is empty then fetch the data from Firebase.
-   * @param postId (string) - Post ID for the post to be fetched
+   * @param {string} postId  - Post ID for the post to be fetched
    */
   const fetchPost = async (postId: string) => {
     try {

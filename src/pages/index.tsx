@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
+import { Post, PostVote } from "@/atoms/postsAtom";
+import CreatePostLink from "@/components/Community/CreatePostLink";
+import PersonalHome from "@/components/Community/PersonalHome";
+import Recommendations from "@/components/Community/Recommendations";
 import PageContent from "@/components/Layout/PageContent";
-import { useAuthState } from "react-firebase-hooks/auth";
+import PostItem from "@/components/Posts/PostItem";
+import PostLoader from "@/components/Posts/PostLoader";
 import { auth, firestore } from "@/firebase/clientApp";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { communityState } from "@/atoms/communitiesAtom";
+import useCommunityData from "@/hooks/useCommunityData";
+import usePosts from "@/hooks/usePosts";
+import { Stack } from "@chakra-ui/react";
+import { Inter } from "@next/font/google";
 import {
   collection,
   getDocs,
@@ -17,15 +19,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import usePosts from "@/hooks/usePosts";
-import { Post, PostVote } from "@/atoms/postsAtom";
-import CreatePostLink from "@/components/Community/CreatePostLink";
-import PostLoader from "@/components/Posts/PostLoader";
-import { Stack } from "@chakra-ui/react";
-import PostItem from "@/components/Posts/PostItem";
-import useCommunityData from "@/hooks/useCommunityData";
-import Recommendations from "@/components/Community/Recommendations";
-import PersonalHome from "@/components/Community/PersonalHome";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,6 +36,11 @@ export default function Home() {
     onDeletePost,
   } = usePosts();
 
+  /**
+   * Creates a home feed for a currently logged in user.
+   * If the user is a member of any communities, it will display posts from those communities.
+   * If the user is not a member of any communities, it will display generic posts.
+   */
   const buildUserHomeFeed = async () => {
     setLoading(true);
 
@@ -48,23 +48,23 @@ export default function Home() {
       if (communityStateValue.mySnippets.length) {
         const myCommunityIds = communityStateValue.mySnippets.map(
           (snippet) => snippet.communityId
-        );
+        ); // get all community ids that the user is a member of
         const postQuery = query(
           collection(firestore, "posts"),
           where("communityId", "in", myCommunityIds),
           // orderBy("voteStatus", "desc"),
           limit(10)
-        );
+        ); // get all posts in community with certain requirements
         const postDocs = await getDocs(postQuery);
         const posts = postDocs.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
+        })); // get all posts in community
 
         setPostStateValue((prev) => ({
           ...prev,
           posts: posts as Post[],
-        }));
+        })); // set posts in state
       } else {
         buildGenericHomeFeed();
       }
@@ -74,6 +74,9 @@ export default function Home() {
     }
   };
 
+  /**
+   * Creates a generic home feed for a user that is not logged in.
+   */
   const buildGenericHomeFeed = async () => {
     setLoading(true);
     try {
@@ -81,14 +84,14 @@ export default function Home() {
         collection(firestore, "posts"),
         orderBy("voteStatus", "desc"),
         limit(10)
-      );
+      ); // get all posts in community with certain requirements
 
-      const postDocs = await getDocs(postQuery);
-      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const postDocs = await getDocs(postQuery); // get all posts in community
+      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // get all posts in community
       setPostStateValue((prev) => ({
         ...prev,
         posts: posts as Post[],
-      }));
+      })); // set posts in state
     } catch (error) {
       console.log("Error: buildGenericHomeFeed", error);
     } finally {
@@ -96,23 +99,26 @@ export default function Home() {
     }
   };
 
+  /**
+   * Gets the votes for the posts that are currently in the home feed.
+   */
   const getUserPostVotes = async () => {
     try {
-      const postIds = postStateValue.posts.map((post) => post.id);
+      const postIds = postStateValue.posts.map((post) => post.id); // get all post ids in home feed
       const postVotesQuery = query(
         collection(firestore, `users/${user?.uid}/postVotes`),
         where("postId", "in", postIds)
-      );
+      ); // get all post votes for posts in home feed
       const postVoteDocs = await getDocs(postVotesQuery);
       const postVotes = postVoteDocs.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      })); // get all post votes for posts in home feed
 
       setPostStateValue((prev) => ({
         ...prev,
         postVotes: postVotes as PostVote[],
-      }));
+      })); // set post votes in state
     } catch (error) {}
   };
 
