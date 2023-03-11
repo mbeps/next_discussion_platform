@@ -1,7 +1,9 @@
 import { communityState } from "@/atoms/communitiesAtom";
 import CreateCommunityModal from "@/components/Modal/CreateCommunity/CreateCommunityModal";
 import { Box, Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { BsFillPeopleFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { useRecoilValue } from "recoil";
@@ -22,6 +24,7 @@ type CommunitiesProps = {};
 const Communities: React.FC<CommunitiesProps> = () => {
   const [open, setOpen] = useState(false); // modal initially closed
   const mySnippets = useRecoilValue(communityState).mySnippets;
+  const router = useRouter();
 
   return (
     <>
@@ -44,6 +47,27 @@ const Communities: React.FC<CommunitiesProps> = () => {
           Create Community
         </Flex>
       </MenuItem>
+
+      <MenuItem
+        fontSize="10pt"
+        fontWeight={700}
+        height="40px"
+        borderRadius={10}
+        alignContent="center"
+        _hover={{
+          bg: "gray.300",
+          color: "black",
+        }}
+        onClick={() => {
+          router.push("/communities");
+        }}
+      >
+        <Flex align="center">
+          <Icon fontSize={20} mr={2} as={BsFillPeopleFill} />
+          View All Communities
+        </Flex>
+      </MenuItem>
+
       <Box>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           PRIVILEGED
