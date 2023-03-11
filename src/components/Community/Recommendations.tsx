@@ -113,18 +113,14 @@ const SuggestedCommunitiesList: React.FC = () => {
     <Flex direction="column" mb={0}>
       {loading ? (
         <Stack mt={2} p={3}>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
+          {Array(5)
+            .fill(0)
+            .map((_, index) => (
+              <Flex justify="space-between" align="center">
+                <SkeletonCircle size="10" />
+                <Skeleton height="10px" width="70%" />
+              </Flex>
+            ))}
         </Stack>
       ) : (
         <>
