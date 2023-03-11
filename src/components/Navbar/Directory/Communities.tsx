@@ -1,7 +1,8 @@
 import { communityState } from "@/atoms/communitiesAtom";
+import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import CreateCommunityModal from "@/components/Modal/CreateCommunity/CreateCommunityModal";
 import useDirectory from "@/hooks/useDirectory";
-import { Box, Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
@@ -32,47 +33,24 @@ const Communities: React.FC<CommunitiesProps> = () => {
     <>
       {/* Sets the state of the community creation modal to true which opens the modal */}
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
-      <MenuItem
-        fontSize="10pt"
-        fontWeight={700}
-        height="40px"
-        borderRadius={10}
-        alignContent="center"
-        _hover={{
-          bg: "gray.300",
-          color: "black",
-        }}
+
+      <CustomMenuButton
+        icon={<GrAdd />}
+        text="Create Community"
         onClick={() => {
           setOpen(true);
           toggleMenuOpen();
         }}
-      >
-        <Flex align="center">
-          <Icon fontSize={20} mr={2} as={GrAdd} />
-          Create Community
-        </Flex>
-      </MenuItem>
+      />
 
-      <MenuItem
-        fontSize="10pt"
-        fontWeight={700}
-        height="40px"
-        borderRadius={10}
-        alignContent="center"
-        _hover={{
-          bg: "gray.300",
-          color: "black",
-        }}
+      <CustomMenuButton
+        icon={<BsFillPeopleFill />}
+        text="View All Communities"
         onClick={() => {
           router.push("/communities");
           toggleMenuOpen();
         }}
-      >
-        <Flex align="center">
-          <Icon fontSize={20} mr={2} as={BsFillPeopleFill} />
-          View All Communities
-        </Flex>
-      </MenuItem>
+      />
 
       <Box>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
