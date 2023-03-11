@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { BsBookmark } from "react-icons/bs";
@@ -261,9 +262,7 @@ const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
    * Displays the author and the time of creation.
    */
   const topText: string = `Author: ${post.creatorUsername} |
-		Time: ${post.createTime
-      .toDate()
-      .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+		Time: ${moment(new Date(post.createTime.seconds * 1000)).fromNow()}`;
   return (
     <Stack
       direction="row"

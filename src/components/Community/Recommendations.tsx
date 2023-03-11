@@ -174,6 +174,7 @@ const SuggestedCommunitiesList: React.FC = () => {
                   <Box position="absolute" right="10px">
                     <Button
                       height="24px"
+                      width="100px"
                       fontSize="8pt"
                       variant={isJoined ? "outline" : "solid"}
                       onClick={(event) => {
