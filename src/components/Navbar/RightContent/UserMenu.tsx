@@ -1,29 +1,26 @@
+import { authModalState } from "@/atoms/authModalAtom";
+import CustomMenuButton from "@/components/Menu/CustomMenuButton";
+import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
+  Flex,
+  Icon,
   Menu,
   MenuButton,
-  Button,
   MenuList,
-  MenuItem,
-  Icon,
-  Flex,
-  MenuDivider,
-  Text,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
 import React, { useState } from "react";
-import { MdAccountCircle } from "react-icons/md";
-import { VscAccount } from "react-icons/vsc";
-import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
-import { MdOutlineLogin } from "react-icons/md";
-import { auth } from "@/firebase/clientApp";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
-import { authModalState } from "@/atoms/authModalAtom";
-import { communityState } from "@/atoms/communitiesAtom";
-import CustomMenuButton from "@/components/Menu/CustomMenuButton";
+import { MdAccountCircle, MdOutlineLogin } from "react-icons/md";
+import { VscAccount } from "react-icons/vsc";
+import { useSetRecoilState } from "recoil";
 
+/**
+ * @param user? (User) - user
+ */
 type UserMenuProps = {
   user?: User | null;
 };
@@ -47,38 +44,51 @@ type UserMenuProps = {
  * @returns React user menu component
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggle = () => {
     if (isMenuOpen) {
-      setMenuOpen(false);
+      setIsMenuOpen(false);
     } else {
-      setMenuOpen(true);
+      setIsMenuOpen(true);
     }
   };
 
   return (
-    <Menu>
-      <UserMenuButton toggle={toggle} user={user} isMenuOpen={isMenuOpen} />
+    <Menu isOpen={isMenuOpen} onOpen={toggle} onClose={toggle}>
+      <UserMenuButton user={user} isMenuOpen={isMenuOpen} />
       <UserMenuList user={user} />
     </Menu>
   );
 };
 export default UserMenu;
 
+/**
+ * @param user? (User) - user
+ * @param isMenuOpen (boolean) - whether the menu is open or not
+ * @param toggle (function) - function to toggle the menu
+ */
 interface UserMenuButtonProps {
-  toggle: () => void;
   user: User | null | undefined;
   isMenuOpen: boolean;
 }
 
+/**
+ * Menu button which changes depending on the authentication status of the user.
+ * If the user is authenticated, the button will display:
+ *    - User icon
+ *    - User name
+ * If the user is unauthenticated, the button will display:
+ *    - Generic user icon
+ * @param {user} - user
+ * @param {isMenuOpen} - whether the menu is open or not
+ * @returns
+ */
 const UserMenuButton: React.FC<UserMenuButtonProps> = ({
-  toggle,
   user,
   isMenuOpen,
 }) => (
   <MenuButton
-    onClick={toggle}
     cursor="pointer"
     height="100%"
     padding="0px 6px"
@@ -90,6 +100,7 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
   >
     <Flex align="center">
       {user ? (
+        // If user is authenticated, display user icon and name
         <>
           <Icon fontSize={24} mr={1} color="gray.300" as={MdAccountCircle} />
 
@@ -106,18 +117,32 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
           </Flex>
         </>
       ) : (
+        // If user is unauthenticated, display generic user icon
         <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
       )}
-
       {isMenuOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
     </Flex>
   </MenuButton>
 );
 
+/**
+ * @param {User} user - current user
+ */
 interface UserMenuListProps {
   user: User | null | undefined;
 }
 
+/**
+ * Menu entries for the user menu.
+ * If the user is authenticated, menu entries will be:
+ *    - Profile
+ *    - Log out
+ * If the user is unauthenticated, menu entries will be:
+ *    - Log in / Sign up
+ * @param {User} user - User
+ * @returns React user menu list component
+ * @requires CustomMenuButton
+ */
 const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
 
