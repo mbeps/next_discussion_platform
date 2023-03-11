@@ -131,6 +131,7 @@ const SuggestedCommunitiesList: React.FC = () => {
             return (
               <Link key={item.id} href={`/community/${item.id}`}>
                 <Flex
+                  key={item.id}
                   align="center"
                   fontSize="10pt"
                   borderBottom="1px solid"
