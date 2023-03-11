@@ -116,7 +116,7 @@ const SuggestedCommunitiesList: React.FC = () => {
           {Array(5)
             .fill(0)
             .map((_, index) => (
-              <Flex justify="space-between" align="center">
+              <Flex justify="space-between" align="center" key={index}>
                 <SkeletonCircle size="10" />
                 <Skeleton height="10px" width="70%" />
               </Flex>
