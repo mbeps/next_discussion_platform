@@ -14,6 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
@@ -79,7 +80,11 @@ const SuggestedCommunitiesList: React.FC = () => {
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);
+  const router = useRouter();
 
+  /**
+   * Gets the top 5 communities with the most members.
+   */
   const getCommunityRecommendations = async () => {
     setLoading(true);
     try {
@@ -189,7 +194,13 @@ const SuggestedCommunitiesList: React.FC = () => {
         </>
       )}
       <Box p="10px 20px">
-        <Button height="30px" width="100%">
+        <Button
+          height="30px"
+          width="100%"
+          onClick={() => {
+            router.push(`/communities`);
+          }}
+        >
           View All
         </Button>
       </Box>
