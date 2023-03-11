@@ -4,6 +4,7 @@ import React from "react";
 import {
   useSignInWithGithub,
   useSignInWithGoogle,
+  useSignInWithMicrosoft,
 } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
@@ -25,9 +26,8 @@ const OAuthButtons: React.FC = () => {
     useSignInWithGithub(auth);
 
   return (
-    <Stack direction="column" spacing={1} width="100%" mb={2} mt={2}>
+    <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
       {/* Google */}
-
       <AuthButton
         provider="Google"
         isLoading={loadingGoogle}
@@ -89,7 +89,6 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     <Button
       flexGrow={1}
       variant="oauth"
-      mb={2}
       isLoading={isLoading}
       onClick={onClick}
     >
