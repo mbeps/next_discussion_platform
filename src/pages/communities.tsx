@@ -10,6 +10,11 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+/**
+ * Displays the communities page with the top 5 communities.
+ * Pressing the "See More" button will display the next 5 communities.
+ * @returns {React.FC} - the communities page with the top 5 communities.
+ */
 const Communities: React.FC = () => {
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
   const [loading, setLoading] = useState(false);
@@ -17,7 +22,8 @@ const Communities: React.FC = () => {
   const router = useRouter();
 
   /**
-   * Gets the top 10 communities with the most members.
+   * Gets the top 5 communities with the most members.
+   * @param {number} numberOfExtraPosts - number of extra posts to display
    */
   const getCommunities = async (numberOfExtraPosts: number) => {
     setLoading(true);

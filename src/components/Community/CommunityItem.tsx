@@ -5,12 +5,25 @@ import React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
+/**
+ * @param {Community} community - community object
+ * @param {boolean} isJoined - whether the user is joined to the community
+ * @param {(community: Community, isJoined: boolean) => void} onJoinOrLeaveCommunity - function to join or leave a community
+ */
 interface CommunityItemProps {
   community: Community;
   isJoined: boolean;
   onJoinOrLeaveCommunity: (community: Community, isJoined: boolean) => void;
 }
 
+/**
+ * Card displaying a community (name and logo) with the subscribe button and the number of members.
+ * @param {Community} community - community object
+ * @param {boolean} isJoined - whether the user is joined to the community
+ * @param {(community: Community, isJoined: boolean) => void} onJoinOrLeaveCommunity - function to join or leave a community
+ *
+ * @returns {React.FC} - the community item component
+ */
 const CommunityItem: React.FC<CommunityItemProps> = ({
   community,
   isJoined,

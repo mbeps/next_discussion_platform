@@ -1,6 +1,10 @@
 import { Flex, SkeletonCircle, Skeleton } from "@chakra-ui/react";
 import React from "react";
 
+/**
+ * Loading component while the communities are being loaded.
+ * @returns {React.FC} - loading component while the community is being loaded
+ */
 const CommunityLoader: React.FC = () => (
   <Flex
     bg="white"
