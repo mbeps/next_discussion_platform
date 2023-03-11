@@ -58,7 +58,6 @@ const formTabs: FormTab[] = [
 ];
 
 /**
- * Tab object.
  * @param {title} - title of the tab
  * @param {icon} - icon of the tab
  */
@@ -67,6 +66,19 @@ export type FormTab = {
   icon: typeof Icon.arguments;
 };
 
+/**
+ * Component for creating a new post.
+ * @param {User} user - user object
+ * @param {string} communityImageURL - image url of the community
+ * @param {Community} currentCommunity - current community
+ *
+ * @returns {React.FC} - NewPostForm component
+ *
+ * @requires TabList - tabs for post creation form
+ * @requires BackToCommunityButton - button to go back to community page
+ * @requires PostBody - body of the post
+ * @requires PostCreateError - error message for post creation
+ */
 const NewPostForm: React.FC<NewPostFormProps> = ({
   user,
   communityImageURL,
@@ -87,6 +99,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
 
   const communityLink = `/community/${currentCommunity?.id}`;
 
+  /**
+   * Handles the creation of a new post.
+   * Uploads the posts contents to Firestore including any optional image.
+   *
+   * @async
+   */
   const handleCreatePost = async () => {
     const { communityId } = router.query;
     // create a new post object
@@ -133,7 +151,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
 
   /**
    * Keeps track of the text inputs in the form and updates the state.
-   * @param event (React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) - event object
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - event object from the input
    */
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -144,7 +162,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     setTextInputs((prev) => ({
       ...prev,
       [name]: value,
-    }));
+    })); // update the state
   };
 
   return (
@@ -172,12 +190,28 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
 };
 export default NewPostForm;
 
+/**
+ * @param {FormTab[]} formTabs - array of form tabs
+ * @param {string} selectedTab - currently selected tab
+ * @param {React.Dispatch<React.SetStateAction<string>>} setSelectedTab - function to set the selected tab
+ */
 type TabListProps = {
   formTabs: FormTab[];
   selectedTab: string;
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
 };
 
+/**
+ * Tab components displayed at the top of the post creation form.
+ * Allows selecting between different tabs to create different types of posts.
+ * @param {FormTab[]} formTabs - array of form tabs
+ * @param {string} selectedTab - currently selected tab
+ * @param {React.Dispatch<React.SetStateAction<string>>} setSelectedTab - function to set the selected tab
+ *
+ * @returns {React.FC} - TabList component
+ *
+ * @requires TabItem - individual tab item
+ */
 const TabList: React.FC<TabListProps> = ({
   formTabs,
   selectedTab,
@@ -198,10 +232,20 @@ const TabList: React.FC<TabListProps> = ({
   );
 };
 
+/**
+ * @param {string} communityId - id of the community the user is currently in
+ */
 interface BackToCommunityButtonProps {
   communityId?: string;
 }
 
+/**
+ * Button that redirects user back to the community page.
+ * Returns to the appropriate community page depending on the communityId prop.
+ * @param {string} communityId - id of the community the user is currently in
+ *
+ * @returns {React.FC} - button component that redirects user back to the community page
+ */
 const BackToCommunityButton: React.FC<BackToCommunityButtonProps> = ({
   communityId,
 }) => {
@@ -224,6 +268,17 @@ const BackToCommunityButton: React.FC<BackToCommunityButtonProps> = ({
   );
 };
 
+/**
+ * @param {string} selectedTab - currently selected tab
+ * @param {() => Promise<void>} handleCreatePost - function to create the post
+ * @param {(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void} onTextChange - function to handle text input changes
+ * @param {boolean} loading - whether the post is currently being created
+ * @param {{title: string; body: string}} textInputs - object containing the title and body of the post
+ * @param {string | undefined} selectedFile - file that the user has selected to upload
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} onSelectFile - function to handle file input changes
+ * @param {React.Dispatch<React.SetStateAction<string>>} setSelectedTab - function to set the selected tab
+ * @param {React.Dispatch<React.SetStateAction<string | undefined>>} setSelectedFile - function to set the selected file
+ */
 type PostBodyProps = {
   selectedTab: string;
   handleCreatePost: () => Promise<void>;
@@ -241,6 +296,27 @@ type PostBodyProps = {
   setSelectedFile: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
+/**
+ * Displays the body of the post creation form.
+ * Displays different inputs depending on the selected tab.
+ * The body is:
+ *  - `Post`: for creating a standard post (with a title and body)
+ *  - 'Images': for creating a post with an image
+ * @param {string} selectedTab - currently selected tab
+ * @param {() => Promise<void>} handleCreatePost - function to create the post
+ * @param {(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void} onTextChange - function to handle text input changes
+ * @param {boolean} loading - whether the post is currently being created
+ * @param {{title: string; body: string}} textInputs - object containing the title and body of the post
+ * @param {string | undefined} selectedFile - file that the user has selected to upload
+ * @param {(event: React.ChangeEvent<HTMLInputElement>) => void} onSelectFile - function to handle file input changes
+ * @param {React.Dispatch<React.SetStateAction<string>>} setSelectedTab - function to set the selected tab
+ * @param {React.Dispatch<React.SetStateAction<string | undefined>>} setSelectedFile - function to set the selected file
+ *
+ * @returns {React.FC} - PostBody component
+ *
+ * @requires TextInputs - form for creating a standard post
+ * @requires ImageUpload - form for creating a post with an image
+ */
 const PostBody: React.FC<PostBodyProps> = ({
   selectedTab,
   handleCreatePost,
@@ -276,10 +352,18 @@ const PostBody: React.FC<PostBodyProps> = ({
   );
 };
 
+/**
+ * @param {boolean} error - whether there has been an error when creating the post
+ */
 type Props = {
   error: boolean;
 };
 
+/**
+ * Displays a alert if there has been an error when creating the post.
+ * @param {boolean} error - whether there has been an error when creating the post
+ * @returns {React.FC} - error component if there is an error when creating the post
+ */
 const PostCreateError: React.FC<Props> = ({ error }) => {
   return (
     <>

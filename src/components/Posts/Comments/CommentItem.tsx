@@ -2,17 +2,13 @@ import { Box, Flex, Icon, Spinner, Stack, Text } from "@chakra-ui/react";
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import {
-  IoArrowDownCircleOutline,
-  IoArrowUpCircleOutline,
-} from "react-icons/io5";
 
 /**
  * Required props for CommentItem component
- * @param {comment} - comment object
- * @param {onDeleteComment} - function to handle deleting comment
- * @param {loadingDelete} - is the comment being deleted
- * @param {userId} - id of the currently logged in user
+ * @param {Comment} comment - comment object
+ * @param {onDeleteComment} onDeleteComment - function to handle deleting comment
+ * @param {loadingDelete} loadingDelete - is the comment being deleted
+ * @param {userId} userId - id of the currently logged in user
  */
 type CommentItemProps = {
   comment: Comment;
@@ -23,6 +19,14 @@ type CommentItemProps = {
 
 /**
  * Represents a comment object.
+ * @property {string} id - id of the comment
+ * @property {string} creatorId - id of the user who created the comment
+ * @property {string} creatorDisplayText - display text of the user who created the comment
+ * @property {string} communityId - id of the community the comment belongs to
+ * @property {string} postId - id of the post the comment belongs to
+ * @property {string} postTitle - title of the post the comment belongs to
+ * @property {string} text - text of the comment
+ * @property {Timestamp} createdAt - time the comment was created
  */
 export type Comment = {
   id: string;
@@ -38,16 +42,17 @@ export type Comment = {
 /**
  * Renders a comment item.
  * The components displays:
- *    - Comment text
- *    - Creator of the comment
- *    - Time the comment was created
- *    - Delete button if the currently logged in user is the creator of the comment
+ *  - Comment text
+ *  - Creator of the comment
+ *  - Time the comment was created
+ *  - Delete button if the currently logged in user is the creator of the comment
  *
- * @param {comment} - comment object
- * @param {onDeleteComment} - function to handle deleting comment
- * @param {loadingDelete} - is the comment being deleted
- * @param {userId} - id of the currently logged in user
- * @returns (React.FC<CommentItemProps>) - CommentItem component
+ * @param {Comment} comment - comment object
+ * @param {onDeleteComment} onDeleteComment - function to handle deleting comment
+ * @param {loadingDelete} loadingDelete - is the comment being deleted
+ * @param {userId} userId - id of the currently logged in user
+ *
+ * @returns {React.FC<CommentItemProps>} - comment item
  */
 const CommentItem: React.FC<CommentItemProps> = ({
   comment,

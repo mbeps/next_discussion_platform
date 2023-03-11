@@ -16,9 +16,10 @@ type ImageUploadProps = {
  * Allows user to upload an image to be used in the post.
  * Initially, the user is presented with a button to upload an image.
  * After the image is uploaded, the user is presented with the image and two buttons:
- *   - Back to Post: returns to the post section
- *   - Remove Content: removes the image and returns to the upload button
+ *  - Back to Post: returns to the post section
+ *  - Remove Content: removes the image and returns to the upload button
  * @param {selectedFile, onSelectImage, setSelectedTab, setSelectedFile} - required props
+ *
  * @returns (React.FC<ImageUploadProps>) - ImageUpload component
  */
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -82,7 +83,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             hidden
             onChange={onSelectImage}
           />
-          {/* <img src={selectedFile} /> */}
         </Flex>
       )}
     </Flex>

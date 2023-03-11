@@ -4,9 +4,9 @@ import { FormTab } from "./NewPostForm";
 
 /**
  * TabItem component for displaying tabs at the top of the NewPostForm.
- * @param item - FormTab object from NewPostForm
- * @param selected - whether the tab is selected or not
- * @param setSelectedTab - selecting a tab
+ * @param {FormTab} item - FormTab object from NewPostForm
+ * @param {boolean} selected - whether the tab is selected or not
+ * @param {function} setSelectedTab - selecting a tab
  */
 type TabItemProps = {
   item: FormTab;
@@ -17,10 +17,11 @@ type TabItemProps = {
 /**
  * Displays tab buttons at the top of the NewPostForm.
  * Allows the user to select a tab to display the form for that tab.
- * @param {item} - FormTab object from NewPostForm
- * @param {selected} - whether the tab is selected or not
- * @param {setSelectedTab} - selecting a tab
- * @returns (React.FC) - TabItem component for displaying tabs at the top of the NewPostForm.
+ * @param {FormTab} item - FormTab object from NewPostForm
+ * @param {boolean} selected - whether the tab is selected or not
+ * @param {() => {}} setSelectedTab - selecting a tab
+ *
+ * @returns {React.FC<TabItemProps>} - TabItem component for NewPostForm
  */
 const TabItem: React.FC<TabItemProps> = ({
   item,
