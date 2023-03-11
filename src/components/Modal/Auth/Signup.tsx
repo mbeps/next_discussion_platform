@@ -14,7 +14,8 @@ import InputField from "./InputField";
  * If the email already exists, the account is not created and an error is displayed.
  *
  * A button to log in instead is available which would switch the modal to the log in view when clicked.
- * @returns Sign up components view for modal.
+ * @returns {React.FC} - Sign up components view for modal.
+ *
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const SignUp = () => {
@@ -36,11 +37,12 @@ const SignUp = () => {
    * This function is used as the event handler for a form submission.
    * It will prevent the page from refreshing.
    * Checks if the password and confirm password fields match and the password requirements are met:
-   *    - If they do not match, an error message is set and the function returns without creating a new user.
-   *    - If the password does not meet the requirements, an error message is set and the function returns without creating a new user.
-   *    - If the passwords match and the password meets the requirements, a new user is created using the email and password provided in the form.
-   * @param event (React.FormEvent): the submit event triggered by the form
-   * @returns None
+   *  - If they do not match, an error message is set and the function returns without creating a new user.
+   *  - If the password does not meet the requirements, an error message is set and the function returns without creating a new user.
+   *  - If the passwords match and the password meets the requirements, a new user is created using the email and password provided in the form.
+   * @param {React.FormEvent<HTMLFormElement>} event - the submit event triggered by the form
+   *
+   * @returns exit if there is an error or the passwords do not match
    */
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the page from refreshing
@@ -73,7 +75,7 @@ const SignUp = () => {
   /**
    * Function to execute when the form is changed (when email and password are typed).
    * Multiple inputs use the same onChange function.
-   * @param event(React.ChangeEvent<HTMLInputElement>) - the event that is triggered when the form is changed
+   * @param {React.ChangeEvent<HTMLInputElement>} event - the change event triggered by the input
    */
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Update form state

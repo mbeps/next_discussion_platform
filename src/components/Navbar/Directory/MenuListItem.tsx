@@ -3,6 +3,13 @@ import { Flex, Image, MenuItem } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons";
 
+/**
+ * @param {string} displayText - text to be displayed in the menu item
+ * @param {string} link - link to be navigated to when the menu item is clicked
+ * @param {IconType} icon - icon to be displayed in the menu item
+ * @param {string} iconColor - color of the icon
+ * @param {string} imageURL - image to be displayed in the menu item
+ */
 type MenuListItemProps = {
   displayText: string;
   link: string;
@@ -11,6 +18,16 @@ type MenuListItemProps = {
   imageURL?: string;
 };
 
+/**
+ * Displays a menu item for each community entry in the directory.
+ * @param {string} displayText - text to be displayed in the menu item
+ * @param {string} link - link to be navigated to when the menu item is clicked
+ * @param {IconType} icon - icon to be displayed in the menu item
+ * @param {string} iconColor - color of the icon
+ * @param {string} imageURL - image to be displayed in the menu item
+ *
+ * @returns {React.FC<MenuListItemProps>} - menu item for each community entry in the directory
+ */
 const MenuListItem: React.FC<MenuListItemProps> = ({
   displayText,
   link,

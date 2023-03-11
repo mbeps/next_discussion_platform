@@ -10,8 +10,11 @@ import { IoPeopleCircleOutline } from "react-icons/io5";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 /**
- *
- * @returns directoryState (DirectoryState) - object containing the current directory state
+ * Hook for managing the directory menu from various components.
+ * Functionality includes:
+ * - Selecting a community from the directory menu
+ * - Toggling the directory menu open or closed
+ * @returns {DirectoryMenuState} directoryState - object containing the current directory state
  */
 const useDirectory = () => {
   const [directoryState, setDirectoryState] =
@@ -23,15 +26,16 @@ const useDirectory = () => {
    * Allows the user to select a menu item from the directory menu.
    * If the user is already on the page that the menu item links to, then the menu will close.
    * If the user is not on the page that the menu item links to, then the user will be redirected to the page.
-   * @param menuItem (DirectoryMenuItem) - object representing the menu item that was selected
+   * @param {DirectoryMenuItem} menuItem - object representing the menu item that was selected
    */
   const onSelectMenuItem = (menuItem: DirectoryMenuItem) => {
     setDirectoryState((prev) => ({
       ...prev,
       selectedMenuItem: menuItem,
-    }));
-    router.push(menuItem.link);
+    })); // set the selected menu item on state
+    router.push(menuItem.link); // redirect the user to the page
     if (directoryState.isOpen) {
+      // if the menu is open, then close it
       toggleMenuOpen();
     }
   };
@@ -44,9 +48,13 @@ const useDirectory = () => {
     setDirectoryState((prev) => ({
       ...prev,
       isOpen: !directoryState.isOpen,
-    }));
+    })); // toggle the menu open or closed
   };
 
+  /**
+   * If the user is currently in a community, then the directory menu will be set to the community menu item.
+   * This is done to ensure that the user can navigate back to the community page from any page.
+   */
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 

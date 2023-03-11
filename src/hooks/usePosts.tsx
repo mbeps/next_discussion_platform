@@ -19,6 +19,18 @@ import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
+/**
+ * Hook for managing posts from various components.
+ * Functionality includes:
+ *  - Voting on a post
+ *  - Selecting a post
+ *  - Deleting a post
+ * @returns {PostState} postStateValue - object containing the current post state
+ * @returns {(postState: PostState) => void} setPostStateValue - function that sets the post state
+ * @returns {(post: Post) => void} onSelectPost - function that handles selecting a post
+ * @return {(event: React.MouseEvent<SVGElement, MouseEvent>, post: Post, vote: number, communityId: string) => Promise<void>} onVote - function that handles voting on a post
+ * @return {(post: Post) => Promise<boolean>} onDeletePost - function that handles deleting a post
+ */
 const usePosts = () => {
   const [user] = useAuthState(auth);
   const [postStateValue, setPostStateValue] = useRecoilState(postState);

@@ -1,5 +1,5 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import CustomMenuButton from "@/components/Menu/CustomMenuButton";
+import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
@@ -19,7 +19,7 @@ import { VscAccount } from "react-icons/vsc";
 import { useSetRecoilState } from "recoil";
 
 /**
- * @param user? (User) - user
+ * @param {User | null} user - user currently logged in if any
  */
 type UserMenuProps = {
   user?: User | null;
@@ -30,22 +30,29 @@ type UserMenuProps = {
  * Both the button and the options change depending on the authentication status of the user.
  * If the user is authenticated:
  *  - Menu button will display:
- *      - User icon
- *      - User name
+ *    - User icon
+ *    - User name
  *  - Menu options will display:
- *      - Profile option
- *      - Log out option
+ *    - Profile option
+ *    - Log out option
  *
  * If the user is unauthenticated:
  *  - Menu button will display:
- *      - Generic user icon
- *      - Log in or sign up option
- * @param {user} - User
+ *    - Generic user icon
+ *    - Log in or sign up option
+ * @param {User | null} user - user currently logged in if any
+ *
  * @returns React user menu component
+ *
+ * @requires UserMenuButton - button which changes depending on the authentication status of the user
+ * @requires UserMenuList - list of menu options which changes depending on the authentication status of the user
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  /**
+   * Toggles the menu open and closed.
+   */
   const toggle = () => {
     if (isMenuOpen) {
       setIsMenuOpen(false);
@@ -64,9 +71,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
 export default UserMenu;
 
 /**
- * @param user? (User) - user
- * @param isMenuOpen (boolean) - whether the menu is open or not
- * @param toggle (function) - function to toggle the menu
+ * @param {User | null | undefined} user - user currently logged in if any
+ * @param {boolean} isMenuOpen - whether the menu is open or not
  */
 interface UserMenuButtonProps {
   user: User | null | undefined;
@@ -75,14 +81,19 @@ interface UserMenuButtonProps {
 
 /**
  * Menu button which changes depending on the authentication status of the user.
+ * The button is responsive:
+ *  - Only icon is shown on mobile
+ *  - Both icon and user name are shown on desktop
+ *
  * If the user is authenticated, the button will display:
- *    - User icon
- *    - User name
+ *  - User icon
+ *  - User name
  * If the user is unauthenticated, the button will display:
- *    - Generic user icon
- * @param {user} - user
- * @param {isMenuOpen} - whether the menu is open or not
- * @returns
+ *  - Generic user icon
+ * @param {User | null | undefined} user - user currently logged in if any
+ * @param {boolean} isMenuOpen - whether the menu is open or not
+ *
+ * @returns {React.FC} - user menu button
  */
 const UserMenuButton: React.FC<UserMenuButtonProps> = ({
   user,
@@ -139,8 +150,10 @@ interface UserMenuListProps {
  *    - Log out
  * If the user is unauthenticated, menu entries will be:
  *    - Log in / Sign up
- * @param {User} user - User
- * @returns React user menu list component
+ * @param {User} user - current user
+ *
+ * @returns {React.FC} - user menu entries
+ *
  * @requires CustomMenuButton
  */
 const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {

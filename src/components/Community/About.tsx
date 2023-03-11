@@ -27,22 +27,26 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { useSetRecoilState } from "recoil";
 
 /**
- * Props for About component.
+ * @param {string} communityName - Name of the community
  */
 type AboutProps = {
   communityData: Community;
 };
 
 /**
- * About component displaying:
- *    - The number of subscribers in the community
- *    - Date when the community was created
- *    - Button for creating a new post
+ * This about component is used for displaying general information about the community.
+ * It displays the following data:
+ *  - The number of subscribers in the community
+ *  - Date when the community was created
+ *  - Button for creating a new post
  *
  * Additional elements are displayed if the current user is an admin:
- *    - Button for changing image
+ *  - Button for changing image
  * @param {communityData} - data required to be displayed
  * @returns (React.FC<AboutProps>) - About component
+ * @requires AboutHeaderBar - Header bar for the about section.
+ * @requires AboutCommunity - Displays the number of subscribers and the date when the community was created.
+ * @requires AdminSectionAbout - Displays some additional elements if the current user is an admin.
  */
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
@@ -80,10 +84,19 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
 };
 export default About;
 
+/**
+ * @param {string} communityName - Name of the community
+ */
 interface AboutHeaderBarProps {
   communityName: string;
 }
 
+/**
+ * Header bar for the about section.
+ * Contains the name of the community and a button for more options.
+ * @param {string} communityName - Name of the community
+ * @returns {React.FC<AboutHeaderBarProps>} - Header bar for the about section
+ */
 const AboutHeaderBar: React.FC<AboutHeaderBarProps> = ({ communityName }) => (
   <Flex
     justify="space-between"
@@ -100,10 +113,18 @@ const AboutHeaderBar: React.FC<AboutHeaderBarProps> = ({ communityName }) => (
   </Flex>
 );
 
+/**
+ * @param {Community} communityData - data required to be displayed
+ */
 interface AboutCommunityProps {
   communityData: Community;
 }
 
+/**
+ * Displays the number of subscribers and the date when the community was created.
+ * @param {Community} communityData - data required to be displayed
+ * @returns {React.FC<AboutCommunityProps>} - About community component
+ */
 const AboutCommunity: React.FC<AboutCommunityProps> = ({ communityData }) => (
   <Flex width="100%" p={2} fontSize="10pt">
     <Flex direction="column" flexGrow={1}>
@@ -124,11 +145,20 @@ const AboutCommunity: React.FC<AboutCommunityProps> = ({ communityData }) => (
   </Flex>
 );
 
+/**
+ * @param {User | null | undefined} user - current user
+ */
 interface AdminSectionAboutProps {
   user: User | null | undefined;
   communityData: Community;
 }
 
+/**
+ * Displays some additional elements if the current user is an admin:
+ *  - Button for changing image
+ * @param {User | null | undefined} user - current user
+ * @returns {React.FC<AdminSectionAboutProps>} - Admin section component
+ */
 const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
   user,
   communityData,
@@ -143,7 +173,6 @@ const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
 
   /**
    * Allows admin to change the image of the community.
-   * @returns null if no file is selected
    */
   const onUpdateImage = async () => {
     if (!selectedFile) {
@@ -153,6 +182,7 @@ const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
     setUploadingImage(true); // set uploading image to true
 
     try {
+      // update image in firebase
       const imageRef = ref(storage, `communities/${communityData.id}/image`); // create reference to image in storage
       await uploadString(imageRef, selectedFile, "data_url"); // upload image to storage
       const downloadURL = await getDownloadURL(imageRef); // get download url of image

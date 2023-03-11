@@ -15,9 +15,13 @@ type RightContentProps = {
  * Right content is a section of the navbar which dynamically adjusts based on state.
  * If the user is not authenticated, the right content will display log in and sign up buttons.
  * If the user is authenticated, the right content will display:
- *  -
- * @param {User} - to manage state and adjust the UI based on said state
- * @returns
+ *  - Create post button
+ *  - GitHub project button
+ * The user menu is always displayed but it changes depending on the authentication status of the user.
+ * @param {User | null} user - User object from Firebase to determine whether user is authenticated
+ *
+ * @returns {React.FC} - Right content of the navbar
+ *
  * @requires ./AuthButtons - log in and sign up buttons
  * @requires ./UserMenu - user menu which changed depending on whether user is authenticated
  * @requires ./AuthModal - authentication modal which is closed by default

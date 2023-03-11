@@ -1,11 +1,21 @@
 import { Flex, Alert, AlertIcon, Text } from "@chakra-ui/react";
 import React from "react";
 
+/**
+ * @param {boolean} error - Error state
+ * @param {string} message - Error message
+ */
 interface PostItemErrorProps {
   error: boolean;
   message: string;
 }
 
+/**
+ * Displays an error message. 
+ * @param {boolean} error - Error state 
+ * @param {string} message - Error message
+ * @returns React.FC: post item error component
+ */
 const PostItemError: React.FC<PostItemErrorProps> = ({ error, message }) => {
   return (
     <>

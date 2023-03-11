@@ -21,11 +21,12 @@ import { IoPeopleCircleOutline } from "react-icons/io5";
  * Displays the top 5 communities with the most members.
  * For each community, displays the community name, number of members, and a button to join or leave the community.
  * Displays a button to view all communities.
- * @returns (React.FC) - Recommendations component
+ * @returns {React.FC} - Recommendations component
+ *
+ * @requires SuggestionsHeader - Displays the header for the Recommendations component.
+ * @requires SuggestedCommunitiesList - Displays the top 5 communities with the most members.
  */
 const Recommendations: React.FC = () => {
-  const bannerImage = "/images/banners/large.png";
-
   return (
     <Flex
       direction="column"
@@ -45,7 +46,13 @@ const Recommendations: React.FC = () => {
 };
 export default Recommendations;
 
+/**
+ * Displays the header for the Recommendations component.
+ * Header includes the title "Top Communities" and a banner image with a gradient.
+ * @returns {React.FC} - Recommendations header component
+ */
 const SuggestionsHeader: React.FC = () => {
+  const bannerImage = "/images/banners/large.png";
   return (
     <Flex
       align="flex-end"
@@ -64,7 +71,11 @@ const SuggestionsHeader: React.FC = () => {
   );
 };
 
-const SuggestedCommunitiesList: React.FC = ({}) => {
+/**
+ * Displays the top 5 communities with the most members.
+ * @returns {React.FC} - Suggested communities list component
+ */
+const SuggestedCommunitiesList: React.FC = () => {
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);

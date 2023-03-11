@@ -5,13 +5,12 @@ import { useSetRecoilState } from "recoil";
 
 /**
  * Displays 2 authentication buttons which open the authentication modal when clicked:
- * 
- *  - `Log In`: opens the log in modal 
- *  - `Sign Up`: opens the sign up modal 
- * @returns Authentication buttons (log in and sign up)
+ *  - `Log In`: opens the log in modal
+ *  - `Sign Up`: opens the sign up modal
+ * @returns {React.FC} - Authentication buttons (log in and sign up)
  */
 const AuthButtons: React.FC = () => {
-  const setAuthModalState = useSetRecoilState(authModalState);// Set global state
+  const setAuthModalState = useSetRecoilState(authModalState); // Set global state
   return (
     <>
       <Button

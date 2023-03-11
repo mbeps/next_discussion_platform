@@ -1,27 +1,19 @@
-import { authModalState } from "@/atoms/authModalAtom";
-import { auth } from "@/firebase/clientApp";
 import useCallCreatePost from "@/hooks/useCallCreatePost";
-import useDirectory from "@/hooks/useDirectory";
 import { Flex, Icon, Input } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { BsLink45Deg } from "react-icons/bs";
 import { IoIosCreate } from "react-icons/io";
 import { IoImageOutline } from "react-icons/io5";
-import { useSetRecoilState } from "recoil";
 
 type CreatePostProps = {};
 
 /**
- * Component for creating a new post.
- * Redirects the user to the create post page.
+ * Component which redirects the user to the create post page.
  * If the user is not logged in, the authentication modal is opened.
- * @returns (React.FC<CreatePostProps>) - CreatePostLink component
+ * @returns {React.FC<CreatePostProps>} Component directing user to the create post page.
  */
 const CreatePostLink: React.FC<CreatePostProps> = () => {
-  const { onClick } = useCallCreatePost();
+  const { onClick } = useCallCreatePost(); // hook for creating a new post
 
   return (
     <Flex

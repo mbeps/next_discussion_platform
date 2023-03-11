@@ -4,6 +4,9 @@ import React from "react";
 import { HiArrowCircleUp } from "react-icons/hi";
 import useCommunityData from "@/hooks/useCommunityData";
 
+/**
+ * @param {communityData} - data required to be displayed
+ */
 type HeaderProps = {
   communityData: Community;
 };
@@ -11,18 +14,23 @@ type HeaderProps = {
 /**
  * Displays a community header which is responsive.
  * Community header contains:
- *    - Community logo
- *    - Community name
- *    - Subscribe and unsubscribe button
- * @param {communityData}
- * @returns (React.FC) - header component
+ *  - Community logo
+ *  - Community name
+ *  - Subscribe and unsubscribe button
+ * @param {communityData} - data required to be displayed
+ *
+ * @returns {React.FC<HeaderProps>} - Header component
+ *
+ * @requires CommunityIcon - Displays the community icon.
+ * @requires CommunityName - Displays the name of the community.
+ * @requires JoinOrLeaveButton - Displays the subscribe and unsubscribe button.
  */
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
   const { communityStateValue, onJoinOrLeaveCommunity, loading } =
     useCommunityData();
   const isJoined = !!communityStateValue.mySnippets.find(
     (item) => item.communityId === communityData.id
-  );
+  ); // check if the user is already subscribed to the community
   return (
     <Flex direction="column" width="100%" height="120px">
       <Box height="30%" bg="red.500" />
@@ -49,12 +57,23 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
 };
 export default Header;
 
+/**
+ * @param {string} imageURL - URL of the community icon
+ */
 type CommunityIconProps = {
   imageURL?: string;
 };
 
+/**
+ * Displays the community icon on the community header.
+ * If the community icon is not available, then a default icon is displayed.
+ * If the community icon is available, then the community icon is displayed.
+ * @param {string} imageURL - URL of the community icon
+ * @returns React.FC: Community icon component
+ */
 const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
   return imageURL ? (
+    // if the community icon is available, then display the community icon
     <Image
       src={imageURL}
       borderRadius="full"
@@ -64,6 +83,7 @@ const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
       border="3px solid white"
     />
   ) : (
+    // if the community icon is not available, then display a default icon
     <Icon
       as={HiArrowCircleUp}
       fontSize={64}
@@ -75,10 +95,18 @@ const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
   );
 };
 
+/**
+ * @param {string} id - id of the community
+ */
 type CommunityNameProps = {
   id: string;
 };
 
+/**
+ * Displays the name of the community on the community header.
+ * @param {string} id - id of the community
+ * @returns {React.FC<CommunityNameProps>} - displays the name of the community
+ */
 const CommunityName: React.FC<CommunityNameProps> = ({ id }) => {
   return (
     <Flex direction="column" mr={6}>
@@ -89,11 +117,19 @@ const CommunityName: React.FC<CommunityNameProps> = ({ id }) => {
   );
 };
 
+/**
+ * @param {boolean} isJoined - true if the user is already subscribed to the community
+ */
 type JoinOrLeaveButtonProps = {
   isJoined: boolean;
   onClick: () => void;
 };
 
+/**
+ * Button to subscribe or unsubscribe to the community.
+ * @param {boolean} isJoined - true if the user is already subscribed to the community
+ * @returns
+ */
 export const JoinOrLeaveButton: React.FC<JoinOrLeaveButtonProps> = ({
   isJoined,
   onClick,

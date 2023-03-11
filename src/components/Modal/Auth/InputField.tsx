@@ -1,5 +1,11 @@
 import { Input } from "@chakra-ui/react";
 
+/**
+ * @param {string} name - Name of the input field
+ * @param {string} placeholder - Placeholder text
+ * @param {string} type - Type of the input field
+ * @param {React.ChangeEventHandler<HTMLInputElement>} onChange - On change event handler
+ */
 interface InputFieldProps {
   name: string;
   placeholder: string;
@@ -7,6 +13,15 @@ interface InputFieldProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
+/**
+ * Input field for various forms used in the Auth modal component.
+ * @param {string} name - Name of the input field
+ * @param {string} placeholder - Placeholder text
+ * @param {string} type - Type of the input field
+ * @param {React.ChangeEventHandler<HTMLInputElement>} onChange - On change event handler
+ *
+ * @returns {React.FC} - Input field component
+ */
 const InputField: React.FC<InputFieldProps> = ({
   name,
   placeholder,

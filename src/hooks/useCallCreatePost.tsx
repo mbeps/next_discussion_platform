@@ -1,11 +1,15 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import { useRouter } from "next/router";
-import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 import useDirectory from "./useDirectory";
 
+/**
+ * Redirects the user to the create post page if the user is logged in.
+ * If the user is not logged in, the login modal is opened.
+ * @returns {() => void} onClick - function that handles opening the create post modal
+ */
 const useCallCreatePost = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);

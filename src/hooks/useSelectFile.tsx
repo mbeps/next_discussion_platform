@@ -5,11 +5,12 @@ import React, { useState } from "react";
  * The file size limit is 10MB and only allows image file types.
  * The file being uploaded must be an image.
  * The file must be within the specified dimensions.
- * @param maxHeight (number) - maximum height of the image
- * @param maxWidth (number) - maximum width of the image
- * @returns selectedFile - the selected file
- * @returns setSelectedFile - function to set the selected file
- * @returns onSelectFile - function to select a file
+ * @param {number} maxHeight - maximum height of the image
+ * @param {number} maxWidth - maximum width of the image
+ *
+ * @returns {string} selectedFile - the selected file after upload
+ * @returns {() => void} setSelectedFile - function to set the selected file
+ * @returns {() => void} onSelectFile - function to select a file from user's system
  */
 const useSelectFile = (maxHeight: number, maxWidth: number) => {
   const [selectedFile, setSelectedFile] = useState<string>();
@@ -18,7 +19,7 @@ const useSelectFile = (maxHeight: number, maxWidth: number) => {
    * Allows user to select a file.
    * The file size limit is 10MB and only allows image file types.
    * The file being uploaded must be an image.
-   * @param event (React.ChangeEvent<HTMLInputElement>) - event object
+   * @param {React.ChangeEvent<HTMLInputElement>} event - event object
    */
   const onSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; // get the first file

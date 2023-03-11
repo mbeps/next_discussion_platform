@@ -14,7 +14,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
@@ -25,6 +24,12 @@ import { IconType } from "react-icons";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
+/**
+ * Options for the community type that can be created.
+ * @param {public, restricted, private} - community types
+ * @param {BsFillPersonFill, BsFillEyeFill, HiLockClosed} - icons for the community types
+ * @param {Public, Restricted, Private} - labels for the community types
+ */
 const COMMUNITY_TYPE_OPTIONS = [
   {
     name: "public",
@@ -49,6 +54,8 @@ const COMMUNITY_TYPE_OPTIONS = [
 /**
  * Controls whether the modal is open or closed by its state.
  * Handles closing the modal.
+ * @param {boolean} open - controls whether the modal is open or closed by its state
+ * @param {() => void} handleClose - handles closing the modal
  */
 type CreateCommunityModalProps = {
   open: boolean;
@@ -57,8 +64,13 @@ type CreateCommunityModalProps = {
 
 /**
  * Modal for creating communities.
- * @param {open, handleClose} - control whether modal is opened or closed
- * @returns (React.FC) - modal component
+ * @param {boolean} open - controls whether the modal is open or closed by its state
+ * @param {() => void} handleClose - handles closing the modal
+ *
+ * @returns {React.FC} - modal for creating communities
+ *
+ * @requires CommunityTypeOptionProps - options for the community type that can be created
+ * @requires CommunityNameSection - section for entering the name of the community to be created
  */
 const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   open,
@@ -78,17 +90,15 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
    * Handles changes in the input element which takes the name of the community to be created.
    *
    * If the community name entered is above the limit:
-   *    - Exists if the community name is too long (above the limit).
+   *  - Exists if the community name is too long (above the limit).
    *
    * If the community name entered is within the limit:
-   *    - Updates the state of `communityName` which allows the creation of the community with the inputted name
-   *    - Updates the number of characters remaining based on the number of characters used so far.
-   * @param event
-   * @returns
+   *  - Updates the state of `communityName` which allows the creation of the community with the inputted name
+   *  - Updates the number of characters remaining based on the number of characters used so far.
+   * @param {React.ChangeEvent<HTMLInputElement>} event - change in HTML input field
    */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > communityNameLengthLimit) return; // community is not created if the name is above the limit
-    // TODO: do not allow spaces
     setCommunityName(event.target.value); // updates the state of `communityName`
     setCharRemaining(communityNameLengthLimit - event.target.value.length); // computing remaining characters for community names
   };
@@ -97,7 +107,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
    * Only 1 checkbox can be toggled as only 1 community type can be created.
    * If a community type checkbox is toggled,
    * toggling another checkbox would untoggle the previous one.
-   * @param event (React.ChangeEvent<HTMLInputElement>) - change in HTML input field
+   * @param {React.ChangeEvent<HTMLInputElement>} event - change in HTML input field
    */
   const onCommunityTypeChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -110,12 +120,14 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
    * and adds the current user as the community creator and member.
    *
    * Does not allow creating a community if:
-   *    - It contains special characters
-   *    - If the the name is too short
-   *    - If the name is already taken
+   *  - It contains special characters
+   *  - If the the name is too short
+   *  - If the name is already taken
    *
    * @async
+   *
    * @throws {Error} If the community name contains special characters or is too short, or if the community name is already taken.
+   *
    * @returns {void}
    */
   const handleCreateCommunity = async () => {
@@ -144,6 +156,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       await runTransaction(firestore, async (transaction) => {
         const communityDoc = await transaction.get(communityDocRef);
         if (communityDoc.exists()) {
+          // if community exists
           throw new Error(
             `The community ${communityName} is already taken. Try a different name! `
           );
@@ -169,14 +182,15 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       });
 
       router.push(`/community/${communityName}`);
-      handleClose();
-      toggleMenuOpen();
+      handleClose(); // closes the modal
+      toggleMenuOpen(); // closes the directory menu
     } catch (error: any) {
       console.log("Error: handleCreateCommunity", error);
       setError(error.message);
       setLoading(false);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -240,6 +254,14 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 };
 export default CreateCommunityModal;
 
+/**
+ * @param {string} name - name of the community type on the form (public, private or restricted)
+ * @param {IconType} icon - icon of the community type
+ * @param {string} label - label of the community type
+ * @param {string} description - description of the community type
+ * @param {boolean} isChecked - whether the checkbox for selecting community is checked or not
+ * @param {React.ChangeEvent<HTMLInputElement>} onChange - change in HTML input field
+ */
 type CommunityTypeOptionProps = {
   name: string;
   icon: IconType;
@@ -249,6 +271,18 @@ type CommunityTypeOptionProps = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
+/**
+ * Displays a checkbox for selecting a community type.
+ * It takes some props to determine the community type.
+ * Shows the icon, label, description, and whether the checkbox is checked or not.
+ * @param {string} name - name of the community type on the form (public, private or restricted)
+ * @param {IconType} icon - icon of the community type
+ * @param {string} label - label of the community type
+ * @param {string} description - description of the community type
+ * @param {boolean} isChecked - whether the checkbox for selecting community is checked or not
+ * @param {React.ChangeEvent<HTMLInputElement>} onChange - change in HTML input field
+ * @returns
+ */
 const CommunityTypeOption: FC<CommunityTypeOptionProps> = ({
   name,
   icon,
@@ -277,6 +311,11 @@ const CommunityTypeOption: FC<CommunityTypeOptionProps> = ({
   );
 };
 
+/**
+ * @param {CommunityTypeOptionProps[]} options - array of community type options
+ * @param {string} communityType - community type selected
+ * @param {React.ChangeEvent<HTMLInputElement>} onCommunityTypeChange - change in HTML input field
+ */
 interface CommunityTypeOptionsProps {
   options: {
     name: string;
@@ -289,11 +328,15 @@ interface CommunityTypeOptionsProps {
 }
 
 /**
- * Contains community types that can be created
+ * Section of the modal for selecting community type.
+ * Contains community types that can be created.
  * Only 1 community type can be created hence only 1 box can be checked
- * Checking another box (community type)
- * @param param0
- * @returns
+ * Checking another box (community type) will uncheck the previous box.
+ * @param {CommunityTypeOptionProps[]} options - array of community type options
+ *
+ * @returns {React.FC} - section for selecting community type
+ *
+ * @requires CommunityTypeOption - displays a checkbox for selecting a community type
  */
 const CommunityTypeOptions: React.FC<CommunityTypeOptionsProps> = ({
   options,
@@ -317,6 +360,12 @@ const CommunityTypeOptions: React.FC<CommunityTypeOptionsProps> = ({
   );
 };
 
+/**
+ * @param {string} communityName - name of the community
+ * @param {React.ChangeEvent<HTMLInputElement>} handleChange - change in HTML input field
+ * @param {number} charRemaining - number of characters remaining for the community name
+ * @param {string} error - error messagesection for entering community name
+ */
 interface CommunityNameSectionProps {
   communityName: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -324,6 +373,14 @@ interface CommunityNameSectionProps {
   error: string;
 }
 
+/**
+ * Section of the modal form for entering community name to be created.
+ * @param {string} communityName - name of the community
+ * @param {React.ChangeEvent<HTMLInputElement>} handleChange - change in HTML input field
+ * @param {number} charRemaining - number of characters remaining for the community name
+ * @param {string} error - error message
+ * @returns {React.FC} - section for entering community name
+ */
 const CommunityNameSection: React.FC<CommunityNameSectionProps> = ({
   communityName,
   handleChange,

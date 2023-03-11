@@ -23,7 +23,6 @@ import ResetPassword from "./ResetPassword";
  * Displays an authentication modal while `open` is `true`.
  * If the `open` is `false`, then the modal is closed.
  * The modal has 3 different views as described by `authModalAtom`:
- *
  *  - `login`: displays the log in view
  *  - `signup`: displays the signup view
  *  - `resetPassword`: displays the reset password view
@@ -34,10 +33,12 @@ import ResetPassword from "./ResetPassword";
  * If the user is resetting the password,
  *  only the reset password elements are shown and
  *  Third party authentication providers and log in or sign up forms are not displayed.
- * @returns authentication modal
+ * @returns {React.FC} - authentication modal which has 3 different views
+ *
  * @requires ./AuthInputs - display correct form depending on `login` or `signup` state
  * @requires ./OAuthButtons - third party authentication providers such as Google or GitHub
  * @requires ./ResetPassword - display reset password view
+ *
  * @see https://chakra-ui.com/docs/components/modal/usage
  */
 const AuthModal: React.FC = () => {

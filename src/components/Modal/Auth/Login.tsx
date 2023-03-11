@@ -18,7 +18,8 @@ type LoginProps = {};
  *
  * Buttons for resetting the password and signing up are present.
  * Clicking these buttons would change the modal to the appropriate view.
- * @returns Log in components view for modal.
+ * @returns {React.FC} - Login component
+ *
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const Login: React.FC<LoginProps> = () => {
@@ -35,7 +36,7 @@ const Login: React.FC<LoginProps> = () => {
    * This function is used as the event handler for a form submission.
    * It will prevent the page from refreshing.
    * Automatically checks if the user with the email exists and if the password is correct.
-   * @param event (React.FormEvent): the submit event triggered by the form
+   * @param {React.FormEvent<HTMLFormElement>} event - the submit event triggered by the form
    */
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page from reloading
@@ -56,6 +57,11 @@ const Login: React.FC<LoginProps> = () => {
     }));
   };
 
+  /**
+   * Determines whether the button is disabled or not.
+   * The button is disabled if the email or password is empty.
+   * @returns {boolean} - Whether the button is disabled or not
+   */
   const isButtonDisabled = () => {
     return (
       !loginForm.email || !loginForm.password
