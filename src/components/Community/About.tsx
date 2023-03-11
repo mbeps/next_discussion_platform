@@ -20,6 +20,7 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
+import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -138,8 +139,9 @@ const AboutCommunity: React.FC<AboutCommunityProps> = ({ communityData }) => (
       <Text fontWeight={700}>Created</Text>
       <Text>
         {communityData.createdAt &&
-          // new Date(communityData.createdAt).toLocaleDateString()
-          "Not working :("}
+          moment(new Date(communityData.createdAt.seconds * 1000)).format(
+            "MMM DD, YYYY"
+          )}
       </Text>
     </Flex>
   </Flex>
