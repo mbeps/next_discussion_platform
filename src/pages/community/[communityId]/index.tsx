@@ -12,10 +12,18 @@ import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import safeJsonStringify from "safe-json-stringify";
 
+/**
+ * @param {Community} communityData - Community data for the current community
+ */
 type CommunityPageProps = {
   communityData: Community;
 };
 
+/**
+ * Displays the community page with the community's posts and information.
+ * @param {Community} communityData - Community data for the current community
+ * @returns {React.FC<CommunityPageProps>} - Community page component
+ */
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   const setCommunityStateValue = useSetRecoilState(communityState);
 
@@ -28,10 +36,9 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   }, [communityData, setCommunityStateValue]);
 
   if (!communityData) {
+    //  if community data is not available, return not found page
     return <NotFound />;
   }
-
-  //useEffect
 
   return (
     <>
@@ -49,6 +56,12 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   );
 };
 
+/**
+ * Gets the community data for the current community.
+ * Returns the community data as props to the client.
+ * @param {GetServerSidePropsContext} context - GetServerSidePropsContext object
+ * @returns {Promise<{props: {communityData: Community}}>} - Community data for the current community
+ */
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // get the community data and pass it to client
   try {

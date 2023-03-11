@@ -1,11 +1,23 @@
 import { MenuItem, Flex, Icon } from "@chakra-ui/react";
 
+/**
+ * @param {React.ReactElement} icon - icon of the button
+ * @param {string} text - text of the button
+ * @param {() => void} onClick - function to be called when the button is clicked
+ */
 interface CustomMenuButtonProps {
   icon: React.ReactElement;
   text: string;
   onClick: () => void;
 }
 
+/**
+ * Custom menu button component for various menus.
+ * @param {React.ReactElement} icon - icon of the button
+ * @param {string} text - text of the button
+ * @param {() => void} onClick - function to be called when the button is clicked
+ * @returns {React.FC} - the custom menu button component
+ */
 const CustomMenuButton: React.FC<CustomMenuButtonProps> = ({
   icon,
   text,

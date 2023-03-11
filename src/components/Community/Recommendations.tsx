@@ -14,6 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
@@ -79,7 +80,11 @@ const SuggestedCommunitiesList: React.FC = () => {
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);
+  const router = useRouter();
 
+  /**
+   * Gets the top 5 communities with the most members.
+   */
   const getCommunityRecommendations = async () => {
     setLoading(true);
     try {
@@ -108,18 +113,14 @@ const SuggestedCommunitiesList: React.FC = () => {
     <Flex direction="column" mb={0}>
       {loading ? (
         <Stack mt={2} p={3}>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
-          <Flex justify="space-between" align="center">
-            <SkeletonCircle size="10" />
-            <Skeleton height="10px" width="70%" />
-          </Flex>
+          {Array(5)
+            .fill(0)
+            .map((_, index) => (
+              <Flex justify="space-between" align="center" key={index}>
+                <SkeletonCircle size="10" />
+                <Skeleton height="10px" width="70%" />
+              </Flex>
+            ))}
         </Stack>
       ) : (
         <>
@@ -130,6 +131,7 @@ const SuggestedCommunitiesList: React.FC = () => {
             return (
               <Link key={item.id} href={`/community/${item.id}`}>
                 <Flex
+                  key={item.id}
                   align="center"
                   fontSize="10pt"
                   borderBottom="1px solid"
@@ -189,7 +191,13 @@ const SuggestedCommunitiesList: React.FC = () => {
         </>
       )}
       <Box p="10px 20px">
-        <Button height="30px" width="100%">
+        <Button
+          height="30px"
+          width="100%"
+          onClick={() => {
+            router.push(`/communities`);
+          }}
+        >
           View All
         </Button>
       </Box>

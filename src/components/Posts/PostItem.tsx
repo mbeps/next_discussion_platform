@@ -211,6 +211,7 @@ const VoteSection: React.FC<VoteSectionProps> = ({
         color={userVoteValue === 1 ? "red.500" : "gray.500"}
         fontSize={22}
         cursor="pointer"
+        _hover={{ color: "red.300" }}
         onClick={(event) => onVote(event, post, 1, post.communityId)}
       />
       {/* number of likes  */}
@@ -225,6 +226,7 @@ const VoteSection: React.FC<VoteSectionProps> = ({
             : IoArrowDownCircleOutline
         }
         color={userVoteValue === -1 ? "red.500" : "gray.500"}
+        _hover={{ color: "red.300" }}
         fontSize={22}
         cursor="pointer"
         onClick={(event) => onVote(event, post, -1, post.communityId)}

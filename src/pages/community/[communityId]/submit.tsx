@@ -5,11 +5,19 @@ import AuthButtons from "@/components/Navbar/RightContent/AuthButtons";
 import NewPostForm from "@/components/Posts/NewPostForm";
 import { auth } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 
+/**
+ * Post submission page where the user can create a new post.
+ * If the user is not logged in, they will be prompted to log in.
+ * Displays:
+ * - Post creation form
+ * - Community information card
+ * @returns {React.FC} - Submit post page component
+ */
 const SubmitPostPage: React.FC = () => {
   const [user] = useAuthState(auth);
   // const communityStateValue = useRecoilValue(communityState);
