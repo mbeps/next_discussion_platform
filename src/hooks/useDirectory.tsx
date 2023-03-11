@@ -58,8 +58,8 @@ const useDirectory = () => {
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 
-    if (currentCommunity) {
-      // if the user is currently in a community
+    if (currentCommunity && router.pathname !== "/") {
+      // if the user is currently in a community and not on the home page
       setDirectoryState((prev) => ({
         ...prev,
         selectedMenuItem: {
@@ -71,7 +71,7 @@ const useDirectory = () => {
         },
       }));
     }
-  }, [communityStateValue.currentCommunity]);
+  }, [communityStateValue.currentCommunity, router.pathname]);
 
   return { directoryState, toggleMenuOpen, onSelectMenuItem };
 };
