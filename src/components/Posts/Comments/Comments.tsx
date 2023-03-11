@@ -5,7 +5,6 @@ import {
   Box,
   Divider,
   Flex,
-  Skeleton,
   SkeletonCircle,
   SkeletonText,
   Stack,
@@ -31,9 +30,9 @@ import CommentItem, { Comment } from "./CommentItem";
 
 /**
  * Required props for Comments component
- * @param user - User object from firebase
- * @param selectedPost - Post object from firebase
- * @param communityId - id of the community
+ * @param {User} user - User object from firebase
+ * @param {Post} selectedPost - Post object from firebase
+ * @param {string} communityId - id of the community
  */
 type CommentsProps = {
   user?: User;
@@ -48,10 +47,11 @@ type CommentsProps = {
  * If there are no comments, displays a message.
  * Show loading skeleton while fetching comments.
  * If everything is loaded, show the comments.
- * @param {user} - User object from firebase
- * @param {selectedPost} - Post object from firebase
- * @param {communityId} - id of the community
- * @returns (React.FC) - Comments component
+ * @param {User} user - User object from firebase
+ * @param {Post} selectedPost - Post object from firebase
+ * @param {string} communityId - id of the community
+ *
+ * @returns {React.FC<CommentsProps>} - Comments component
  */
 const Comments: React.FC<CommentsProps> = ({
   user,
@@ -68,6 +68,10 @@ const Comments: React.FC<CommentsProps> = ({
   /**
    * Creates a new comment for the selected post.
    * Also updates the number of comments in the post document.
+   *
+   * @returns {Promise<void>} - void
+   *
+   * @async
    */
   const onCreateComment = async () => {
     setCreateLoading(true);
@@ -114,7 +118,7 @@ const Comments: React.FC<CommentsProps> = ({
   /**
    * Deletes a comment.
    * Also updates the number of comments in the post document.
-   * @param comment (Comment) - comment object to be deleted
+   * @param {Comment} comment - Comment to be deleted
    */
   const onDeleteComment = async (comment: Comment) => {
     setLoadingDelete(comment.id);

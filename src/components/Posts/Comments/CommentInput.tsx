@@ -5,11 +5,11 @@ import React from "react";
 
 /**
  * Required props for CommentInput component
- * @param {commentText} - text of the comment
- * @param {setCommentText} - function to set the comment text
- * @param {user} - User object from firebase
- * @param {createLoading} - is the comment being created
- * @param {onCreateComment} - function to handle creating comment
+ * @param {string} commentText - text of the comment
+ * @param {setCommentText} setCommentText - function to set the comment text
+ * @param {User} user - User object from firebase
+ * @param {boolean} createLoading - is the comment being created
+ * @param {onCreateComment} onCreateComment - function to handle creating comment
  */
 type CommentInputProps = {
   commentText: string;
@@ -22,19 +22,20 @@ type CommentInputProps = {
 /**
  * Input box for creating a comment by inputting text.
  * The component displays:
- *    - Textarea for inputting comment text
- *    - Button for creating the comment
+ *  - Textarea for inputting comment text
+ *  - Button for creating the comment
  *
  * If the user is not logged in, the component displays:
- *    - Text prompting the user to log in or sign up
- *    - AuthButtons component
+ *  - Text prompting the user to log in or sign up
+ *  - AuthButtons component
  *
- * @param {commentText} - text of the comment
- * @param {setCommentText} - function to set the comment text
- * @param {user} - User object from firebase
- * @param {createLoading} - is the comment being created
- * @param {onCreateComment} - function to handle creating comment
- * @returns (React.FC<CommentInputProps>) - CommentInput component
+ * @param {string} commentText - text of the comment
+ * @param {setCommentText} setCommentText - function to set the comment text
+ * @param {User} user - User object from firebase
+ * @param {boolean} createLoading - is the comment being created
+ * @param {onCreateComment} onCreateComment - function to handle creating comment
+ *
+ * @returns {React.FC<CommentInputProps>} - input box for creating a comment
  */
 const CommentInput: React.FC<CommentInputProps> = ({
   commentText,

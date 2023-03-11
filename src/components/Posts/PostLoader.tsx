@@ -7,7 +7,7 @@ type PostLoaderItemProps = {
 
 /**
  * Displays a post loader item of the given height.
- * @param {height} - height of the post loader
+ * @param {string} height - height of the post loader item
  * @returns
  */
 const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
@@ -28,7 +28,8 @@ const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
 
 /**
  * Component to display a post loader while the post is being loaded.
- * @returns (React.FC) - PostLoader component
+ * @returns {React.FC} - loading component while the post is being loaded
+ *
  * @requires PostLoaderItem - actual post loader item of the given height
  */
 const PostLoader: React.FC = () => {

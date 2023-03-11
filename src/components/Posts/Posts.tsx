@@ -4,24 +4,27 @@ import { Post } from "@/atoms/postsAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostItem from "./PostItem";
 import PostLoader from "./PostLoader";
 
+/**
+ * @param {Community} communityData - Community object from firebase
+ */
 type PostsProps = {
   communityData: Community;
 };
 
+/**
+ * Displays all the posts in a community.
+ * Displays a list of `PostItem` components.
+ * While the posts are being fetched, displays a loading skeleton.
+ * @param {Community} communityData - Community object from firebase
+ *
+ * @returns {React.FC<PostsProps>} - Posts component
+ */
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
@@ -35,6 +38,8 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
 
   /**
    * Gets all posts in the community.
+   *
+   * @returns {Promise<void>} - void
    */
   const getPosts = async () => {
     try {
@@ -43,7 +48,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         collection(firestore, "posts"),
         where("communityId", "==", communityData.id),
         orderBy("createTime", "desc")
-      ); // get all posts in community
+      ); // get all posts in community with certain requirements
       const postDocs = await getDocs(postsQuery); // get all posts in community
       const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // get all posts in community
       setPostStateValue((prev) => ({

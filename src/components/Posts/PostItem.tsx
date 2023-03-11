@@ -24,13 +24,13 @@ import { MdOutlineDelete } from "react-icons/md";
 import PostItemError from "../atoms/ErrorMessage";
 
 /**
- * Props for PostItem component.
- * @param {post} - post object
- * @param {userIsCreator} - is the currently logged in user the creator of post
- * @param {userVoteValue} - value of the vote of the currently logged in user
- * @param {onVote} - function to handle voting
- * @param {onDeletePost} - function to handle deleting post
- * @param {onSelectPost} - function to handle selecting post
+ * @param {Post} post - post object
+ * @param {boolean} userIsCreator - is the currently logged in user the creator of post
+ * @param {number} userVoteValue - whether the currently logged in user has voted on the post (1, -1, or 0)
+ * @param {function} onVote - function to handle voting
+ * @param {function} onDeletePost - function to handle deleting post
+ * @param {function} onSelectPost - function to handle selecting post
+ * @param {boolean} showCommunityImage - whether to show the community image
  */
 type PostItemProps = {
   post: Post;
@@ -47,6 +47,26 @@ type PostItemProps = {
   showCommunityImage?: boolean;
 };
 
+/**
+ * Component to display a post:
+ *  - Post title
+ *  - Post text
+ *  - Post creator
+ *  - Post community
+ *  - Post vote count
+ *  - Post vote buttons
+ *  - Post delete button (if user is creator)
+ *  - Post select button (if post is not selected)
+ *  - Post community image (if showCommunityImage is true)
+ * @param {Post} post - post object
+ * @param {boolean} userIsCreator - is the currently logged in user the creator of post
+ * @param {number} userVoteValue - whether the currently logged in user has voted on the post (1, -1, or 0)
+ * @param {function} onVote - function to handle voting
+ * @param {function} onDeletePost - function to handle deleting post
+ * @param {function} onSelectPost - function to handle selecting post
+ * @param {boolean} showCommunityImage - whether to show the community image
+ * @returns {React.FC<PostItemProps>} - card displaying post
+ */
 const PostItem: React.FC<PostItemProps> = ({
   post,
   userIsCreator,
@@ -70,7 +90,7 @@ const PostItem: React.FC<PostItemProps> = ({
    * This function provides the error handling for the delete functionality.
    * Each component may choose to the error handling differently.
    * Core functionality is shared.
-   * @param {event} - event object
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event - click event on delete button to prevent from post being selected
    */
   const handleDelete = async (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -150,6 +170,11 @@ const PostItem: React.FC<PostItemProps> = ({
 };
 export default PostItem;
 
+/**
+ * @param {number} userVoteValue - whether the currently logged in user has voted on the post (1, -1, or 0)
+ * @param {function} onVote - function to handle voting
+ * @param {Post} post - post object
+ */
 type VoteSectionProps = {
   userVoteValue?: number;
   onVote: (
@@ -161,6 +186,18 @@ type VoteSectionProps = {
   post: Post;
 };
 
+/**
+ * Displays the vote section of a post.
+ * Contains:
+ * - Like button
+ * - Vote status (number of likes and dislikes combined)
+ * - Dislike button
+ * @param {number} userVoteValue - whether the currently logged in user has voted on the post (1, -1, or 0)
+ * @param {function} onVote - function to handle voting
+ * @param {Post} post - post object
+ *
+ * @returns {React.FC<VoteSectionProps>} - component to display the vote section of a post
+ */
 const VoteSection: React.FC<VoteSectionProps> = ({
   userVoteValue,
   onVote,
@@ -196,11 +233,26 @@ const VoteSection: React.FC<VoteSectionProps> = ({
   );
 };
 
+/**
+ * @param {boolean} showCommunityImage - whether to show the community image
+ * @param {Post} post - post object
+ */
 type PostDetailsProps = {
   showCommunityImage?: boolean;
   post: Post;
 };
 
+/**
+ * Displays the details of a post at the top of the post card.
+ * Contains:
+ * - Community image (if needed)
+ * - Author of the post
+ * - Time of creation
+ * @param {boolean} showCommunityImage - whether to show the community image
+ * @param {Post} post - post object
+ *
+ * @returns {React.FC<PostDetailsProps>} - component to display the details of a post
+ */
 const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
   /**
    * Text to be displayed on top of the post.
@@ -256,10 +308,19 @@ const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
   );
 };
 
+/**
+ * @param {Post} post - post object
+ */
 type PostTitleProps = {
   post: Post;
 };
 
+/**
+ * Displays the title of a post.
+ * @param {Post} post - post object
+ *
+ * @returns {React.FC<PostTitleProps>} - component to display the title of a post
+ */
 const PostTitle = ({ post }: PostTitleProps) => {
   return (
     <Text fontSize="12pt" fontWeight={600}>
@@ -268,12 +329,25 @@ const PostTitle = ({ post }: PostTitleProps) => {
   );
 };
 
+/**
+ * @param {Post} post - post object
+ * @param {boolean} loadingImage - whether the image is loading
+ * @param {function} setLoadingImage - function to set the loadingImage state
+ */
 type PostBodyProps = {
   post: Post;
   loadingImage: boolean;
   setLoadingImage: (value: React.SetStateAction<boolean>) => void;
 };
 
+/**
+ * Body of the post containing the description and the image (if exists).
+ * The description is limited to 30 words.
+ * @param {Post} post - post object
+ * @param {boolean} loadingImage - whether the image is loading
+ * @param {function} setLoadingImage - function to set the loadingImage state
+ * @returns {React.FC<PostBodyProps>} - component to display the body of a post
+ */
 const PostBody = ({ post, loadingImage, setLoadingImage }: PostBodyProps) => {
   return (
     <>
@@ -303,6 +377,10 @@ const PostBody = ({ post, loadingImage, setLoadingImage }: PostBodyProps) => {
   );
 };
 
+/**
+ * @param {function} handleDelete - function to handle the delete button
+ * @param {boolean} loadingDelete - whether the post is being deleted
+ */
 interface PostActionsProps {
   handleDelete: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -310,6 +388,16 @@ interface PostActionsProps {
   loadingDelete: boolean;
 }
 
+/**
+ * Displays the actions the user can take on a post.
+ * Contains:
+ * - Share button (not implemented)
+ * - Save button (not implemented)
+ * - Delete button (only for the author of the post)
+ * @param {function} handleDelete - function to handle the delete button
+ * @param {boolean} loadingDelete - whether the post is being deleted
+ * @returns {React.FC<PostActionsProps>} - component to display the actions of a post
+ */
 const PostActions: React.FC<PostActionsProps> = ({
   handleDelete,
   loadingDelete,
