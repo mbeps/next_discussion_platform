@@ -84,7 +84,6 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { toggleMenuOpen } = useDirectory();
 
   /**
    * Handles changes in the input element which takes the name of the community to be created.
@@ -183,7 +182,6 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
       router.push(`/community/${communityName}`);
       handleClose(); // closes the modal
-      toggleMenuOpen(); // closes the directory menu
     } catch (error: any) {
       console.log("Error: handleCreateCommunity", error);
       setError(error.message);

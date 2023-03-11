@@ -1,5 +1,6 @@
 import { communityState } from "@/atoms/communitiesAtom";
 import CreateCommunityModal from "@/components/Modal/CreateCommunity/CreateCommunityModal";
+import useDirectory from "@/hooks/useDirectory";
 import { Box, Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -25,6 +26,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
   const [open, setOpen] = useState(false); // modal initially closed
   const mySnippets = useRecoilValue(communityState).mySnippets;
   const router = useRouter();
+  const { toggleMenuOpen } = useDirectory();
 
   return (
     <>
@@ -40,7 +42,10 @@ const Communities: React.FC<CommunitiesProps> = () => {
           bg: "gray.300",
           color: "black",
         }}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          toggleMenuOpen();
+        }}
       >
         <Flex align="center">
           <Icon fontSize={20} mr={2} as={GrAdd} />
@@ -60,6 +65,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
         }}
         onClick={() => {
           router.push("/communities");
+          toggleMenuOpen();
         }}
       >
         <Flex align="center">
