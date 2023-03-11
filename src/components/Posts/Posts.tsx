@@ -8,7 +8,7 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostItem from "./PostItem";
-import PostLoader from "./PostLoader";
+import PostLoader from "../Loaders/PostLoader";
 
 /**
  * @param {Community} communityData - Community object from firebase
