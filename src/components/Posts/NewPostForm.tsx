@@ -2,7 +2,15 @@ import { Community } from "@/atoms/communitiesAtom";
 import { Post } from "@/atoms/postsAtom";
 import { firestore, storage } from "@/firebase/clientApp";
 import useSelectFile from "@/hooks/useSelectFile";
-import { Alert, AlertIcon, Button, Flex, Icon, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Flex,
+  Icon,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -141,51 +149,140 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
 
   return (
     <Flex direction="column" bg="white" borderRadius={10} mt={2}>
-      <Flex width="100%">
-        {/* create a tab item for each tab in the formTabs array */}
-        {formTabs.map((item) => (
-          <TabItem
-            key={item.title}
-            item={item}
-            selected={item.title === selectedTab}
-            setSelectedTab={setSelectedTab}
-          />
-        ))}
-      </Flex>
-      <Button
-        variant="outline"
-        mt={4}
-        ml={4}
-        mr={4}
-        justifyContent="left"
-        width="fit-content"
-        onClick={() => router.push(communityLink)}
-      >
-        <Icon as={MdOutlineArrowBackIos} mr={2} />
-        {`Back to ${currentCommunity?.id}`}
-      </Button>
+      <TabList
+        formTabs={formTabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+      />
+      <BackToCommunityButton communityId={currentCommunity?.id} />
+      <PostBody
+        selectedTab={selectedTab}
+        handleCreatePost={handleCreatePost}
+        onTextChange={onTextChange}
+        loading={loading}
+        textInputs={textInputs}
+        selectedFile={selectedFile}
+        onSelectFile={onSelectFile}
+        setSelectedTab={setSelectedTab}
+        setSelectedFile={setSelectedFile}
+      />
+      <PostCreateError error={error} />
+    </Flex>
+  );
+};
+export default NewPostForm;
 
-      <Flex p={4}>
-        {/* Display the correct form based on the selected tab */}
-        {selectedTab === "Post" && (
-          <TextInputs
-            textInputs={textInputs}
-            handleCreatePost={handleCreatePost}
-            onChange={onTextChange}
-            loading={loading}
-          />
-        )}
-        {/* Display the image upload form if the user has selected the Images tab */}
-        {selectedTab === "Images" && (
-          <ImageUpload
-            selectedFile={selectedFile}
-            onSelectImage={onSelectFile}
-            setSelectedTab={setSelectedTab}
-            setSelectedFile={setSelectedFile}
-          />
-        )}
-      </Flex>
-      {/* If there is an error display an alert */}
+type TabListProps = {
+  formTabs: FormTab[];
+  selectedTab: string;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const TabList: React.FC<TabListProps> = ({
+  formTabs,
+  selectedTab,
+  setSelectedTab,
+}) => {
+  return (
+    <Stack width="100%" direction="row" spacing={2} p={2}>
+      {/* create a tab item for each tab in the formTabs array */}
+      {formTabs.map((item) => (
+        <TabItem
+          key={item.title}
+          item={item}
+          selected={item.title === selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
+      ))}
+    </Stack>
+  );
+};
+
+interface BackToCommunityButtonProps {
+  communityId?: string;
+}
+
+const BackToCommunityButton: React.FC<BackToCommunityButtonProps> = ({
+  communityId,
+}) => {
+  const router = useRouter();
+  const communityLink = `/community/${communityId}`;
+
+  return (
+    <Button
+      variant="outline"
+      mt={4}
+      ml={4}
+      mr={4}
+      justifyContent="left"
+      width="fit-content"
+      onClick={() => router.push(communityLink)}
+    >
+      <Icon as={MdOutlineArrowBackIos} mr={2} />
+      {`Back to ${communityId}`}
+    </Button>
+  );
+};
+
+type PostBodyProps = {
+  selectedTab: string;
+  handleCreatePost: () => Promise<void>;
+  onTextChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  loading: boolean;
+  textInputs: {
+    title: string;
+    body: string;
+  };
+  selectedFile: string | undefined;
+  onSelectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedFile: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+
+const PostBody: React.FC<PostBodyProps> = ({
+  selectedTab,
+  handleCreatePost,
+  onTextChange,
+  loading,
+  textInputs,
+  selectedFile,
+  onSelectFile,
+  setSelectedTab,
+  setSelectedFile,
+}) => {
+  return (
+    <Flex p={4}>
+      {/* Display the correct form based on the selected tab */}
+      {selectedTab === "Post" && (
+        <TextInputs
+          textInputs={textInputs}
+          handleCreatePost={handleCreatePost}
+          onChange={onTextChange}
+          loading={loading}
+        />
+      )}
+      {/* Display the image upload form if the user has selected the Images tab */}
+      {selectedTab === "Images" && (
+        <ImageUpload
+          selectedFile={selectedFile}
+          onSelectImage={onSelectFile}
+          setSelectedTab={setSelectedTab}
+          setSelectedFile={setSelectedFile}
+        />
+      )}
+    </Flex>
+  );
+};
+
+type Props = {
+  error: boolean;
+};
+
+const PostCreateError: React.FC<Props> = ({ error }) => {
+  return (
+    <>
       {error && (
         <Alert status="error">
           <AlertIcon />
@@ -194,7 +291,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           </Text>
         </Alert>
       )}
-    </Flex>
+    </>
   );
 };
-export default NewPostForm;

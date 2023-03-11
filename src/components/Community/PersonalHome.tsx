@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { Button, Flex, Icon, Stack, Text, Image } from "@chakra-ui/react";
-import { FaReddit } from "react-icons/fa";
 import { communityState } from "@/atoms/communitiesAtom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import CreateCommunityModal from "../Modal/CreateCommunity/CreateCommunityModal";
-import { authModalState } from "@/atoms/authModalAtom";
-import { auth } from "@/firebase/clientApp";
-import useDirectory from "@/hooks/useDirectory";
-import { useRouter } from "next/router";
-import { useAuthState } from "react-firebase-hooks/auth";
 import useCallCreatePost from "@/hooks/useCallCreatePost";
+import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
+import CreateCommunityModal from "../Modal/CreateCommunity/CreateCommunityModal";
 
+/**
+ * Component for displaying card for creating a new community or post.
+ * @returns {React.FC} Card for creating a new community or post.
+ */
 const PersonalHome: React.FC = () => {
   const [open, setOpen] = useState(false); // modal initially closed
   const mySnippets = useRecoilValue(communityState).mySnippets;

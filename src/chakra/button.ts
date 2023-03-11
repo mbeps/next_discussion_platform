@@ -58,5 +58,14 @@ export const Button: ComponentStyleConfig = {
         borderColor: "red.400",
       },
     },
+    action: {
+      height: "34px",
+      border: "1px solid",
+      borderColor: "white",
+      _hover: {
+        bg: "gray.50",
+        borderColor: "red.400",
+      },
+    },
   },
 };

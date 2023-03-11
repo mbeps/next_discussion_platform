@@ -26,7 +26,8 @@ import SearchInput from "./SearchInput";
  * If the user is not authenticated, it will display the:
  *  - Authentication buttons (log in and sing up)
  *  - User menu with different options
- * @returns navbar component
+ * @returns {React.FC} - Navbar component
+ *
  * @requires ./RightContent - content displaying authentication buttons or actions
  * @requires ./SearchInput - Search field
  * @requires ./Directory - showing community menu button
@@ -70,7 +71,7 @@ const Navbar: React.FC = () => {
       </Flex>
       {/* Community directory only visible when user is logged in */}
       {user && <Directory />}
-      <SearchInput user={user} />
+      <SearchInput />
       {/* Changes depending on whether user is authenticated or not */}
       <RightContent user={user} />
     </Flex>

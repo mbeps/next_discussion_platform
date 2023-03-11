@@ -3,26 +3,27 @@ import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Flex,
   Icon,
+  Image,
   Menu,
   MenuButton,
   MenuList,
-  Text,
-  Image,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
-import { TiHome } from "react-icons/ti";
 import Communities from "./Communities";
 
 /**
- * Displays a menu item for community.
- * It displays the option to create a community (opens the community create modal).
+ * Component for displaying the directory menu.
+ * It displays:
+ *  - Button to create a community (opens community creation modal)
+ *  - List of communities the user is subscribed to
  * The directory button itself is responsive:
- *    - Only icon is shown on mobile
- *    - Both icon and community name are shown on desktop
- * todo: Displays a list of all communities the user is subscribed to.
+ *  - Only icon is shown on mobile
+ *  - Both icon and community name are shown on desktop
  * @requires ./Communities - community creation modal
- * @returns (React.FC) - community directory menu
+ *
+ * @returns {React.FC} - button to open the directory menu and the directory menu itself
  */
 const UserMenu: React.FC = () => {
   const { directoryState, toggleMenuOpen } = useDirectory();

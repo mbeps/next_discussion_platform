@@ -23,9 +23,10 @@ import { useRecoilState, useSetRecoilState } from "recoil";
  * Checks whether a user is subscribed to a community.
  * Contains the current community state (`communitiesState`).
  * Contains functionality to subscribe or unsubscribe to a community.
- * @returns communityStateValue (CommunityState) - object containing the current community state, including the user's community snippets
- * @returns onJoinOrLeaveCommunity (() => void) - function that handles subscribing or unsubscribing a community
- * @returns loading (boolean) - indicating whether a community operation is currently in progress
+ *
+ * @returns {Community} currentCommunity - object containing the current community state, including the user's community snippets
+ * @returns {() => void} onJoinOrLeaveCommunity - function that handles subscribing or unsubscribing a community
+ * @returns {boolean} loading - indicates whether a community operation is currently in progress
  */
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
@@ -41,9 +42,8 @@ const useCommunityData = () => {
    * If the user is not currently authenticated, the authentication modal is opened.
    * If the user is already subscribed, then the function will unsubscribe the user from the community.
    * If the user is not subscribed, then the function will subscribe the user to the community.
-   * @param communityData (Community) - object is an object representing the community being joined or left
-   * @param isJoined (boolean) - indicates whether the user is currently a member of the community
-   * @returns null
+   * @param {Community} communityData - object is an object representing the community being joined or left
+   * @param {boolean} isJoined - indicates whether the user is currently a member of the community
    */
   const onJoinOrLeaveCommunity = (
     communityData: Community,
@@ -62,6 +62,8 @@ const useCommunityData = () => {
       return;
     }
     joinCommunity(communityData);
+
+    setLoading(false);
   };
 
   /**
@@ -85,8 +87,9 @@ const useCommunityData = () => {
     } catch (error: any) {
       console.log("Error: getMySnippets", error);
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   /**
@@ -153,8 +156,11 @@ const useCommunityData = () => {
 
   /**
    * Unsubscribes the currently authenticated user from the community
-   * @param communityId (Community) - community from which the user is unsubscribed from
-   * @throws error - error in subscribing to a community
+   * @param {string} communityId - community from which the user is unsubscribed from
+   *
+   * @async
+   *
+   * @throws {any} error - error in subscribing to a community
    */
   const leaveCommunity = async (communityId: string) => {
     try {
@@ -202,10 +208,16 @@ const useCommunityData = () => {
     getMySnippets();
   }, [user]);
 
+  /**
+   * Fetches the community data when the communityId changes.
+   * This is used to fetch the community data when the user navigates to a community page.
+   * The community data is stored in the communityState.
+   */
   useEffect(() => {
-    const { communityId } = router.query;
+    const { communityId } = router.query; // get the communityId from the URL
     if (communityId && !communityStateValue.currentCommunity) {
-      getCommunityData(communityId as string);
+      // if the communityId exists and the community data is not already fetched
+      getCommunityData(communityId as string); // fetch the community data
     }
   }, [communityStateValue.currentCommunity, router.query]);
 

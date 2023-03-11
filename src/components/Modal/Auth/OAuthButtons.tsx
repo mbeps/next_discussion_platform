@@ -1,25 +1,24 @@
-import { Button, Flex, Image, Stack, Text } from "@chakra-ui/react";
-import { FirebaseError } from "@firebase/app";
-import { AuthError, User } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { Button, Image, Stack, Text } from "@chakra-ui/react";
+import { AuthError } from "firebase/auth";
+import React from "react";
 import {
-  useSignInWithGoogle,
   useSignInWithGithub,
+  useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
-import { auth, firestore } from "../../../firebase/clientApp";
+import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 /**
  * Displays third party authentication providers, in this case Google and GitHub.
  * When a provider is clicked:
  *  - A new account is created if the user does not already exist
- *  - Signed in if it is an existing user
+ *  - Logs in if it is an existing user
  *  - An error is displayed if the user already exist with a different provider.
- * @returns
+ * @returns {React.FC} - OAuthButtons component
+ *
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
-const OAuthButtons: React.FC = ({}) => {
+const OAuthButtons: React.FC = () => {
   const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] =
     useSignInWithGoogle(auth);
   const [signInWithGithub, userGitHub, loadingGitHub, errorGitHub] =
@@ -55,6 +54,12 @@ const OAuthButtons: React.FC = ({}) => {
 
 export default OAuthButtons;
 
+/**
+ * @param {string} provider - The name of the provider
+ * @param {boolean} isLoading - Whether the button is loading or not
+ * @param {() => void} onClick - The function to execute when the button is clicked
+ * @param {string} image - The image to display
+ */
 interface AuthButtonProps {
   provider: string;
   isLoading: boolean;
@@ -62,6 +67,18 @@ interface AuthButtonProps {
   image: string;
 }
 
+/**
+ * Displays an authentication button for a third party provider.
+ * The button displays:
+ * - The provider's logo
+ * - The provider's name
+ * @param {string} provider - The name of the provider
+ * @param {boolean} isLoading - Whether the button is loading or not
+ * @param {() => void} onClick - The function to execute when the button is clicked
+ * @param {string} image - The image to display
+ *
+ * @returns {React.FC} - AuthButton component
+ */
 const AuthButton: React.FC<AuthButtonProps> = ({
   provider,
   isLoading,
@@ -87,10 +104,19 @@ const AuthButton: React.FC<AuthButtonProps> = ({
   );
 };
 
+/**
+ * @param {AuthError | undefined} error - The error to display
+ */
 interface ErrorMessageProps {
   error: AuthError | undefined;
 }
 
+/**
+ * Displays an error message if there is an error.
+ * @param {AuthError | undefined} error - The error to display
+ *
+ * @returns {React.FC} - ErrorMessage component
+ */
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   return error ? (
     <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">

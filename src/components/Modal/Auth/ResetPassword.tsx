@@ -10,7 +10,8 @@ import { auth } from "../../../firebase/clientApp";
  * Allows the user to reset their password.
  * Takes the email as the input and sends the user an email from Firebase to reset the password.
  * Once the email is submitted, a new view is shown telling the user to check their email.
- * @returns
+ * @returns {React.FC} - Reset Password view in the authentication modal
+ *
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const ResetPassword: React.FC = () => {
@@ -24,7 +25,7 @@ const ResetPassword: React.FC = () => {
    * This function is used as the event handler for a form submission.
    * It will prevent the page from refreshing.
    * Sends the email from Firebase to the email that was inputted in the form.
-   * @param event (React.FormEvent): the submit event triggered by the form
+   * @param {React.FormEvent<HTMLFormElement>} event - the submit event triggered by the form
    */
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page from reloading
@@ -42,7 +43,7 @@ const ResetPassword: React.FC = () => {
       {success ? (
         <Text mb={4}>Check your email</Text>
       ) : (
-        // While the email has not been sent, show the form 
+        // While the email has not been sent, show the form
         <>
           <Text fontSize="sm" textAlign="center" mb={2}>
             Enter the email associated with your account and we will send you a
