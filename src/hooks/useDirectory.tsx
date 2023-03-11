@@ -58,7 +58,11 @@ const useDirectory = () => {
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 
-    if (currentCommunity && router.pathname !== "/") {
+    if (
+      currentCommunity &&
+      router.pathname !== "/" &&
+      router.pathname !== "/communities"
+    ) {
       // if the user is currently in a community and not on the home page
       setDirectoryState((prev) => ({
         ...prev,
