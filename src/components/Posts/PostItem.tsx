@@ -160,6 +160,7 @@ const PostItem: React.FC<PostItemProps> = ({
         <PostActions
           handleDelete={handleDelete}
           loadingDelete={loadingDelete}
+          userIsCreator={userIsCreator}
         />
         <PostItemError
           error={error}
@@ -387,6 +388,7 @@ interface PostActionsProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => Promise<void>;
   loadingDelete: boolean;
+  userIsCreator: boolean;
 }
 
 /**
@@ -402,6 +404,7 @@ interface PostActionsProps {
 const PostActions: React.FC<PostActionsProps> = ({
   handleDelete,
   loadingDelete,
+  userIsCreator,
 }) => (
   <Stack
     ml={1}
@@ -421,14 +424,16 @@ const PostActions: React.FC<PostActionsProps> = ({
       <Text fontSize="9pt">Save</Text>
     </Button>
 
-    <Button
-      variant="action"
-      height="32px"
-      onClick={handleDelete}
-      isLoading={loadingDelete}
-    >
-      <Icon as={MdOutlineDelete} mr={2} />
-      <Text fontSize="9pt">Delete</Text>
-    </Button>
+    {userIsCreator && (
+      <Button
+        variant="action"
+        height="32px"
+        onClick={handleDelete}
+        isLoading={loadingDelete}
+      >
+        <Icon as={MdOutlineDelete} mr={2} />
+        <Text fontSize="9pt">Delete</Text>
+      </Button>
+    )}
   </Stack>
 );
