@@ -26,6 +26,7 @@ const PersonalHome: React.FC = () => {
         border="1px solid"
         borderColor="gray.300"
         position="sticky"
+        shadow="md"
       >
         <Flex
           align="flex-end"
@@ -52,12 +53,13 @@ const PersonalHome: React.FC = () => {
             <Text fontSize="9pt">
               Home page personalized based on your subscribed communities.
             </Text>
-            <Button height="30px" onClick={onClick}>
+            <Button height="30px" onClick={onClick} shadow="md">
               Create Post
             </Button>
             <Button
               variant="outline"
               height="30px"
+              shadow="md"
               onClick={() => setOpen(true)}
             >
               Create Community

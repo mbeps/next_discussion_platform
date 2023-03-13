@@ -170,7 +170,7 @@ const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {
   };
 
   return (
-    <MenuList borderRadius={10} mt={2}>
+    <MenuList borderRadius={10} mt={2} shadow="lg">
       <Flex justifyContent="center">
         <Stack spacing={1} width="95%">
           {user ? (

@@ -26,6 +26,7 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
       borderColor="gray.300"
       p={2}
       mb={4}
+      shadow="md"
     >
       <Icon as={IoIosCreate} fontSize={36} color="gray.300" mr={4} />
       {/* Input for creating a new post */}

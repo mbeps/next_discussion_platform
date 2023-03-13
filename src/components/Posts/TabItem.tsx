@@ -44,6 +44,7 @@ const TabItem: React.FC<TabItemProps> = ({
       borderColor={selected ? "red.500" : "gray.200"}
       borderRadius={10}
       onClick={() => setSelectedTab(item.title)}
+      shadow="md"
     >
       <Flex align="center" height="20px" mr={2}>
         <Icon as={item.icon} />

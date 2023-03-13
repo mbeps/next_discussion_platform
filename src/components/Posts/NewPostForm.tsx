@@ -166,7 +166,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   };
 
   return (
-    <Flex direction="column" bg="white" borderRadius={10} mt={2}>
+    <Flex direction="column" bg="white" borderRadius={10} mt={2} shadow="md">
       <TabList
         formTabs={formTabs}
         selectedTab={selectedTab}
@@ -260,6 +260,7 @@ const BackToCommunityButton: React.FC<BackToCommunityButtonProps> = ({
       mr={4}
       justifyContent="left"
       width="fit-content"
+      shadow="md"
       onClick={() => router.push(communityLink)}
     >
       <Icon as={MdOutlineArrowBackIos} mr={2} />
