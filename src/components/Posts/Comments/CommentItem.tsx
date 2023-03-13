@@ -66,6 +66,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
       bg="white"
       borderColor="gray.300"
       borderRadius={10}
+      shadow="sm"
     >
       <Flex m={2}>
         <Box>

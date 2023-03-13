@@ -55,7 +55,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
 
   return (
     // sticky position for the about section
-    <Box position="sticky" top="60px">
+    <Box position="sticky" top="60px" borderRadius={10} shadow="md">
       <AboutHeaderBar communityName={communityData.id} />
 
       {/* about section */}
@@ -72,6 +72,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             onClick={() => {
               router.push(`/community/${communityData.id}/submit`);
             }}
+            shadow="md"
           >
             Create Post
           </Button>
@@ -262,6 +263,7 @@ const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
                   boxSize="40px"
                   src={selectedFile || communityData?.imageURL}
                   alt="Selected image"
+                  shadow="md"
                 />
               ) : (
                 // default image
@@ -269,6 +271,7 @@ const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({
                   src="/images/logo.svg"
                   height="40px"
                   alt="Website logo"
+                  shadow="md"
                 />
               )}
             </Flex>

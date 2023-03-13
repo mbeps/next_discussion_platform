@@ -50,6 +50,7 @@ const Navbar: React.FC = () => {
       borderColor="gray.300"
       borderRadius={10}
       m={{ base: 1, md: 1.5 }}
+      shadow="lg"
     >
       <Flex
         align="center"

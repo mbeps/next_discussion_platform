@@ -129,6 +129,7 @@ const PostItem: React.FC<PostItemProps> = ({
       _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
       cursor={singlePostPage ? "unset" : "pointer"}
       onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
+      shadow="md"
     >
       {/* Left Section */}
       <Flex

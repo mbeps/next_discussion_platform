@@ -12,6 +12,7 @@ const CommunityLoader: React.FC = () => (
     align="center"
     p={5}
     borderRadius={10}
+    shadow="md"
   >
     <SkeletonCircle size="14" />
     <Skeleton height="10px" width="80%" />

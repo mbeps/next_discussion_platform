@@ -82,7 +82,7 @@ const UserMenu: React.FC = () => {
           )}
         </Flex>
       </MenuButton>
-      <MenuList borderRadius={10} mt={2}>
+      <MenuList borderRadius={10} mt={2} shadow="lg">
         <Flex justifyContent="center">
           <Stack spacing={1} width="95%">
             {/* Communities menu to open the community creation modal */}

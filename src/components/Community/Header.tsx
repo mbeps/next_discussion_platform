@@ -81,6 +81,7 @@ const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
       alt="Community icons"
       color="red.500"
       border="3px solid white"
+      shadow="md"
     />
   ) : (
     // if the community icon is not available, then display a default icon
@@ -91,6 +92,7 @@ const CommunityIcon = ({ imageURL }: CommunityIconProps) => {
       border="3px solid white"
       borderRadius="full"
       bg="white"
+      shadow="md"
     />
   );
 };
@@ -141,6 +143,7 @@ export const JoinOrLeaveButton: React.FC<JoinOrLeaveButtonProps> = ({
       pr={{ base: 2, md: 6 }}
       pl={{ base: 2, md: 6 }}
       onClick={onClick}
+      shadow="md"
     >
       {isJoined ? "Unsubscribe" : "Subscribe"}
     </Button>

@@ -47,6 +47,7 @@ const CommunityItem: React.FC<CommunityItemProps> = ({
       onClick={() => {
         router.push(`/community/${community.id}`);
       }}
+      shadow="md"
     >
       <Flex width="80%" align="center">
         <Flex align="center">

@@ -78,6 +78,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
           isDisabled={!textInputs.title} // if there is no text in the title field button is disabled
           isLoading={loading}
           onClick={handleCreatePost}
+          shadow="md"
         >
           Post
         </Button>

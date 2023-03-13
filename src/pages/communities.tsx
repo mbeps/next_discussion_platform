@@ -87,6 +87,7 @@ const Communities: React.FC = () => {
                 onClick={() => {
                   getCommunities(5);
                 }}
+                shadow="md"
               >
                 View More
               </Button>

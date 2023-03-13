@@ -12,7 +12,13 @@ type PostLoaderItemProps = {
  */
 const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
   return (
-    <Box padding="10px 10px" boxShadow="lg" bg="white" borderRadius={10}>
+    <Box
+      padding="10px 10px"
+      boxShadow="lg"
+      bg="white"
+      borderRadius={10}
+      shadow="md"
+    >
       <SkeletonText
         borderRadius={10}
         mt="4"

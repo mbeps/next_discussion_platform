@@ -110,7 +110,7 @@ const SuggestedCommunitiesList: React.FC = () => {
     getCommunityRecommendations();
   }, []);
   return (
-    <Flex direction="column" mb={0}>
+    <Flex direction="column" mb={0} shadow="md">
       {loading ? (
         <Stack mt={2} p={3}>
           {Array(5)
@@ -195,6 +195,7 @@ const SuggestedCommunitiesList: React.FC = () => {
         <Button
           height="30px"
           width="100%"
+          shadow="md"
           onClick={() => {
             router.push(`/communities`);
           }}
