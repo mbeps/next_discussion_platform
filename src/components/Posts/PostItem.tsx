@@ -128,7 +128,7 @@ const PostItem: React.FC<PostItemProps> = ({
       borderRadius={singlePostPage ? "10px 10px 0px 0px" : "10px"}
       _hover={{
         borderColor: singlePostPage ? "none" : "gray.400",
-        boxShadow: "xl",
+        boxShadow: !singlePostPage && "xl",
       }}
       cursor={singlePostPage ? "unset" : "pointer"}
       onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
