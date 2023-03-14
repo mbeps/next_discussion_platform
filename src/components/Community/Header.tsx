@@ -1,8 +1,14 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { HiArrowCircleUp } from "react-icons/hi";
 import useCommunityData from "@/hooks/useCommunityData";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
+import { FiSettings } from "react-icons/fi";
+import IconItem from "../atoms/Icon";
+import CommunitySettingsModal from "../Modal/CommunitySettings/CommunitySettings";
 
 /**
  * @param {communityData} - data required to be displayed
@@ -43,7 +49,8 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
 
           <Flex padding="10px 16px" width="100%">
             <CommunityName id={communityData.id} />
-            <Flex direction="column" flexGrow={1} align="end" justify="end">
+            <Flex direction="row" flexGrow={1} align="end" justify="end">
+              <CommunitySettings communityData={communityData} />
               <JoinOrLeaveButton
                 isJoined={isJoined}
                 onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
@@ -147,5 +154,38 @@ export const JoinOrLeaveButton: React.FC<JoinOrLeaveButtonProps> = ({
     >
       {isJoined ? "Unsubscribe" : "Subscribe"}
     </Button>
+  );
+};
+
+type CommunitySettingsProps = {
+  communityData: Community;
+};
+
+export const CommunitySettings: React.FC<CommunitySettingsProps> = ({
+  communityData,
+}) => {
+  const router = useRouter();
+  const { communityId } = router.query;
+  const [user] = useAuthState(auth);
+  const [isCommunitySettingsModalOpen, setCommunitySettingsModalOpen] =
+    useState(false);
+
+  return (
+    <>
+      {user?.uid === communityData.creatorId && (
+        <>
+          <CommunitySettingsModal
+            open={isCommunitySettingsModalOpen}
+            handleClose={() => setCommunitySettingsModalOpen(false)}
+            communityData={communityData}
+          />
+          <IconItem
+            icon={FiSettings}
+            fontSize={20}
+            onClick={() => setCommunitySettingsModalOpen(true)}
+          />
+        </>
+      )}
+    </>
   );
 };
