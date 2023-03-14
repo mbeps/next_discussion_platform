@@ -71,6 +71,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         >
           {/* Upload button */}
           <Button
+            shadow="md"
             onClick={() => {
               selectedFileRef.current?.click();
             }}

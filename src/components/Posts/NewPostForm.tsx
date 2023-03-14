@@ -260,7 +260,6 @@ const BackToCommunityButton: React.FC<BackToCommunityButtonProps> = ({
       mr={4}
       justifyContent="left"
       width="fit-content"
-      shadow="md"
       onClick={() => router.push(communityLink)}
     >
       <Icon as={MdOutlineArrowBackIos} mr={2} />

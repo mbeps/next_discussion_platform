@@ -166,7 +166,7 @@ export default function Home() {
         {loading ? (
           <PostLoader />
         ) : (
-          <Stack>
+          <Stack spacing={3}>
             {postStateValue.posts.map((post) => (
               <PostItem
                 key={post.id}

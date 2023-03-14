@@ -21,6 +21,7 @@ export const Button: ComponentStyleConfig = {
     _focus: {
       boxShadow: "none",
     },
+    _hover: { boxShadow: "lg" },
   },
   sizes: {
     sm: {
