@@ -1,5 +1,6 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import CustomMenuButton from "@/components/atoms/CustomMenuButton";
+import ProfileModal from "@/components/Modal/Profile/ProfileModal";
 import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
@@ -50,6 +51,7 @@ type UserMenuProps = {
  */
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   /**
    * Toggles the menu open and closed.
@@ -63,10 +65,17 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   };
 
   return (
-    <Menu isOpen={isMenuOpen} onOpen={toggle} onClose={toggle}>
-      <UserMenuButton user={user} isMenuOpen={isMenuOpen} />
-      <UserMenuList user={user} />
-    </Menu>
+    <>
+      <ProfileModal
+        open={isProfileModalOpen}
+        handleClose={() => setProfileModalOpen(false)}
+      />
+
+      <Menu isOpen={isMenuOpen} onOpen={toggle} onClose={toggle}>
+        <UserMenuButton user={user} isMenuOpen={isMenuOpen} />
+        <UserMenuList user={user} setProfileModalOpen={setProfileModalOpen} />
+      </Menu>
+    </>
   );
 };
 export default UserMenu;
@@ -122,6 +131,7 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
                 src={user.photoURL}
                 alt="User Profile Photo"
                 height="30px"
+                borderRadius="full"
                 mr={1}
               />
             </>
@@ -162,6 +172,8 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
  */
 interface UserMenuListProps {
   user: User | null | undefined;
+  setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  //todo pass open profile modal function
 }
 
 /**
@@ -177,7 +189,10 @@ interface UserMenuListProps {
  *
  * @requires CustomMenuButton
  */
-const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {
+const UserMenuList: React.FC<UserMenuListProps> = ({
+  user,
+  setProfileModalOpen,
+}) => {
   const setAuthModalState = useSetRecoilState(authModalState);
 
   /**
@@ -199,7 +214,7 @@ const UserMenuList: React.FC<UserMenuListProps> = ({ user }) => {
               <CustomMenuButton
                 icon={<CgProfile />}
                 text="Profile"
-                onClick={() => console.log("Profile clicked")}
+                onClick={() => setProfileModalOpen(true)}
               />
 
               <CustomMenuButton
