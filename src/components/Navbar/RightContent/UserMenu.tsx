@@ -10,6 +10,7 @@ import {
   MenuList,
   Stack,
   Text,
+  Image,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
 import React, { useState } from "react";
@@ -90,6 +91,7 @@ interface UserMenuButtonProps {
  *  - User name
  * If the user is unauthenticated, the button will display:
  *  - Generic user icon
+ *  - If the user has a profile photo, the photo will be displayed
  * @param {User | null | undefined} user - user currently logged in if any
  * @param {boolean} isMenuOpen - whether the menu is open or not
  *
@@ -108,12 +110,31 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
       outline: "1px solid",
       outlineColor: "gray.200",
     }}
+    maxWidth="200px"
   >
     <Flex align="center">
       {user ? (
         // If user is authenticated, display user icon and name
         <>
-          <Icon fontSize={24} mr={1} color="gray.300" as={MdAccountCircle} />
+          {user.photoURL ? (
+            <>
+              <Image
+                src={user.photoURL}
+                alt="User Profile Photo"
+                height="30px"
+                mr={1}
+              />
+            </>
+          ) : (
+            <>
+              <Icon
+                fontSize={30}
+                mr={1}
+                color="gray.300"
+                as={MdAccountCircle}
+              />
+            </>
+          )}
 
           <Flex
             direction="column"
