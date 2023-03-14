@@ -44,8 +44,13 @@ const TextInputs: React.FC<TextInputsProps> = ({
         value={textInputs.title}
         onChange={onChange}
         fontSize="10pt"
-        borderRadius={4}
+        borderRadius={10}
         _placeholder={{ color: "gray.500" }}
+        _hover={{
+          bg: "white",
+          border: "1px solid",
+          borderColor: "red.500",
+        }}
         _focus={{
           outline: "none",
           bg: "white",
@@ -56,13 +61,18 @@ const TextInputs: React.FC<TextInputsProps> = ({
       {/* Body of the post */}
       <Textarea
         name="body"
-        placeholder="Text (optional)"
+        placeholder="Text (Optional)"
         value={textInputs.body}
         onChange={onChange}
         fontSize="10pt"
         height="120px"
-        borderRadius={4}
+        borderRadius={10}
         _placeholder={{ color: "gray.500" }}
+        _hover={{
+          bg: "white",
+          border: "1px solid",
+          borderColor: "red.500",
+        }}
         _focus={{
           outline: "none",
           bg: "white",

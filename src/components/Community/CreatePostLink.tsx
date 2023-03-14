@@ -37,18 +37,18 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
         _hover={{
           bg: "white",
           border: "1px solid",
-          borderColor: "blue.500",
+          borderColor: "red.500",
         }}
         _focus={{
           outline: "none",
           bg: "white",
           border: "1px solid",
-          borderColor: "blue.500",
+          borderColor: "red.500",
         }}
         bg="gray.50"
         borderColor="gray.200"
         height="36px"
-        borderRadius={4}
+        borderRadius={10}
         mr={4}
         onClick={onClick}
       />

@@ -126,7 +126,10 @@ const PostItem: React.FC<PostItemProps> = ({
       // borderColor="red.500"
       borderColor={singlePostPage ? "white" : "gray.300"}
       borderRadius={singlePostPage ? "10px 10px 0px 0px" : "10px"}
-      _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
+      _hover={{
+        borderColor: singlePostPage ? "none" : "gray.400",
+        boxShadow: !singlePostPage && "xl",
+      }}
       cursor={singlePostPage ? "unset" : "pointer"}
       onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
       shadow="md"
@@ -373,6 +376,7 @@ const PostBody = ({ post, loadingImage, setLoadingImage }: PostBodyProps) => {
             borderRadius="10px"
             display={loadingImage ? "none" : "unset"}
             onLoad={() => setLoadingImage(false)}
+            shadow="md"
           />
         </Flex>
       )}

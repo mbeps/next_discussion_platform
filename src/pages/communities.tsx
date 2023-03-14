@@ -54,7 +54,7 @@ const Communities: React.FC = () => {
     <>
       <PageContent>
         <>
-          <Stack direction="column" borderRadius={10}>
+          <Stack direction="column" borderRadius={10} spacing={3}>
             {loading ? (
               <Stack mt={2} p={3}>
                 {Array(5)

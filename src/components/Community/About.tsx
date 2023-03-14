@@ -72,7 +72,6 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             onClick={() => {
               router.push(`/community/${communityData.id}/submit`);
             }}
-            shadow="md"
           >
             Create Post
           </Button>
