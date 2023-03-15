@@ -1,4 +1,5 @@
 import { Post } from "@/atoms/postsAtom";
+import useCustomToast from "@/hooks/useCustomToast";
 import {
   Button,
   Flex,
@@ -8,6 +9,7 @@ import {
   Skeleton,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -81,6 +83,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const [error, setError] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
+  const showToast = useCustomToast();
   /**
    * If there is no selected post then post is already selected
    */
@@ -106,7 +109,11 @@ const PostItem: React.FC<PostItemProps> = ({
         throw new Error("Post could not be deleted"); // throw error
       }
 
-      console.log("Post has been deleted successfully"); // log success
+      showToast({
+        title: "Post Deleted",
+        description: "Your post has been deleted",
+        status: "success",
+      });
       // if the user deletes post from the single post page, they should be redirected to the post's community page
       if (singlePostPage) {
         // if the post is on the single post page
@@ -114,6 +121,11 @@ const PostItem: React.FC<PostItemProps> = ({
       }
     } catch (error: any) {
       setError(error.message);
+      showToast({
+        title: "Post not Deleted",
+        description: "There was an error deleting your post",
+        status: "error",
+      });
     } finally {
       setLoadingDelete(false);
     }
