@@ -12,6 +12,7 @@ type IconProps = {
   icon: IconType;
   fontSize: number;
   onClick?: () => void;
+  iconColor?: string;
 };
 
 /**
@@ -23,7 +24,12 @@ type IconProps = {
  *
  * @returns {React.FC<IconProps>} - Icon with a hover effect
  */
-const IconItem: React.FC<IconProps> = ({ icon, fontSize, onClick }) => {
+const IconItem: React.FC<IconProps> = ({
+  icon,
+  fontSize,
+  onClick,
+  iconColor = "black",
+}) => {
   return (
     <Flex
       mr={1.5}
@@ -36,7 +42,7 @@ const IconItem: React.FC<IconProps> = ({ icon, fontSize, onClick }) => {
       }}
       onClick={onClick}
     >
-      <Icon as={icon} fontSize={fontSize} />
+      <Icon as={icon} fontSize={fontSize} color={iconColor} />
     </Flex>
   );
 };

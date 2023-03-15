@@ -183,6 +183,7 @@ export const CommunitySettings: React.FC<CommunitySettingsProps> = ({
             icon={FiSettings}
             fontSize={20}
             onClick={() => setCommunitySettingsModalOpen(true)}
+            iconColor="gray.500"
           />
         </>
       )}
