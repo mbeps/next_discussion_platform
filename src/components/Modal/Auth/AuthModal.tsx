@@ -73,7 +73,11 @@ const AuthModal: React.FC = () => {
   return (
     <>
       <Modal isOpen={modalState.open} onClose={handleClose}>
-        <ModalOverlay />
+        <ModalOverlay
+          bg="rgba(0, 0, 0, 0.4)"
+          backdropFilter="auto"
+          backdropBlur="5px"
+        />
         <ModalContent borderRadius={10}>
           {/* Dynamically display header depending on the authentication state */}
           <ModalHeader textAlign="center">

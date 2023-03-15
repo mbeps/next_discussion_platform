@@ -194,7 +194,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   return (
     <>
       <Modal isOpen={open} onClose={handleClose}>
-        <ModalOverlay />
+        <ModalOverlay
+          bg="rgba(0, 0, 0, 0.4)"
+          backdropFilter="auto"
+          backdropBlur="5px"
+        />
         <ModalContent borderRadius={10}>
           <ModalHeader
             display="flex"
