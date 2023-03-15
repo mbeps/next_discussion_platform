@@ -266,8 +266,9 @@ const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
    * Text to be displayed on top of the post.
    * Displays the author and the time of creation.
    */
-  const topText: string = `Author: ${post.creatorUsername} |
-		Time: ${moment(new Date(post.createTime.seconds * 1000)).fromNow()}`;
+  const topText: string = `By ${post.creatorUsername} ${moment(
+    new Date(post.createTime.seconds * 1000)
+  ).fromNow()}`;
   return (
     <Stack
       direction="row"
@@ -309,7 +310,7 @@ const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
           </Link>
         </>
       )}
-      <Text>{topText}</Text>
+      <Text fontWeight={500}>{topText}</Text>
     </Stack>
   );
 };

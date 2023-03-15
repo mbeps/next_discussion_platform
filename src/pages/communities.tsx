@@ -5,7 +5,7 @@ import PageContent from "@/components/Layout/PageContent";
 import CommunityLoader from "@/components/Loaders/CommunityLoader";
 import { firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -80,7 +80,7 @@ const Communities: React.FC = () => {
                 })}
               </>
             )}
-            <Box p="10px 20px" alignContent="center">
+            <Flex p="10px 20px" alignContent="center" justifyContent="center">
               <Button
                 height="34px"
                 width="200px"
@@ -91,7 +91,7 @@ const Communities: React.FC = () => {
               >
                 View More
               </Button>
-            </Box>
+            </Flex>
           </Stack>
         </>
         <Stack spacing={2}>

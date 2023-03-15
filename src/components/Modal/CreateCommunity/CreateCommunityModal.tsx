@@ -362,7 +362,7 @@ const CommunityTypeOptions: React.FC<CommunityTypeOptionsProps> = ({
  * @param {string} communityName - name of the community
  * @param {React.ChangeEvent<HTMLInputElement>} handleChange - change in HTML input field
  * @param {number} charRemaining - number of characters remaining for the community name
- * @param {string} error - error messagesection for entering community name
+ * @param {string} error - error message section for entering community name
  */
 interface CommunityNameSectionProps {
   communityName: string;

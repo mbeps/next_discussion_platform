@@ -1,4 +1,4 @@
-import { Button, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Stack, Text } from "@chakra-ui/react";
 import { AuthError } from "firebase/auth";
 import React from "react";
 import {
@@ -26,29 +26,31 @@ const OAuthButtons: React.FC = () => {
     useSignInWithGithub(auth);
 
   return (
-    <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
-      {/* Google */}
-      <AuthButton
-        provider="Google"
-        isLoading={loadingGoogle}
-        onClick={() => signInWithGoogle()}
-        image="/images/google.png"
-      />
+    <Box>
+      <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
+        {/* Google */}
+        <AuthButton
+          provider="Google"
+          isLoading={loadingGoogle}
+          onClick={() => signInWithGoogle()}
+          image="/images/google.png"
+        />
 
-      {/* GitHub */}
-      <AuthButton
-        provider="GitHub"
-        isLoading={loadingGitHub}
-        onClick={() => signInWithGithub()}
-        image="/images/github.png"
-      />
+        {/* GitHub */}
+        <AuthButton
+          provider="GitHub"
+          isLoading={loadingGitHub}
+          onClick={() => signInWithGithub()}
+          image="/images/github.png"
+        />
+      </Stack>
 
       {/* If there is error than the error is shown */}
       <>
         <ErrorMessage error={errorGoogle} />
         <ErrorMessage error={errorGitHub} />
       </>
-    </Stack>
+    </Box>
   );
 };
 
