@@ -50,18 +50,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
               </Stack>
             </ModalBody>
           </Box>
-
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button
-              variant="outline"
-              height="30px"
-              mr={3}
-              onClick={handleClose}
-            >
-              B1
-            </Button>
-            <Button height="30px">B2</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
