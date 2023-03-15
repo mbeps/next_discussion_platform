@@ -4,6 +4,7 @@ import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
   Button,
+  Divider,
   Flex,
   Icon,
   Image,
@@ -25,10 +26,10 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillPeopleFill } from "react-icons/bs";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 type CommunitySettingsModalProps = {
   open: boolean;
@@ -205,7 +206,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
             <ModalCloseButton />
             <ModalBody display="flex" flexDirection="column" padding="10px 0px">
               <>
-                <Stack fontSize="10pt" spacing={1} p={5}>
+                <Stack fontSize="10pt" spacing={2} p={5}>
                   {/* community image */}
                   <Flex align="center" justify="center" p={2}>
                     {communityStateValue.currentCommunity?.imageURL ||
@@ -228,6 +229,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
                         as={BsFillPeopleFill}
                       />
                     )}
+                  </Flex>
+                  <Flex align="center" justify="center">
+                    <Text fontSize="14pt" fontWeight={600} color="gray.600">
+                      {communityData.id}
+                    </Text>
                   </Flex>
 
                   <Stack spacing={1} direction="row" flexGrow={1}>
@@ -262,12 +268,17 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
 
                     {/*  */}
                   </Stack>
+                  <Divider />
                   {/* Change community privacy type */}
-                  <Flex direction="column" pt={4}>
+                  <Flex direction="column">
                     <Stack spacing={2} direction="column" flexGrow={1}>
-                      <Text fontWeight={600} color="gray.500">
+                      <Text fontWeight={600} fontSize="12pt" color="gray.500">
                         Community Type
                       </Text>
+                      <Text fontWeight={500} fontSize="10pt" color="gray.500">
+                        {`Currently ${communityStateValue.currentCommunity?.privacyType}`}
+                      </Text>
+
                       <Select
                         placeholder="Select option"
                         mt={2}
@@ -277,7 +288,6 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
                         <option value="restricted">Restricted</option>
                         <option value="private">Private</option>
                       </Select>
-                      {/* <Button onClick={handleSaveButtonClick}>Save</Button> */}
                     </Stack>
                   </Flex>
                 </Stack>
