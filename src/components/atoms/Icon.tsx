@@ -7,6 +7,7 @@ import { IconType } from "react-icons";
  * @param {IconType} icon - Icon to be displayed
  * @param {number} fontSize - Font size of the icon
  * @param {() => void} onClick - Function to be executed when the button is clicked
+ * @param {string} iconColor - Color of the icon
  */
 type IconProps = {
   icon: IconType;
@@ -21,6 +22,7 @@ type IconProps = {
  * @param {IconType} icon - Icon to be displayed
  * @param {number} fontSize - Font size of the icon
  * @param {() => void} onClick - Function to be executed when the button is clicked
+ * @param {string} iconColor - Color of the icon (default: black)
  *
  * @returns {React.FC<IconProps>} - Icon with a hover effect
  */

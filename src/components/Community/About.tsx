@@ -24,7 +24,7 @@ type AboutProps = {
  *  - Button for creating a new post
  *
  * Additional elements are displayed if the current user is an admin:
- *  - Button for changing image
+ *  - Button for opening the community settings modal
  * @param {communityData} - data required to be displayed
  * @returns (React.FC<AboutProps>) - About component
  * @requires AboutHeaderBar - Header bar for the about section.
@@ -135,7 +135,7 @@ type AdminSectionAboutProps = {
 
 /**
  * Displays some additional elements if the current user is an admin:
- *  - Button for changing image
+ *  - Button for opening the community settings modal
  * @returns {React.FC<AdminSectionAboutProps>} - Admin section component
  */
 const AdminSectionAbout: React.FC<AdminSectionAboutProps> = ({

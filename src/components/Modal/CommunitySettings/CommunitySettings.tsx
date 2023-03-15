@@ -31,12 +31,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { useRecoilState } from "recoil";
 
+/**
+ * @param {boolean} open - boolean to determine if the modal is open or not
+ * @param {function} handleClose - function to close the modal
+ * @param {Community} communityData - data required to be displayed
+ */
 type CommunitySettingsModalProps = {
   open: boolean;
   handleClose: () => void;
   communityData: Community;
 };
 
+/**
+ * Allows the admin to change the settings of the community.
+ * The following settings can be changed:
+ *  - Community image
+ *  - Visibility of the community
+ * @param {open} - boolean to determine if the modal is open or not
+ * @param {handleClose} - function to close the modal
+ * @param {communityData} - data required to be displayed
+ * @returns {React.FC<CommunitySettingsModalProps>} - CommunitySettingsModal component
+ */
 const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
   open,
   handleClose,
@@ -74,7 +89,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
         imageURL: downloadURL,
       }); // update imageURL in firestore
 
-      // update imageURL in recoil state
+      // update imageURL in current community recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         currentCommunity: {
@@ -83,8 +98,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
         } as Community,
       }));
 
-      // update mySnippet
-      // mySnippets = communityStateValue.mySnippets
+      // update mySnippet imageURL in recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         mySnippets: prev.mySnippets.map((snippet) => {
@@ -118,7 +132,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
         imageURL: "",
       }); // update imageURL in firestore
 
-      // updates the state to change the ui
+      // update imageURL in current community recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         currentCommunity: {
@@ -127,7 +141,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
         } as Community,
       })); // update imageURL in recoil state
 
-      // update mySnippet
+      // update mySnippet imageURL in recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         mySnippets: prev.mySnippets.map((snippet) => {
@@ -147,11 +161,16 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
 
   const [selectedPrivacyType, setSelectedPrivacyType] = useState("");
 
+  /**
+   * Changes the privacy type of the current community.
+   * @param {string} privacyType - privacy type to be changed to
+   */
   const onUpdateCommunityPrivacyType = async (privacyType: string) => {
     try {
       await updateDoc(doc(firestore, "communities", communityData.id), {
         privacyType,
       });
+      // update privacyType in current community recoil state
       setCommunityStateValue((prev) => ({
         ...prev,
         currentCommunity: {
@@ -164,10 +183,23 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     }
   };
 
-  const handlePrivacyTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPrivacyType(e.target.value);
+  /**
+   * Handles changes to the privacy type select input.
+   * @param {React.ChangeEvent<HTMLInputElement>} event - event when user selects a file
+   */
+  const handlePrivacyTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedPrivacyType(event.target.value); // set selected privacy type
   };
 
+  /**
+   * Handles applying changes to the community settings.
+   * Changes can be:
+   * - Changing the privacy type
+   * - Changing the community image
+   * - Deleting the community image
+   */
   const handleSaveButtonClick = () => {
     // Save privacy type change
     if (selectedPrivacyType) {
@@ -182,6 +214,9 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     closeModal();
   };
 
+  /**
+   * Closes the modal and resets the state.
+   */
   const closeModal = () => {
     setSelectedFile("");
     setSelectedPrivacyType("");
