@@ -25,10 +25,10 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillPeopleFill } from "react-icons/bs";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 type CommunitySettingsModalProps = {
   open: boolean;
@@ -43,65 +43,16 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
 }) => {
   const [user] = useAuthState(auth);
 
-  return (
-    <>
-      <Modal isOpen={open} onClose={handleClose}>
-        <ModalOverlay />
-        <ModalContent borderRadius={10}>
-          <ModalHeader
-            display="flex"
-            flexDirection="column"
-            padding={3}
-            textAlign="center"
-          >
-            Community Settings
-          </ModalHeader>
-          <Box>
-            <ModalCloseButton />
-            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
-              <>
-                <Stack fontSize="10pt" spacing={1} p={5}>
-                  <CommunityModalPicture communityData={communityData} />
-                  <Flex direction="column" pt={4}>
-                    <CommunityTypeSettings communityData={communityData} />
-                  </Flex>
-                </Stack>
-              </>
-            </ModalBody>
-          </Box>
-
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button
-              variant="outline"
-              height="30px"
-              mr={3}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-            <Button height="30px">Save</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-};
-export default CommunitySettingsModal;
-
-type CommunityModalPictureProps = {
-  communityData: Community;
-};
-
-const CommunityModalPicture: React.FC<CommunityModalPictureProps> = ({
-  communityData,
-}) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
     300,
     300
   );
   const selectFileRef = useRef<HTMLInputElement>(null);
-  const setCommunityStateValue = useSetRecoilState(communityState);
+  // const setCommunityStateValue = useSetRecoilState(communityState);
+  const [communityStateValue, setCommunityStateValue] =
+    useRecoilState(communityState);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [deleteImage, setDeleteImage] = useState(false);
 
   /**
    * Allows admin to change the image of the community.
@@ -130,10 +81,26 @@ const CommunityModalPicture: React.FC<CommunityModalPictureProps> = ({
           imageURL: downloadURL,
         } as Community,
       }));
+
+      // update mySnippet
+      // mySnippets = communityStateValue.mySnippets
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: prev.mySnippets.map((snippet) => {
+          if (snippet.communityId === communityData.id) {
+            return {
+              ...snippet,
+              imageURL: downloadURL,
+            };
+          }
+          return snippet;
+        }),
+      }));
     } catch (error) {
       console.log("Error: onUploadImage", error);
     } finally {
       setUploadingImage(false); // set uploading image to false
+      setSelectedFile(""); // clear selected file
     }
   };
 
@@ -158,78 +125,25 @@ const CommunityModalPicture: React.FC<CommunityModalPictureProps> = ({
           imageURL: "",
         } as Community,
       })); // update imageURL in recoil state
+
+      // update mySnippet
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        mySnippets: prev.mySnippets.map((snippet) => {
+          if (snippet.communityId === communityId) {
+            return {
+              ...snippet,
+              imageURL: "",
+            };
+          }
+          return snippet;
+        }),
+      }));
     } catch (error) {
       console.log("Error: onDeleteImage", error);
     }
   };
 
-  return (
-    <Box>
-      <Flex align="center" justify="center" p={2}>
-        {communityData?.imageURL || selectedFile ? (
-          <Image
-            src={selectedFile || communityData?.imageURL}
-            alt="Community Photo"
-            height="120px"
-            borderRadius="full"
-            shadow="md"
-          />
-        ) : (
-          <Icon fontSize={120} mr={1} color="gray.300" as={BsFillPeopleFill} />
-        )}
-      </Flex>
-
-      <Stack spacing={1} direction="row" flexGrow={1}>
-        <Button
-          flex={1}
-          height={34}
-          onClick={() => selectFileRef.current?.click()}
-        >
-          Change Image
-        </Button>
-
-        {/* save changes button */}
-        {selectedFile && (
-          <Button
-            flex={1}
-            height={34}
-            variant="outline"
-            onClick={onUpdateImage}
-            isLoading={uploadingImage}
-          >
-            Save Changes
-          </Button>
-        )}
-        <input
-          id="file-upload"
-          type="file"
-          accept="image/png,image/gif,image/jpeg"
-          hidden
-          ref={selectFileRef}
-          onChange={onSelectFile}
-        />
-        {communityData?.imageURL && (
-          <Button
-            flex={1}
-            height={34}
-            variant="outline"
-            onClick={() => onDeleteImage(communityData.id)}
-          >
-            Delete Image
-          </Button>
-        )}
-      </Stack>
-    </Box>
-  );
-};
-
-type CommunityTypeSettingsProps = {
-  communityData: Community;
-};
-
-const CommunityTypeSettings: React.FC<CommunityTypeSettingsProps> = ({
-  communityData,
-}) => {
   const [selectedPrivacyType, setSelectedPrivacyType] = useState("");
 
   const onUpdateCommunityPrivacyType = async (privacyType: string) => {
@@ -237,6 +151,13 @@ const CommunityTypeSettings: React.FC<CommunityTypeSettingsProps> = ({
       await updateDoc(doc(firestore, "communities", communityData.id), {
         privacyType,
       });
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: {
+          ...prev.currentCommunity,
+          privacyType: privacyType,
+        } as Community,
+      }));
     } catch (error) {
       console.log("Error: onUpdateCommunityPrivacyType", error);
     }
@@ -247,36 +168,135 @@ const CommunityTypeSettings: React.FC<CommunityTypeSettingsProps> = ({
   };
 
   const handleSaveButtonClick = () => {
+    // Save privacy type change
     if (selectedPrivacyType) {
       onUpdateCommunityPrivacyType(selectedPrivacyType);
     }
+    if (selectedFile) {
+      onUpdateImage();
+    }
+    if (deleteImage) {
+      onDeleteImage(communityData.id);
+    }
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setSelectedFile("");
+    setSelectedPrivacyType("");
+    setDeleteImage(false);
+    handleClose();
   };
 
   return (
     <>
-      <Stack spacing={2} direction="column" flexGrow={1}>
-        <Text fontWeight={600} color="gray.500">
-          Community Type
-        </Text>
-        <Text>
-          Currently{" "}
-          {communityData.privacyType === "public"
-            ? "Public"
-            : communityData?.privacyType === "restricted"
-            ? "Restricted"
-            : "Private"}
-        </Text>
-        <Select
-          placeholder="Select option"
-          mt={2}
-          onChange={handlePrivacyTypeChange}
-        >
-          <option value="public">Public</option>
-          <option value="restricted">Restricted</option>
-          <option value="private">Private</option>
-        </Select>
-        <Button onClick={handleSaveButtonClick}>Save</Button>
-      </Stack>
+      <Modal isOpen={open} onClose={handleClose}>
+        <ModalOverlay />
+        <ModalContent borderRadius={10}>
+          <ModalHeader
+            display="flex"
+            flexDirection="column"
+            padding={3}
+            textAlign="center"
+          >
+            Community Settings
+          </ModalHeader>
+          <Box>
+            <ModalCloseButton />
+            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
+              <>
+                <Stack fontSize="10pt" spacing={1} p={5}>
+                  {/* community image */}
+                  <Flex align="center" justify="center" p={2}>
+                    {communityStateValue.currentCommunity?.imageURL ||
+                    selectedFile ? (
+                      <Image
+                        src={
+                          selectedFile ||
+                          communityStateValue.currentCommunity?.imageURL
+                        }
+                        alt="Community Photo"
+                        height="120px"
+                        borderRadius="full"
+                        shadow="md"
+                      />
+                    ) : (
+                      <Icon
+                        fontSize={120}
+                        mr={1}
+                        color="gray.300"
+                        as={BsFillPeopleFill}
+                      />
+                    )}
+                  </Flex>
+
+                  <Stack spacing={1} direction="row" flexGrow={1}>
+                    <Button
+                      flex={1}
+                      height={34}
+                      onClick={() => selectFileRef.current?.click()}
+                    >
+                      {communityStateValue.currentCommunity?.imageURL
+                        ? "Change Image"
+                        : "Add Image"}
+                    </Button>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      accept="image/png,image/gif,image/jpeg"
+                      hidden
+                      ref={selectFileRef}
+                      onChange={onSelectFile}
+                    />
+                    {communityStateValue.currentCommunity?.imageURL && (
+                      <Button
+                        flex={1}
+                        height={34}
+                        variant="outline"
+                        onClick={() => setDeleteImage(true)}
+                        isDisabled={deleteImage}
+                      >
+                        Delete Image
+                      </Button>
+                    )}
+
+                    {/*  */}
+                  </Stack>
+                  {/* Change community privacy type */}
+                  <Flex direction="column" pt={4}>
+                    <Stack spacing={2} direction="column" flexGrow={1}>
+                      <Text fontWeight={600} color="gray.500">
+                        Community Type
+                      </Text>
+                      <Select
+                        placeholder="Select option"
+                        mt={2}
+                        onChange={handlePrivacyTypeChange}
+                      >
+                        <option value="public">Public</option>
+                        <option value="restricted">Restricted</option>
+                        <option value="private">Private</option>
+                      </Select>
+                      {/* <Button onClick={handleSaveButtonClick}>Save</Button> */}
+                    </Stack>
+                  </Flex>
+                </Stack>
+              </>
+            </ModalBody>
+          </Box>
+
+          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+            <Button variant="outline" height="30px" mr={3} onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button height="30px" onClick={handleSaveButtonClick}>
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
+
+export default CommunitySettingsModal;
