@@ -9,6 +9,7 @@ import {
   Skeleton,
   Stack,
   Text,
+  useClipboard,
   useToast,
 } from "@chakra-ui/react";
 import moment from "moment";
@@ -84,6 +85,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
   const showToast = useCustomToast();
+  const { onCopy, value, setValue, hasCopied } = useClipboard("");
   /**
    * If there is no selected post then post is already selected
    */
@@ -129,6 +131,21 @@ const PostItem: React.FC<PostItemProps> = ({
     } finally {
       setLoadingDelete(false);
     }
+  };
+
+  const handleShare = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation(); // stop event bubbling up to parent
+    const postLink = `circus-discussion.vercel.app/community/${post.communityId}/comments/${post.id}`;
+    setValue(postLink);
+    onCopy(); // copy link to clipboard
+
+    showToast({
+      title: "Link Copied",
+      description: "Link to the post has been saved to your clipboard",
+      status: "info",
+    });
   };
 
   return (
@@ -177,6 +194,7 @@ const PostItem: React.FC<PostItemProps> = ({
           handleDelete={handleDelete}
           loadingDelete={loadingDelete}
           userIsCreator={userIsCreator}
+          handleShare={handleShare}
         />
         <PostItemError
           error={error}
@@ -407,6 +425,7 @@ interface PostActionsProps {
   ) => Promise<void>;
   loadingDelete: boolean;
   userIsCreator: boolean;
+  handleShare: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 /**
@@ -423,6 +442,7 @@ const PostActions: React.FC<PostActionsProps> = ({
   handleDelete,
   loadingDelete,
   userIsCreator,
+  handleShare,
 }) => (
   <Stack
     ml={1}
@@ -432,7 +452,7 @@ const PostActions: React.FC<PostActionsProps> = ({
     direction="row"
     spacing={1}
   >
-    <Button variant="action" height="32px">
+    <Button variant="action" height="32px" onClick={handleShare}>
       <Icon as={FiShare2} mr={2} />
       <Text fontSize="9pt">Share</Text>
     </Button>
