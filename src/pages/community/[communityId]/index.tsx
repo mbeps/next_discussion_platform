@@ -27,16 +27,18 @@ type CommunityPageProps = {
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   const setCommunityStateValue = useSetRecoilState(communityState);
 
-  // store the community data currently available into the state as soon as component renders
+  // store the community data currently available into the state as soon as the component renders
   useEffect(() => {
-    setCommunityStateValue((prev) => ({
-      ...prev,
-      currentCommunity: communityData,
-    }));
+    if (communityData) {
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: communityData,
+      }));
+    }
   }, [communityData, setCommunityStateValue]);
 
-  if (!communityData) {
-    //  if community data is not available, return not found page
+  if (!communityData || Object.keys(communityData).length === 0) {
+    //  if community data is not available or empty, return not found page
     return <NotFound />;
   }
 
@@ -63,7 +65,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
  * @returns {Promise<{props: {communityData: Community}}>} - Community data for the current community
  */
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // get the community data and pass it to client
+  // get the community data and pass it to the client
   try {
     const communityDocRef = doc(
       firestore,
@@ -71,6 +73,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       context.query.communityId as string
     );
     const communityDoc = await getDoc(communityDocRef);
+
+    if (!communityDoc.exists()) {
+      // if the document does not exist, return notFound property
+      return { props: {} };
+    }
 
     return {
       props: {
