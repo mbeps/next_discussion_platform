@@ -133,6 +133,10 @@ const PostItem: React.FC<PostItemProps> = ({
     }
   };
 
+  /**
+   * Added functionality to share a post by copying the link to the post to the clipboard.
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event - click event on share button to prevent from post being selected
+   */
   const handleShare = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
