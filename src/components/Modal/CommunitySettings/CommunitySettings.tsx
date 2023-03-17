@@ -20,7 +20,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import {
   deleteObject,
   getDownloadURL,
@@ -83,13 +89,43 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     setUploadingImage(true); // set uploading image to true
 
     try {
-      // update image in firebase
+      // update image in the community collection
       const imageRef = ref(storage, `communities/${communityData.id}/image`); // create reference to image in storage
       await uploadString(imageRef, selectedFile, "data_url"); // upload image to storage
       const downloadURL = await getDownloadURL(imageRef); // get download url of image
       await updateDoc(doc(firestore, "communities", communityData.id), {
         imageURL: downloadURL,
       }); // update imageURL in firestore
+
+      // update imageURL in all users communitySnippets
+      const usersSnapshot = await getDocs(collection(firestore, "users")); // get all users
+      usersSnapshot.forEach(async (userDoc) => {
+        // loop through all users
+        const communitySnippetDoc = await getDoc(
+          doc(
+            firestore,
+            "users",
+            userDoc.id,
+            "communitySnippets",
+            communityData.id
+          ) // get communitySnippet of the community
+        );
+        if (communitySnippetDoc.exists()) {
+          // if the communitySnippet exists, update the imageURL
+          await updateDoc(
+            doc(
+              firestore,
+              "users",
+              userDoc.id,
+              "communitySnippets",
+              communityData.id
+            ),
+            {
+              imageURL: downloadURL,
+            }
+          );
+        }
+      });
 
       // update imageURL in current community recoil state
       setCommunityStateValue((prev) => ({
@@ -138,6 +174,29 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
       await updateDoc(doc(firestore, "communities", communityId), {
         imageURL: "",
       }); // update imageURL in firestore
+
+      // delete imageURL in communitySnippets for all users
+      const usersSnapshot = await getDocs(collection(firestore, "users")); // get all users
+      usersSnapshot.forEach(async (userDoc) => {
+        const communitySnippetDoc = await getDoc(
+          doc(firestore, "users", userDoc.id, "communitySnippets", communityId)
+        ); // get communitySnippet of the community
+        if (communitySnippetDoc.exists()) {
+          // if the communitySnippet exists, update the imageURL
+          await updateDoc(
+            doc(
+              firestore,
+              "users",
+              userDoc.id,
+              "communitySnippets",
+              communityId
+            ),
+            {
+              imageURL: "",
+            }
+          ); // update imageURL in firestore
+        }
+      });
 
       // update imageURL in current community recoil state
       setCommunityStateValue((prev) => ({
