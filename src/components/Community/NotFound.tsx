@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Button } from "@chakra-ui/react";
+import { Flex, Button, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 /**
@@ -14,10 +14,21 @@ const CommunityNotFound: React.FC = () => {
       alignItems="center"
       minHeight="60vh"
     >
-      Sorry, this community does not exist!
-      <Link href="/">
-        <Button mt={4}>Home</Button>
-      </Link>
+      <Text fontSize="2xl" fontWeight="bold" color="gray.600">
+        Sorry, this community does not exist!
+      </Text>
+      <Stack direction="row" spacing={4} mt={4}>
+        <Link href="/">
+          <Button mt={4} width="150px">
+            Home
+          </Button>
+        </Link>
+        <Link href="/communities">
+          <Button mt={4} width="150px">
+            All Communities
+          </Button>
+        </Link>
+      </Stack>
     </Flex>
   );
 };
