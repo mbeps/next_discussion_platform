@@ -71,13 +71,13 @@ export default function Home() {
         buildGenericHomeFeed();
       }
     } catch (error) {
-    } finally {
-      setLoading(false);
       showToast({
         title: "Could not Build Home Feed",
         description: "There was an error while building your home feed",
         status: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
