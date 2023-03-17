@@ -154,6 +154,18 @@ const PostItem: React.FC<PostItemProps> = ({
     });
   };
 
+  const handleSave = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation(); // stop event bubbling up to parent
+
+    showToast({
+      title: "Functionality Coming Soon",
+      description: "Currently, this functionality is not available",
+      status: "warning",
+    });
+  };
+
   return (
     <Flex
       border="1px solid"
@@ -201,6 +213,7 @@ const PostItem: React.FC<PostItemProps> = ({
           loadingDelete={loadingDelete}
           userIsCreator={userIsCreator}
           handleShare={handleShare}
+          handleSave={handleSave}
         />
         <PostItemError
           error={error}
@@ -432,6 +445,7 @@ interface PostActionsProps {
   loadingDelete: boolean;
   userIsCreator: boolean;
   handleShare: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleSave: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 /**
@@ -449,6 +463,7 @@ const PostActions: React.FC<PostActionsProps> = ({
   loadingDelete,
   userIsCreator,
   handleShare,
+  handleSave,
 }) => (
   <Stack
     ml={1}
@@ -463,7 +478,7 @@ const PostActions: React.FC<PostActionsProps> = ({
       <Text fontSize="9pt">Share</Text>
     </Button>
 
-    <Button variant="action" height="32px">
+    <Button variant="action" height="32px" onClick={handleSave}>
       <Icon as={BsBookmark} mr={2} />
       <Text fontSize="9pt">Save</Text>
     </Button>
