@@ -135,13 +135,15 @@ const PostItem: React.FC<PostItemProps> = ({
 
   /**
    * Added functionality to share a post by copying the link to the post to the clipboard.
+   * Router will check base URL to copy the correct link depending on the name of the site.
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event - click event on share button to prevent from post being selected
    */
   const handleShare = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation(); // stop event bubbling up to parent
-    const postLink = `circus-discussion.vercel.app/community/${post.communityId}/comments/${post.id}`;
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const postLink = `${baseUrl}/community/${post.communityId}/comments/${post.id}`;
     setValue(postLink);
     onCopy(); // copy link to clipboard
 
