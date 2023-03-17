@@ -70,7 +70,7 @@ const PostPage: React.FC = () => {
     }
     // render `NotFound` page if post is not found
     if (!postStateValue.selectedPost) {
-      router.push("/PageNotFound");
+      router.push("/404");
       return;
     }
   }, [postStateValue.selectedPost, router.query]);
