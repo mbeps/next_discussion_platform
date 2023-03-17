@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostItem from "./PostItem";
 import PostLoader from "../Loaders/PostLoader";
+import useCustomToast from "@/hooks/useCustomToast";
 
 /**
  * @param {Community} communityData - Community object from firebase
@@ -35,6 +36,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     onDeletePost,
     onSelectPost,
   } = usePosts();
+  const showToast = useCustomToast();
 
   /**
    * Gets all posts in the community.
@@ -57,6 +59,11 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
       })); // set posts in state
     } catch (error: any) {
       console.log("Error: getPosts", error.message);
+      showToast({
+        title: "Posts not Loaded",
+        description: "There was an error loading posts",
+        status: "error",
+      });
     } finally {
       setLoading(false);
     }

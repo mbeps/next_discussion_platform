@@ -1,6 +1,7 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
+import useCustomToast from "@/hooks/useCustomToast";
 import {
   Flex,
   Icon,
@@ -82,6 +83,7 @@ const SuggestedCommunitiesList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);
   const router = useRouter();
+  const showToast = useCustomToast();
 
   /**
    * Gets the top 5 communities with the most members.
@@ -102,6 +104,11 @@ const SuggestedCommunitiesList: React.FC = () => {
       setCommunities(communities as Community[]);
     } catch (error) {
       console.log("Error: getCommunityRecommendations", error);
+      showToast({
+        title: "Recommendations not Loaded",
+        description: "There was an error loading recommendations",
+        status: "error",
+      });
     } finally {
       setLoading(false);
     }

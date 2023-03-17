@@ -5,6 +5,7 @@ import PageContent from "@/components/Layout/PageContent";
 import CommunityLoader from "@/components/Loaders/CommunityLoader";
 import { firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
+import useCustomToast from "@/hooks/useCustomToast";
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
@@ -20,6 +21,7 @@ const Communities: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);
   const router = useRouter();
+  const showToast = useCustomToast();
 
   /**
    * Gets the top 5 communities with the most members.
@@ -43,6 +45,11 @@ const Communities: React.FC = () => {
       console.log("Error: getCommunityRecommendations", error);
     } finally {
       setLoading(false);
+      showToast({
+        title: "Could not Find Communities",
+        description: "There was an error getting communities",
+        status: "error",
+      });
     }
   };
 

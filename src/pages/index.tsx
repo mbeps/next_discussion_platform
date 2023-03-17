@@ -8,6 +8,7 @@ import PostLoader from "@/components/Loaders/PostLoader";
 import PostItem from "@/components/Posts/PostItem";
 import { auth, firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
+import useCustomToast from "@/hooks/useCustomToast";
 import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { Inter } from "@next/font/google";
@@ -35,6 +36,7 @@ export default function Home() {
     onVote,
     onDeletePost,
   } = usePosts();
+  const showToast = useCustomToast();
 
   /**
    * Creates a home feed for a currently logged in user.
@@ -71,6 +73,11 @@ export default function Home() {
     } catch (error) {
     } finally {
       setLoading(false);
+      showToast({
+        title: "Could not Build Home Feed",
+        description: "There was an error while building your home feed",
+        status: "error",
+      });
     }
   };
 
@@ -94,6 +101,11 @@ export default function Home() {
       })); // set posts in state
     } catch (error) {
       console.log("Error: buildGenericHomeFeed", error);
+      showToast({
+        title: "Could not Build Home Feed",
+        description: "There was an error while building your home feed",
+        status: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -119,7 +131,14 @@ export default function Home() {
         ...prev,
         postVotes: postVotes as PostVote[],
       })); // set post votes in state
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error: getUserPostVotes", error);
+      showToast({
+        title: "Could not Get Post Votes",
+        description: "There was an error while getting your post votes",
+        status: "error",
+      });
+    }
   };
 
   /**

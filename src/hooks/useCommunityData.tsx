@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import useCustomToast from "./useCustomToast";
 
 /**
  * Checks whether a user is subscribed to a community.
@@ -36,6 +37,7 @@ const useCommunityData = () => {
   const [error, setError] = useState("");
   const setAuthModalState = useSetRecoilState(authModalState);
   const router = useRouter();
+  const showToast = useCustomToast();
 
   /**
    * Handles the user subscribing or unsubscribing to a community.
@@ -86,6 +88,11 @@ const useCommunityData = () => {
       }));
     } catch (error: any) {
       console.log("Error: getMySnippets", error);
+      showToast({
+        title: "Subscriptions not Found",
+        description: "There was an error fetching your subscriptions",
+        status: "error",
+      });
       setError(error.message);
     } finally {
       setLoading(false);
@@ -132,11 +139,20 @@ const useCommunityData = () => {
       }));
     } catch (error: any) {
       console.log("Error: joinCommunity", error);
+      showToast({
+        title: "Could not Subscribe",
+        description: "There was an error subscribing to the community",
+        status: "error",
+      });
       setError(error.message);
     }
     setLoading(false);
   };
 
+  /**
+   * Fetches the community data from the database.
+   * @param {string} communityId - community from which the user is unsubscribed from
+   */
   const getCommunityData = async (communityId: string) => {
     try {
       const communityDocRef = doc(firestore, "communities", communityId);
@@ -151,6 +167,11 @@ const useCommunityData = () => {
       }));
     } catch (error) {
       console.log("Error: getCommunityData", error);
+      showToast({
+        title: "Could not Fetch Communities",
+        description: "There was an error fetching your communities",
+        status: "error",
+      });
     }
   };
 
@@ -188,6 +209,11 @@ const useCommunityData = () => {
     } catch (error: any) {
       console.log("Error: leaveCommunity", error.message);
       setError(error.message);
+      showToast({
+        title: "Could not Unsubscribe",
+        description: "There was an error unsubscribing from the community",
+        status: "error",
+      });
     }
     setLoading(false);
   };

@@ -18,6 +18,7 @@ import { Router, useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import useCustomToast from "./useCustomToast";
 
 /**
  * Hook for managing posts from various components.
@@ -37,6 +38,7 @@ const usePosts = () => {
   const currentCommunity = useRecoilValue(communityState).currentCommunity;
   const setAuthModalState = useSetRecoilState(authModalState);
   const router = useRouter();
+  const showToast = useCustomToast();
   // TODO: create postVote variable
 
   /**
@@ -166,6 +168,11 @@ const usePosts = () => {
       }
     } catch (error) {
       console.log("Error: onVote", error);
+      showToast({
+        title: "Could not Vote",
+        description: "There was an error voting on the post",
+        status: "error",
+      });
     }
   };
 
@@ -207,6 +214,11 @@ const usePosts = () => {
       return true; // post was deleted
     } catch (error) {
       return false; // post was not deleted
+      showToast({
+        title: "Could not Delete Post",
+        description: "There was an error deleting your post",
+        status: "error",
+      });
     }
   };
 

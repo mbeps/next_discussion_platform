@@ -6,6 +6,7 @@ import Comments from "@/components/Posts/Comments/Comments";
 import PostItem from "@/components/Posts/PostItem";
 import { auth, firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
+import useCustomToast from "@/hooks/useCustomToast";
 import usePosts from "@/hooks/usePosts";
 import { doc, getDoc } from "@firebase/firestore";
 import { User } from "firebase/auth";
@@ -28,6 +29,7 @@ const PostPage: React.FC = () => {
   const { communityStateValue } = useCommunityData();
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const showToast = useCustomToast();
 
   /**
    * Single post page received all the necessary post data (state) from community page.
@@ -46,6 +48,11 @@ const PostPage: React.FC = () => {
       })); // Set post state
     } catch (error) {
       console.log("Error: fetchPost", error);
+      showToast({
+        title: "Could not Find Posts",
+        description: "There was an error finding posts",
+        status: "error",
+      });
     }
   };
 
