@@ -228,6 +228,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     if (deleteImage) {
       onDeleteImage(communityData.id);
     }
+    showToast({
+      title: "Settings Updated",
+      description: "Your settings have been updated",
+      status: "success",
+    });
     closeModal();
   };
 
