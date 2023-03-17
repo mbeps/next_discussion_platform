@@ -170,9 +170,8 @@ const PostItem: React.FC<PostItemProps> = ({
     <Flex
       border="1px solid"
       bg="white"
-      // borderColor="red.500"
-      borderColor={singlePostPage ? "white" : "gray.300"}
-      borderRadius={singlePostPage ? "10px 10px 0px 0px" : "10px"}
+      borderColor="gray.300"
+      borderRadius={10}
       _hover={{
         borderColor: singlePostPage ? "none" : "gray.400",
         boxShadow: !singlePostPage && "xl",
