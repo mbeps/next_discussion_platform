@@ -211,7 +211,15 @@ const Comments: React.FC<CommentsProps> = ({
   }, [selectedPost]);
 
   return (
-    <Box bg="white" borderRadius="0px 0px 10px 10px" shadow="md">
+    <Flex
+      direction="column"
+      border="1px solid"
+      borderColor="gray.300"
+      bg="white"
+      borderRadius={10}
+      pt={4}
+      shadow="md"
+    >
       <Flex
         direction="column"
         pl={10}
@@ -228,7 +236,6 @@ const Comments: React.FC<CommentsProps> = ({
           onCreateComment={onCreateComment}
         />
       </Flex>
-      <Divider mb={6} />
       <Stack spacing={4} m={4} ml={10}>
         {fetchLoading ? (
           <>
@@ -264,7 +271,7 @@ const Comments: React.FC<CommentsProps> = ({
           </>
         )}
       </Stack>
-    </Box>
+    </Flex>
   );
 };
 export default Comments;

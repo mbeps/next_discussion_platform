@@ -8,6 +8,7 @@ import { auth, firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
 import useCustomToast from "@/hooks/useCustomToast";
 import usePosts from "@/hooks/usePosts";
+import { Stack } from "@chakra-ui/react";
 import { doc, getDoc } from "@firebase/firestore";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -73,26 +74,30 @@ const PostPage: React.FC = () => {
     <PageContent>
       {/* Right */}
       <>
-        {postStateValue.selectedPost && (
-          <PostItem
-            post={postStateValue.selectedPost}
-            onVote={onVote}
-            onDeletePost={onDeletePost}
-            userVoteValue={
-              postStateValue.postVotes.find(
-                (item) => item.postId === postStateValue.selectedPost?.id
-              )?.voteValue
-            }
-            userIsCreator={user?.uid === postStateValue.selectedPost?.creatorId}
-            showCommunityImage={true}
-          />
-        )}
+        <Stack spacing={3} direction="column">
+          {postStateValue.selectedPost && (
+            <PostItem
+              post={postStateValue.selectedPost}
+              onVote={onVote}
+              onDeletePost={onDeletePost}
+              userVoteValue={
+                postStateValue.postVotes.find(
+                  (item) => item.postId === postStateValue.selectedPost?.id
+                )?.voteValue
+              }
+              userIsCreator={
+                user?.uid === postStateValue.selectedPost?.creatorId
+              }
+              showCommunityImage={true}
+            />
+          )}
 
-        <Comments
-          user={user as User}
-          selectedPost={postStateValue.selectedPost}
-          communityId={postStateValue.selectedPost?.communityId as string}
-        />
+          <Comments
+            user={user as User}
+            selectedPost={postStateValue.selectedPost}
+            communityId={postStateValue.selectedPost?.communityId as string}
+          />
+        </Stack>
       </>
       {communityStateValue.currentCommunity && (
         <About communityData={communityStateValue.currentCommunity} />

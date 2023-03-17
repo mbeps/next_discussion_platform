@@ -1,7 +1,8 @@
+import ProfileModal from "@/components/Modal/Profile/ProfileModal";
 import AuthButtons from "@/components/Navbar/RightContent/AuthButtons";
-import { Flex, Textarea, Button, Text } from "@chakra-ui/react";
+import { Flex, Textarea, Button, Text, Stack } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 
 /**
  * Required props for CommentInput component
@@ -44,14 +45,32 @@ const CommentInput: React.FC<CommentInputProps> = ({
   createLoading,
   onCreateComment,
 }) => {
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   return (
     <Flex direction="column" position="relative">
       {user ? (
         // If the user is logged in, display the comment input box
         <>
-          <Text color="gray.600" mb={1}>
-            Comment as {user?.email?.split("@")[0]}
-          </Text>
+          <ProfileModal
+            handleClose={() => setProfileModalOpen(false)}
+            open={isProfileModalOpen}
+          />
+          <Stack direction="row" align="center" spacing={1} mb={2}>
+            <Text color="gray.600">Comment as</Text>
+            <Text
+              color="gray.600"
+              fontSize="10pt"
+              _hover={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                textColor: "red.500",
+              }}
+              onClick={() => setProfileModalOpen(true)}
+            >
+              {user?.email?.split("@")[0]}
+            </Text>
+          </Stack>
+
           <Textarea
             value={commentText}
             onChange={(event) => setCommentText(event.target.value)}
