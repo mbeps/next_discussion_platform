@@ -1,5 +1,6 @@
 import { Community, communityState } from "@/atoms/communitiesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
+import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
@@ -69,6 +70,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     useRecoilState(communityState);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [deleteImage, setDeleteImage] = useState(false);
+  const showToast = useCustomToast();
 
   /**
    * Allows admin to change the image of the community.
@@ -113,6 +115,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
       }));
     } catch (error) {
       console.log("Error: onUploadImage", error);
+      showToast({
+        title: "Image not Updated",
+        description: "There was an error updating the image",
+        status: "error",
+      });
     } finally {
       setUploadingImage(false); // set uploading image to false
       setSelectedFile(""); // clear selected file
@@ -156,6 +163,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
       }));
     } catch (error) {
       console.log("Error: onDeleteImage", error);
+      showToast({
+        title: "Image not Deleted",
+        description: "There was an error deleting the image",
+        status: "error",
+      });
     }
   };
 
@@ -180,6 +192,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
       }));
     } catch (error) {
       console.log("Error: onUpdateCommunityPrivacyType", error);
+      showToast({
+        title: "Privacy Type not Updated",
+        description: "There was an error updating the community privacy type",
+        status: "error",
+      });
     }
   };
 
@@ -211,6 +228,11 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
     if (deleteImage) {
       onDeleteImage(communityData.id);
     }
+    showToast({
+      title: "Settings Updated",
+      description: "Your settings have been updated",
+      status: "success",
+    });
     closeModal();
   };
 

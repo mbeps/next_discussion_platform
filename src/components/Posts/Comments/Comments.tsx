@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Post, postState } from "@/atoms/postsAtom";
 import { firestore } from "@/firebase/clientApp";
+import useCustomToast from "@/hooks/useCustomToast";
 import {
   Box,
   Divider,
@@ -64,6 +65,7 @@ const Comments: React.FC<CommentsProps> = ({
   const [createLoading, setCreateLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState("");
   const setPostState = useSetRecoilState(postState);
+  const showToast = useCustomToast();
 
   /**
    * Creates a new comment for the selected post.
@@ -108,8 +110,19 @@ const Comments: React.FC<CommentsProps> = ({
           numberOfComments: prev.selectedPost?.numberOfComments! + 1,
         } as Post,
       })); // update number of comments in post state
+
+      showToast({
+        title: "Comment Created",
+        description: "Your comment has been created",
+        status: "success",
+      });
     } catch (error) {
       console.log("Error: OnCreateComment", error);
+      showToast({
+        title: "Comment not Created",
+        description: "There was an error creating your comment",
+        status: "error",
+      });
     } finally {
       setCreateLoading(false);
     }
@@ -144,8 +157,19 @@ const Comments: React.FC<CommentsProps> = ({
       })); // update number of comments in post state
 
       setComments((prev) => prev.filter((item) => item.id !== comment.id)); // remove comment from comments state
+
+      showToast({
+        title: "Comment Deleted",
+        description: "Your comment has been deleted",
+        status: "success",
+      });
     } catch (error) {
       console.log("Error: onDeleteComment");
+      showToast({
+        title: "Comment not Deleted",
+        description: "There was an error creating your comment",
+        status: "error",
+      });
     } finally {
       setLoadingDelete("");
     }
@@ -165,6 +189,11 @@ const Comments: React.FC<CommentsProps> = ({
       setComments(comments as Comment[]);
     } catch (error) {
       console.log("Error: getPostComments", error);
+      showToast({
+        title: "Comments not Fetched",
+        description: "There was an error fetching comments",
+        status: "error",
+      });
     } finally {
       setFetchLoading(false);
     }

@@ -1,6 +1,7 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { Post } from "@/atoms/postsAtom";
 import { firestore, storage } from "@/firebase/clientApp";
+import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
   Alert,
@@ -96,7 +97,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
+  const showToast = useCustomToast();
   const communityLink = `/community/${currentCommunity?.id}`;
 
   /**
@@ -137,7 +138,11 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       router.push(communityLink); // redirect user back to communities page after post is created
     } catch (error: any) {
       console.log("Error: handleCreatePost", error.message);
-      setError(true);
+      showToast({
+        title: "Post not Created",
+        description: "There was an error creating your post",
+        status: "error",
+      });
     } finally {
       setLoading(false);
     }

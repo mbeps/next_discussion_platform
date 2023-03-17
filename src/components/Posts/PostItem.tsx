@@ -1,4 +1,5 @@
 import { Post } from "@/atoms/postsAtom";
+import useCustomToast from "@/hooks/useCustomToast";
 import {
   Button,
   Flex,
@@ -8,6 +9,8 @@ import {
   Skeleton,
   Stack,
   Text,
+  useClipboard,
+  useToast,
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -81,6 +84,8 @@ const PostItem: React.FC<PostItemProps> = ({
   const [error, setError] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
+  const showToast = useCustomToast();
+  const { onCopy, value, setValue, hasCopied } = useClipboard("");
   /**
    * If there is no selected post then post is already selected
    */
@@ -106,7 +111,11 @@ const PostItem: React.FC<PostItemProps> = ({
         throw new Error("Post could not be deleted"); // throw error
       }
 
-      console.log("Post has been deleted successfully"); // log success
+      showToast({
+        title: "Post Deleted",
+        description: "Your post has been deleted",
+        status: "success",
+      });
       // if the user deletes post from the single post page, they should be redirected to the post's community page
       if (singlePostPage) {
         // if the post is on the single post page
@@ -114,9 +123,47 @@ const PostItem: React.FC<PostItemProps> = ({
       }
     } catch (error: any) {
       setError(error.message);
+      showToast({
+        title: "Post not Deleted",
+        description: "There was an error deleting your post",
+        status: "error",
+      });
     } finally {
       setLoadingDelete(false);
     }
+  };
+
+  /**
+   * Added functionality to share a post by copying the link to the post to the clipboard.
+   * Router will check base URL to copy the correct link depending on the name of the site.
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} event - click event on share button to prevent from post being selected
+   */
+  const handleShare = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation(); // stop event bubbling up to parent
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const postLink = `${baseUrl}/community/${post.communityId}/comments/${post.id}`;
+    setValue(postLink);
+    onCopy(); // copy link to clipboard
+
+    showToast({
+      title: "Link Copied",
+      description: "Link to the post has been saved to your clipboard",
+      status: "info",
+    });
+  };
+
+  const handleSave = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation(); // stop event bubbling up to parent
+
+    showToast({
+      title: "Functionality Coming Soon",
+      description: "Currently, this functionality is not available",
+      status: "warning",
+    });
   };
 
   return (
@@ -165,6 +212,8 @@ const PostItem: React.FC<PostItemProps> = ({
           handleDelete={handleDelete}
           loadingDelete={loadingDelete}
           userIsCreator={userIsCreator}
+          handleShare={handleShare}
+          handleSave={handleSave}
         />
         <PostItemError
           error={error}
@@ -395,6 +444,8 @@ interface PostActionsProps {
   ) => Promise<void>;
   loadingDelete: boolean;
   userIsCreator: boolean;
+  handleShare: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleSave: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 /**
@@ -411,6 +462,8 @@ const PostActions: React.FC<PostActionsProps> = ({
   handleDelete,
   loadingDelete,
   userIsCreator,
+  handleShare,
+  handleSave,
 }) => (
   <Stack
     ml={1}
@@ -420,12 +473,12 @@ const PostActions: React.FC<PostActionsProps> = ({
     direction="row"
     spacing={1}
   >
-    <Button variant="action" height="32px">
+    <Button variant="action" height="32px" onClick={handleShare}>
       <Icon as={FiShare2} mr={2} />
       <Text fontSize="9pt">Share</Text>
     </Button>
 
-    <Button variant="action" height="32px">
+    <Button variant="action" height="32px" onClick={handleSave}>
       <Icon as={BsBookmark} mr={2} />
       <Text fontSize="9pt">Save</Text>
     </Button>

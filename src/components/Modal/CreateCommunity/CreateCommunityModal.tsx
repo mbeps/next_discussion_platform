@@ -1,4 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
+import useCustomToast from "@/hooks/useCustomToast";
 import useDirectory from "@/hooks/useDirectory";
 import {
   Box,
@@ -84,6 +85,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const showToast = useCustomToast();
 
   /**
    * Handles changes in the input element which takes the name of the community to be created.
@@ -185,7 +187,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     } catch (error: any) {
       console.log("Error: handleCreateCommunity", error);
       setError(error.message);
-      setLoading(false);
+      showToast({
+        title: "Community not Created",
+        description: "There was an error creating your community",
+        status: "error",
+      });
     } finally {
       setLoading(false);
     }
