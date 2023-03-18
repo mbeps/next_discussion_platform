@@ -16,6 +16,7 @@ import {
   Image,
   Icon,
   Stack,
+  Input,
 } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
 import { User } from "@firebase/auth";
@@ -44,6 +45,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [deleteImage, setDeleteImage] = useState(false);
   const showToast = useCustomToast();
+  const [userName, setUserName] = useState("");
 
   const closeModal = () => {
     setSelectedFile("");
@@ -115,12 +117,38 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
+  const onUpdateUserName = async () => {
+    try {
+      const success = await updateProfile({
+        displayName: userName,
+      });
+
+      if (!success) {
+        throw new Error("Failed to update profile name");
+      }
+    } catch (error) {
+      console.error("Error: onUpdateUserName: ", error);
+      showToast({
+        title: "Name not Updated",
+        description: "Failed to update profile name",
+        status: "error",
+      });
+    }
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
+
   const handleSaveButtonClick = () => {
     if (selectedFile) {
       onUpdateImage();
     }
     if (deleteImage) {
       onDeleteImage();
+    }
+    if (userName) {
+      onUpdateUserName();
     }
     closeModal();
   };
@@ -197,7 +225,27 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
                   {/*  */}
                 </Stack>
                 {/*  */}
-                <ProfileModalUserDetails user={user} />
+
+                {/* name */}
+                <Flex direction="column">
+                  <Text fontSize="sm" color="gray.500" mb={1}>
+                    {`Email: ${user?.email}`}
+                  </Text>
+                  <Text fontSize="sm" color="gray.500" mb={1}>
+                    {`Name: ${user?.displayName}`}
+                  </Text>
+                  <Text fontSize="sm" color="gray.500" mb={1}>
+                    User Name
+                  </Text>
+                  <Input
+                    name="displayName"
+                    placeholder="User Name"
+                    value={userName}
+                    type="text"
+                    onChange={handleNameChange}
+                  />
+                </Flex>
+                {/*  */}
               </Stack>
             </ModalBody>
           </Box>
@@ -215,46 +263,3 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   );
 };
 export default ProfileModal;
-
-type ProfileModalPictureProps = {
-  user: User | null | undefined;
-};
-
-const ProfileModalPicture: React.FC<ProfileModalPictureProps> = ({ user }) => {
-  return (
-    <Flex align="center" justify="center" p={2}>
-      {user?.photoURL ? (
-        <Image
-          src={user.photoURL}
-          alt="User Profile Photo"
-          height="120px"
-          borderRadius="full"
-          shadow="md"
-        />
-      ) : (
-        <Icon fontSize={120} mr={1} color="gray.300" as={MdAccountCircle} />
-      )}
-    </Flex>
-  );
-};
-
-interface ProfileModalUserDetailsProps {
-  user: User | null | undefined;
-}
-
-const ProfileModalUserDetails: React.FC<ProfileModalUserDetailsProps> = ({
-  user,
-}) => {
-  return (
-    <Flex direction="column">
-      <Stack direction="row">
-        <Text fontWeight={700}>Display Name:</Text>
-        <Text>{user?.displayName ? user.displayName : "No Name"}</Text>
-      </Stack>
-      <Stack direction="row">
-        <Text fontWeight={700}>Email:</Text>
-        <Text>{user?.email}</Text>
-      </Stack>
-    </Flex>
-  );
-};
