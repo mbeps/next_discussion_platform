@@ -119,7 +119,7 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
       outline: "1px solid",
       outlineColor: "gray.200",
     }}
-    maxWidth="200px"
+    maxWidth="150px"
   >
     <Flex align="center">
       {user ? (
