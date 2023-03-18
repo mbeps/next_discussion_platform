@@ -26,7 +26,7 @@ const OAuthButtons: React.FC = () => {
     useSignInWithGithub(auth);
 
   return (
-    <Box>
+    <Box width="100%">
       <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
         {/* Google */}
         <AuthButton
@@ -93,6 +93,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
       variant="oauth"
       isLoading={isLoading}
       onClick={onClick}
+      width="50%"
     >
       <Image
         src={image}

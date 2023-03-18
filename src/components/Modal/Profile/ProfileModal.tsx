@@ -242,7 +242,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     if (userName && userName !== user?.displayName) {
       onUpdateUserName();
     }
-    router.reload();
     closeModal();
   };
 
@@ -268,7 +267,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
             <ModalBody display="flex" flexDirection="column" padding="10px 0px">
               <Stack p={5} spacing={5}>
                 {/* image */}
-                <Flex align="center" justify="center" p={2}>
+                <Stack direction="column" align="center" justify="center" p={2}>
                   {user?.photoURL || selectedFile ? (
                     <Image
                       src={selectedFile || (user?.photoURL as string)}
@@ -285,7 +284,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
                       as={MdAccountCircle}
                     />
                   )}
-                </Flex>
+                  <Text fontSize="xl" color="gray.700">
+                    {user?.displayName}
+                  </Text>
+                </Stack>
 
                 {isEditing && (
                   <Stack spacing={1} direction="row" flexGrow={1}>
@@ -376,23 +378,35 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
             </ModalBody>
           </Box>
           <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button variant="outline" height="30px" mr={3} onClick={closeModal}>
-              Cancel
-            </Button>
-            {isEditing ? (
-              <Button height="30px" onClick={handleSaveButtonClick}>
-                Save
-              </Button>
-            ) : (
+            <Stack direction="row" justifyContent="space-between" width="100%">
               <Button
+                variant="outline"
                 height="30px"
-                onClick={() => {
-                  setIsEditing(true);
-                }}
+                width="100%"
+                onClick={closeModal}
               >
-                Edit
+                Cancel
               </Button>
-            )}
+              {isEditing ? (
+                <Button
+                  height="30px"
+                  width="100%"
+                  onClick={handleSaveButtonClick}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  height="30px"
+                  width="100%"
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>

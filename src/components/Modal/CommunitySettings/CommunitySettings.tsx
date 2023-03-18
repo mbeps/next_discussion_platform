@@ -164,7 +164,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
 
   /**
    * Deletes the image of the community.
-   * @param communityId (string) - id of the community
+   * @param {string} communityId - id of the community
    */
   const onDeleteImage = async (communityId: string) => {
     try {
@@ -416,12 +416,26 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
           </Box>
 
           <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button variant="outline" height="30px" mr={3} onClick={closeModal}>
-              Cancel
-            </Button>
-            <Button height="30px" onClick={handleSaveButtonClick}>
-              Save
-            </Button>
+            <Stack direction="row" justifyContent="space-between" width="100%">
+              <Button
+                width="100%"
+                variant="outline"
+                height="30px"
+                mr={3}
+                onClick={closeModal}
+                flex={1}
+              >
+                Cancel
+              </Button>
+              <Button
+                width="100%"
+                height="30px"
+                onClick={handleSaveButtonClick}
+                flex={1}
+              >
+                Save
+              </Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
