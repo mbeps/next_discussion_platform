@@ -32,6 +32,7 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { MdAccountCircle } from "react-icons/md";
@@ -54,7 +55,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   const showToast = useCustomToast();
   const [userName, setUserName] = useState(user?.displayName || "");
   const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
 
+  /**
+   * Closes the modal and resets the states.
+   */
   const closeModal = () => {
     setSelectedFile("");
     setDeleteImage(false);
@@ -62,6 +67,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     handleClose();
   };
 
+  /**
+   * Update profile image of the currently logged in user.
+   * Exists if the user is not logged in or no image is selected.
+   */
   const onUpdateImage = async () => {
     if (!(user && selectedFile)) {
       return;
@@ -75,7 +84,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
 
       const success = await updateProfile({
         photoURL: downloadURL,
-      });
+      }); // update profile image url in firestore
       if (!success) {
         throw new Error("Failed to update profile image");
       }
@@ -97,16 +106,20 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
+  /**
+   * Deletes the profile image of the currently logged in user.
+   * Exists if the user is not logged in.
+   */
   const onDeleteImage = async () => {
     try {
       if (!user) {
         return;
       }
-      const imageRef = ref(storage, `users/${user?.uid}/profileImage`);
-      await deleteObject(imageRef);
+      const imageRef = ref(storage, `users/${user?.uid}/profileImage`); // path to store image
+      await deleteObject(imageRef); // delete image
       const success = await updateProfile({
         photoURL: "",
-      });
+      }); // update profile image url in firestore
       if (!success) {
         throw new Error("Failed to delete profile image");
       }
@@ -126,7 +139,12 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
-  // Function to update creatorDisplayText in comments
+  /**
+   * Updates the name of the creator of the comments.
+   * Finds all the comments a user has created and updates the creator name.
+   * @param {string} userId - ID of the user whose comments are to be updated
+   * @param {string} newUserName - New name of the user
+   */
   const updateUserNameInComments = async (
     userId: string,
     newUserName: string
@@ -134,37 +152,49 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     const commentsQuery = query(
       collection(firestore, "comments"),
       where("creatorId", "==", userId)
-    );
-    const commentsSnapshot = await getDocs(commentsQuery);
+    ); // query to get all comments by the user
+    const commentsSnapshot = await getDocs(commentsQuery); // get all comments by the user
 
-    const batch = writeBatch(firestore);
+    const batch = writeBatch(firestore); // create batch to update multiple documents
 
     commentsSnapshot.forEach((commentDoc) => {
       const commentRef = doc(firestore, "comments", commentDoc.id);
       batch.update(commentRef, { creatorDisplayText: newUserName });
-    });
+    }); // update all comments
 
-    await batch.commit();
+    await batch.commit(); // commit batch
   };
 
   // Function to update creatorUsername in posts
+  /**
+   * Updates the name of the creator of the posts.
+   * Finds all the posts a user has created and updates the creator name.
+   */
   const updateUserNameInPosts = async (userId: string, newUserName: string) => {
     const postsQuery = query(
       collection(firestore, "posts"),
       where("creatorId", "==", userId)
-    );
+    ); // query to get all posts by the user
     const postsSnapshot = await getDocs(postsQuery);
 
-    const batch = writeBatch(firestore);
+    const batch = writeBatch(firestore); // create batch to update multiple documents
 
     postsSnapshot.forEach((postDoc) => {
       const postRef = doc(firestore, "posts", postDoc.id);
       batch.update(postRef, { creatorUsername: newUserName });
-    });
+    }); // update all posts
 
     await batch.commit();
   };
 
+  /**
+   * Update profile name of the currently logged in user.
+   * Updates:
+   *  - `displayName` in `users` collection
+   *  - `creatorDisplayText` in `comments` collection
+   *  - `creatorUsername` in `posts` collection
+   * Updates values in multiple places as they are repeated in different collections.
+   */
   const onUpdateUserName = async () => {
     try {
       const success = await updateProfile({
@@ -187,10 +217,21 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
+  /**
+   * Updates the state which tracks the name of the user.
+   * @param {React.ChangeEvent<HTMLInputElement>} event - event of the input field
+   */
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
 
+  /**
+   * Saves the changes made to the profile.
+   * If the profile image is changed, it is updated.
+   * If the profile image is deleted, it is deleted.
+   * If the profile name is changed, it is updated.
+   * Closes the modal after saving.
+   */
   const handleSaveButtonClick = () => {
     if (selectedFile) {
       onUpdateImage();
@@ -201,6 +242,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     if (userName && userName !== user?.displayName) {
       onUpdateUserName();
     }
+    router.reload();
     closeModal();
   };
 
