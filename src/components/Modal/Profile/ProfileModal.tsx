@@ -1,4 +1,4 @@
-import { auth, storage } from "@/firebase/clientApp";
+import { auth, firestore, storage } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
@@ -18,6 +18,14 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import {
+  query,
+  collection,
+  where,
+  getDocs,
+  writeBatch,
+  doc,
+} from "firebase/firestore";
 import {
   deleteObject,
   getDownloadURL,
@@ -118,6 +126,45 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
+  // Function to update creatorDisplayText in comments
+  const updateUserNameInComments = async (
+    userId: string,
+    newUserName: string
+  ) => {
+    const commentsQuery = query(
+      collection(firestore, "comments"),
+      where("creatorId", "==", userId)
+    );
+    const commentsSnapshot = await getDocs(commentsQuery);
+
+    const batch = writeBatch(firestore);
+
+    commentsSnapshot.forEach((commentDoc) => {
+      const commentRef = doc(firestore, "comments", commentDoc.id);
+      batch.update(commentRef, { creatorDisplayText: newUserName });
+    });
+
+    await batch.commit();
+  };
+
+  // Function to update creatorUsername in posts
+  const updateUserNameInPosts = async (userId: string, newUserName: string) => {
+    const postsQuery = query(
+      collection(firestore, "posts"),
+      where("creatorId", "==", userId)
+    );
+    const postsSnapshot = await getDocs(postsQuery);
+
+    const batch = writeBatch(firestore);
+
+    postsSnapshot.forEach((postDoc) => {
+      const postRef = doc(firestore, "posts", postDoc.id);
+      batch.update(postRef, { creatorUsername: newUserName });
+    });
+
+    await batch.commit();
+  };
+
   const onUpdateUserName = async () => {
     try {
       const success = await updateProfile({
@@ -127,6 +174,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
       if (!success) {
         throw new Error("Failed to update profile name");
       }
+      // Update the creatorDisplayText in comments and creatorUsername in posts
+      await updateUserNameInComments(user!.uid, userName);
+      await updateUserNameInPosts(user!.uid, userName);
     } catch (error) {
       console.error("Error: onUpdateUserName: ", error);
       showToast({
