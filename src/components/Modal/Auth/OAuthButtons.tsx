@@ -27,14 +27,7 @@ const OAuthButtons: React.FC = () => {
 
   return (
     <Box width="100%">
-      <Stack
-        direction="row"
-        spacing={2}
-        width="100%"
-        mb={1.5}
-        mt={2}
-        border="1px solid green"
-      >
+      <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
         {/* Google */}
         <AuthButton
           provider="Google"
