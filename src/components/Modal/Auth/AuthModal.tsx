@@ -99,7 +99,7 @@ const AuthModal: React.FC = () => {
               direction="column"
               align="center"
               justify="center"
-              width="70%"
+              width="75%"
             >
               {/* If user is trying to authenticate (log in or sign up) */}
               {modalState.view === "login" || modalState.view === "signup" ? (
