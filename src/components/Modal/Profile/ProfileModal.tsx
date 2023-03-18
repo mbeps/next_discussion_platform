@@ -21,7 +21,12 @@ import { MdAccountCircle } from "react-icons/md";
 import { User } from "@firebase/auth";
 import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
 
 type ProfileModalProps = {
   open: boolean;
@@ -63,6 +68,12 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
       if (!success) {
         throw new Error("Failed to update profile image");
       }
+
+      showToast({
+        title: "Profile updated",
+        description: "Your profile has been updated",
+        status: "success",
+      });
     } catch (error) {
       console.error("Error: onUpdateImage: ", error);
       showToast({
@@ -75,15 +86,42 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
     }
   };
 
+  const onDeleteImage = async () => {
+    try {
+      if (!user) {
+        return;
+      }
+      const imageRef = ref(storage, `users/${user?.uid}/profileImage`);
+      await deleteObject(imageRef);
+      const success = await updateProfile({
+        photoURL: "",
+      });
+      if (!success) {
+        throw new Error("Failed to delete profile image");
+      }
+
+      showToast({
+        title: "Profile updated",
+        description: "Your profile has been updated",
+        status: "success",
+      });
+    } catch (error) {
+      console.error("Error: onDeleteImage: ", error);
+      showToast({
+        title: "Image not Deleted",
+        description: "Failed to delete profile image",
+        status: "error",
+      });
+    }
+  };
+
   const handleSaveButtonClick = () => {
     if (selectedFile) {
       onUpdateImage();
     }
-    showToast({
-      title: "Profile updated",
-      description: "Your profile has been updated",
-      status: "success",
-    });
+    if (deleteImage) {
+      onDeleteImage();
+    }
     closeModal();
   };
 
