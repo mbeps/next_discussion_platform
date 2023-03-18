@@ -1,12 +1,7 @@
+import { Button, Flex, Link, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { Flex, Button, Stack, Text } from "@chakra-ui/react";
-import Link from "next/link";
 
-/**
- * Displays appropriate message when trying to visit a community that does not exit.
- * @returns {React.FC} - CommunityNotFound component
- */
-const CommunityNotFound: React.FC = () => {
+const PageNotFound: React.FC = () => {
   return (
     <Flex
       direction="column"
@@ -15,7 +10,7 @@ const CommunityNotFound: React.FC = () => {
       minHeight="60vh"
     >
       <Text fontSize="2xl" fontWeight="bold" color="gray.600">
-        Sorry, this community does not exist!
+        Sorry, this page does not exist!
       </Text>
       <Stack direction="row" spacing={4} mt={4}>
         <Link href="/">
@@ -33,4 +28,4 @@ const CommunityNotFound: React.FC = () => {
   );
 };
 
-export default CommunityNotFound;
+export default PageNotFound;

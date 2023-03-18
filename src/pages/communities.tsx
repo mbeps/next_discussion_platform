@@ -43,13 +43,13 @@ const Communities: React.FC = () => {
       setCommunities(communities as Community[]);
     } catch (error) {
       console.log("Error: getCommunityRecommendations", error);
-    } finally {
-      setLoading(false);
       showToast({
         title: "Could not Find Communities",
         description: "There was an error getting communities",
         status: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
 

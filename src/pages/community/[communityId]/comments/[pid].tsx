@@ -68,6 +68,11 @@ const PostPage: React.FC = () => {
     if (pid && !postStateValue.selectedPost) {
       fetchPost(pid as string);
     }
+    // render `NotFound` page if post is not found
+    if (!postStateValue.selectedPost) {
+      router.push("/404");
+      return;
+    }
   }, [postStateValue.selectedPost, router.query]);
 
   return (
