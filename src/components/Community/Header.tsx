@@ -151,6 +151,7 @@ export const JoinOrLeaveButton: React.FC<JoinOrLeaveButtonProps> = ({
       pl={{ base: 2, md: 6 }}
       onClick={onClick}
       shadow="md"
+      width="120px"
     >
       {isJoined ? "Unsubscribe" : "Subscribe"}
     </Button>
