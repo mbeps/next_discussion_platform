@@ -1,6 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
-import useDirectory from "@/hooks/useDirectory";
 import {
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
@@ -239,21 +239,24 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
           </Box>
 
           <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button
-              variant="outline"
-              height="30px"
-              mr={3}
-              onClick={handleClose}
-            >
-              Cancel
-            </Button>
-            <Button
-              height="30px"
-              onClick={handleCreateCommunity}
-              isLoading={loading}
-            >
-              Create Community
-            </Button>
+            <Stack direction="row" justifyContent="space-between" width="100%">
+              <Button
+                variant="outline"
+                height="30px"
+                width="100%"
+                onClick={handleClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                height="30px"
+                width="100%"
+                onClick={handleCreateCommunity}
+                isLoading={loading}
+              >
+                Create Community
+              </Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>

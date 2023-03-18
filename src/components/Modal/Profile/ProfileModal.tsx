@@ -376,23 +376,35 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
             </ModalBody>
           </Box>
           <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Button variant="outline" height="30px" mr={3} onClick={closeModal}>
-              Cancel
-            </Button>
-            {isEditing ? (
-              <Button height="30px" onClick={handleSaveButtonClick}>
-                Save
-              </Button>
-            ) : (
+            <Stack direction="row" justifyContent="space-between" width="100%">
               <Button
+                variant="outline"
                 height="30px"
-                onClick={() => {
-                  setIsEditing(true);
-                }}
+                width="100%"
+                onClick={closeModal}
               >
-                Edit
+                Cancel
               </Button>
-            )}
+              {isEditing ? (
+                <Button
+                  height="30px"
+                  width="100%"
+                  onClick={handleSaveButtonClick}
+                >
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  height="30px"
+                  width="100%"
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
