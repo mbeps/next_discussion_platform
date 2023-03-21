@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest --run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest "
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
@@ -19,11 +22,14 @@
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@types/testing-library__jest-dom": "^5.14.5",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "firebase": "^9.16.0",
     "firebase-functions": "^4.2.1",
     "framer-motion": "^8.5.4",
+    "jsdom": "^21.1.1",
     "moment": "^2.29.4",
     "next": "13.1.6",
     "react": "18.2.0",
@@ -35,6 +41,11 @@
     "typescript": "4.9.4"
   },
   "devDependencies": {
-    "@types/safe-json-stringify": "^1.1.2"
+    "@testing-library/dom": "^9.0.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/safe-json-stringify": "^1.1.2",
+    "vitest": "^0.29.7"
   }
 }
