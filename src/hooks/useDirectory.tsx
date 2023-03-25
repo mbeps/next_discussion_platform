@@ -74,6 +74,18 @@ const useDirectory = () => {
           iconColor: "red.500",
         },
       }));
+    } else if (router.pathname === "/communities") {
+      // if the user is on the communities page
+      setDirectoryState((prev) => ({
+        ...prev,
+        selectedMenuItem: {
+          displayText: "Communities",
+          link: "/communities",
+          imageURL: "",
+          icon: IoPeopleCircleOutline,
+          iconColor: "red.500",
+        },
+      }));
     }
   }, [communityStateValue.currentCommunity, router.pathname]);
 
