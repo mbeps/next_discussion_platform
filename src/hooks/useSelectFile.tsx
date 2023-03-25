@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useCustomToast from "./useCustomToast";
 
 /**
  * Hook provides functionality to select a file.
@@ -14,6 +15,7 @@ import React, { useState } from "react";
  */
 const useSelectFile = (maxHeight: number, maxWidth: number) => {
   const [selectedFile, setSelectedFile] = useState<string>();
+  const showToast = useCustomToast();
 
   /**
    * Allows user to select a file.
@@ -30,14 +32,20 @@ const useSelectFile = (maxHeight: number, maxWidth: number) => {
     if (file) {
       // check if file size is too large
       if (file.size > maxImageSize * 1024 * 1024) {
-        alert(
-          `File size is too large. Maximum file size is ${maxImageSize}MB.`
-        ); // alert user
+        showToast({
+          title: "File size is too large",
+          description: `Maximum file size is ${maxImageSize}MB.`,
+          status: "error",
+        });
         return; // exit function
       }
       // check if file type is allowed
       if (!allowedFileTypes.includes(file.type)) {
-        alert(`Only image file types are allowed (.png / .jpeg / .gif).`); // alert user
+        showToast({
+          title: "File type not allowed",
+          description: `Only image file types are allowed (.png / .jpeg / .gif).`,
+          status: "error",
+        });
         return; // exit function
       }
 
@@ -46,9 +54,11 @@ const useSelectFile = (maxHeight: number, maxWidth: number) => {
       image.src = URL.createObjectURL(file);
       image.onload = () => {
         if (image.width > maxWidth || image.height > maxHeight) {
-          alert(
-            `Image dimensions are too large. Maximum dimensions are ${maxWidth}x${maxHeight}.`
-          ); // alert user
+          showToast({
+            title: "Image dimensions are too large",
+            description: `Maximum dimensions are ${maxWidth}x${maxHeight}.`,
+            status: "error",
+          });
           return; // exit function
         }
 
