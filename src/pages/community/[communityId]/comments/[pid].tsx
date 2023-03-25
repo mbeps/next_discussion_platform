@@ -2,6 +2,7 @@
 import { Post } from "@/atoms/postsAtom";
 import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
+import PostLoader from "@/components/Loaders/PostLoader";
 import Comments from "@/components/Posts/Comments/Comments";
 import PostItem from "@/components/Posts/PostItem";
 import { auth, firestore } from "@/firebase/clientApp";
@@ -33,6 +34,7 @@ const PostPage: React.FC = () => {
   const showToast = useCustomToast();
   const [hasFetched, setHasFetched] = useState(false);
   const [postExists, setPostExists] = useState(true);
+  const [postLoading, setPostLoading] = useState(false);
 
   /**
    * The necessary data for this page should be passed as props from the previous page.
@@ -43,6 +45,7 @@ const PostPage: React.FC = () => {
    * @param {string} postId  - Post ID for the post to be fetched
    */
   const fetchPost = async (postId: string) => {
+    setPostLoading(true);
     try {
       setHasFetched(false); // Reset fetching attempt status
       const postDocRef = doc(firestore, "posts", postId); // Get post document reference
@@ -69,6 +72,7 @@ const PostPage: React.FC = () => {
       setPostExists(false); // Set post existence to false on error
     } finally {
       setHasFetched(true); // Set fetching attempt status to true when finished
+      setPostLoading(false);
     }
   };
   /**
@@ -97,42 +101,45 @@ const PostPage: React.FC = () => {
 
   return (
     <PageContent>
-      {/* Right */}
+      {/* Left */}
       <>
-        <Stack spacing={3} direction="column">
-          {postStateValue.selectedPost && (
-            <PostItem
-              post={postStateValue.selectedPost}
-              onVote={onVote}
-              onDeletePost={onDeletePost}
-              userVoteValue={
-                postStateValue.postVotes.find(
-                  (item) => item.postId === postStateValue.selectedPost?.id
-                )?.voteValue
-              }
-              userIsCreator={
-                user?.uid === postStateValue.selectedPost?.creatorId
-              }
-              showCommunityImage={true}
-            />
-          )}
+        {postLoading ? (
+          <PostLoader />
+        ) : (
+          <>
+            <Stack spacing={3} direction="column">
+              {postStateValue.selectedPost && (
+                <PostItem
+                  post={postStateValue.selectedPost}
+                  onVote={onVote}
+                  onDeletePost={onDeletePost}
+                  userVoteValue={
+                    postStateValue.postVotes.find(
+                      (item) => item.postId === postStateValue.selectedPost?.id
+                    )?.voteValue
+                  }
+                  userIsCreator={
+                    user?.uid === postStateValue.selectedPost?.creatorId
+                  }
+                  showCommunityImage={true}
+                />
+              )}
 
-          <Comments
-            user={user as User}
-            selectedPost={postStateValue.selectedPost}
-            communityId={postStateValue.selectedPost?.communityId as string}
-          />
-        </Stack>
+              <Comments
+                user={user as User}
+                selectedPost={postStateValue.selectedPost}
+                communityId={postStateValue.selectedPost?.communityId as string}
+              />
+            </Stack>
+          </>
+        )}
       </>
       {communityStateValue.currentCommunity && (
         <About communityData={communityStateValue.currentCommunity} />
       )}
-      {/* Left */}
+      {/* Right */}
       <></>
     </PageContent>
   );
 };
 export default PostPage;
-function setPostExists(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
