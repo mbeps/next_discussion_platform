@@ -6,7 +6,7 @@ import CommunityLoader from "@/components/Loaders/CommunityLoader";
 import { firestore } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { Button, Flex, Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -95,6 +95,7 @@ const Communities: React.FC = () => {
                   getCommunities(5);
                 }}
                 shadow="md"
+                isLoading={loading}
               >
                 View More
               </Button>
