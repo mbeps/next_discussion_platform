@@ -12,7 +12,7 @@ import { Stack } from "@chakra-ui/react";
 import { doc, getDoc } from "@firebase/firestore";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 /**
@@ -31,22 +31,34 @@ const PostPage: React.FC = () => {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const showToast = useCustomToast();
+  const [hasFetched, setHasFetched] = useState(false);
+  const [postExists, setPostExists] = useState(true);
 
   /**
-   * Single post page received all the necessary post data (state) from community page.
-   * Refreshing the page or pasting link to the post loads an empty page.
-   * This is because the community page was bypassed hence the state is empty.
-   * If the state is empty then fetch the data from Firebase.
+   * The necessary data for this page should be passed as props from the previous page.
+   * If the user navigates to this page directly (using link), the data will not be available.
+   * This function fetches the data from Firebase and populates the state.
+   * The function checks if the post exists.
+   *
    * @param {string} postId  - Post ID for the post to be fetched
    */
   const fetchPost = async (postId: string) => {
     try {
+      setHasFetched(false); // Reset fetching attempt status
       const postDocRef = doc(firestore, "posts", postId); // Get post document reference
       const postDoc = await getDoc(postDocRef); // Get post document
-      setPostStateValue((prev) => ({
-        ...prev,
-        selectedPost: { id: postDoc.id, ...(postDoc.data() as Post) },
-      })); // Set post state
+
+      if (postDoc.exists()) {
+        // If post exists
+        setPostStateValue((prev) => ({
+          ...prev,
+          selectedPost: { id: postDoc.id, ...(postDoc.data() as Post) },
+        })); // Set post state
+        setPostExists(true); // Set post existence to true
+      } else {
+        // If post does not exist
+        setPostExists(false); // Set post existence to false if post not found
+      }
     } catch (error) {
       console.log("Error: fetchPost", error);
       showToast({
@@ -54,13 +66,20 @@ const PostPage: React.FC = () => {
         description: "There was an error finding posts",
         status: "error",
       });
+      setPostExists(false); // Set post existence to false on error
+    } finally {
+      setHasFetched(true); // Set fetching attempt status to true when finished
     }
   };
-
   /**
    * Fetch post data if the state is empty and the post ID is available.
    * This is to prevent fetching the post data when the user is on the community page.
    * The post data is already available in the state.
+   *
+   * Runs when the page is loaded, when the post ID changes, and when the post state changes.
+   * Checks if the post data is available in the state (when the user navigates to this page from another page).
+   * If the post state is empty due the user navigating to the page directly, it will fetch the post data.
+   * if the post data is not valid, it will redirect to the `404` page.
    */
   useEffect(() => {
     const { pid } = router.query;
@@ -68,12 +87,13 @@ const PostPage: React.FC = () => {
     if (pid && !postStateValue.selectedPost) {
       fetchPost(pid as string);
     }
-    // render `NotFound` page if post is not found
-    if (!postStateValue.selectedPost) {
+
+    // If fetching attempt has been completed and post does not exist, redirect to `NotFound` page
+    if (hasFetched && !postExists) {
       router.push("/404");
       return;
     }
-  }, [postStateValue.selectedPost, router.query]);
+  }, [postStateValue.selectedPost, router.query, hasFetched, postExists]);
 
   return (
     <PageContent>
@@ -113,3 +133,6 @@ const PostPage: React.FC = () => {
   );
 };
 export default PostPage;
+function setPostExists(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
