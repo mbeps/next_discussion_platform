@@ -29,10 +29,12 @@ const useDirectory = () => {
    * @param {DirectoryMenuItem} menuItem - object representing the menu item that was selected
    */
   const onSelectMenuItem = (menuItem: DirectoryMenuItem) => {
+    // updates the selected menu item on state
     setDirectoryState((prev) => ({
       ...prev,
       selectedMenuItem: menuItem,
     })); // set the selected menu item on state
+
     router.push(menuItem.link); // redirect the user to the page
     if (directoryState.isOpen) {
       // if the menu is open, then close it

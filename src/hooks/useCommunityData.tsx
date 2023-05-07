@@ -69,7 +69,7 @@ const useCommunityData = () => {
   };
 
   /**
-   * Checks whether the user is subscribed to the community.
+   * Fetches the user's subscribed communities.
    * @async
    * @throws {error} - failed to fetch required data
    */
@@ -109,11 +109,12 @@ const useCommunityData = () => {
     try {
       const batch = writeBatch(firestore);
 
+      // creates a new snippet representing the subscription (from current page)
       const newSnippet: CommunitySnippet = {
-        communityId: communityData.id,
-        imageURL: communityData.imageURL || "",
+        communityId: communityData.id, // community id from the current community page
+        imageURL: communityData.imageURL || "", // community image from the current community page
         // if the creator of community re-subscribes to the community
-        isAdmin: user?.uid === communityData.creatorId,
+        isAdmin: user?.uid === communityData.creatorId, // if the user is the creator of the community
       };
 
       // create a new community snippet into the user document (subscription)
@@ -150,14 +151,17 @@ const useCommunityData = () => {
   };
 
   /**
-   * Fetches the community data from the database.
-   * @param {string} communityId - community from which the user is unsubscribed from
+   * Fetches the community data from the database and updates the state by storing it in the Recoil atom.
+   * @param {string} communityId - community id of the community to be fetched
+   *
+   * @async
    */
   const getCommunityData = async (communityId: string) => {
     try {
       const communityDocRef = doc(firestore, "communities", communityId);
       const communityDoc = await getDoc(communityDocRef);
 
+      // update state to update the UI by selecting the community
       setCommunityStateValue((prev) => ({
         ...prev,
         currentCommunity: {

@@ -19,6 +19,7 @@ interface CustomToastOptions {
  * @param {string} title - title of the toast
  * @param {string} description - description of the toast
  * @param {"success" | "error" | "warning" | "info"} status - status of the toast
+ *
  * @returns {function} - function which shows a toast
  */
 const useCustomToast = () => {
