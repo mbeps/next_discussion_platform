@@ -223,7 +223,7 @@ const usePosts = () => {
   };
 
   /**
-   * Fetches community status.
+   * Fetches community votes for the current user in the current community.
    * When reloading, the community status is no longer stored in state.
    * @param communityId (string) - id of the community
    */
