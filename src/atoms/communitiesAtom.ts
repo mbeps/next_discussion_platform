@@ -20,9 +20,11 @@ export interface Community {
 }
 
 /**
- * The communities a user us subscribed to is stored in the `users` collection (as snippets)
- * in the database for higher efficiency.
+ * The snippet representing a community a user us subscribed to
+ * is stored in the `users` collection (as snippets) in the database for higher efficiency.
  * This interface represents the snippets of data for a community that a user is subscribed to.
+ * The whole community data is not required and it can be fetched from `communities` if required.
+ * This stores just enough data to model the subscription relations.
  * @property {string} communityId - unique identifier for the community
  * @property {boolean} isAdmin - whether the user is an admin of the community or not
  * @property {string} imageURL - URL of the community's image
