@@ -103,3 +103,9 @@ These are required for querying.
 npm run dev
 ```
 This should run the project on `localhost:3000`
+
+# **Demo**
+This video demonstrates the features and functionality of the project. 
+
+https://user-images.githubusercontent.com/58662575/236821702-25dfb59c-162f-4de5-af8f-e0e7b8315aae.mp4
+
