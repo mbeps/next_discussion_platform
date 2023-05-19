@@ -10,7 +10,7 @@ Our platform is also designed to be user-friendly and accessible, with a respons
 # **Requirements**
 These are the requirements needed to run the project:
 - Node 18 LTS
-- Next.JS 13
+- Next.JS 12+
 - Firebase V9
 
 # **Features**
@@ -63,7 +63,7 @@ These are the main technologies that were used in this project:
 
 # **Running Application Locally**
 These are simple steps to run the application locally. For more detail instructions, refer to the Wiki. 
-## 1. **Clone the project locally**
+## 1. **Clone the Project Locally**
 ```sh
 git clone https://github.com/mbeps/next_discussion_platform.git
 ```
