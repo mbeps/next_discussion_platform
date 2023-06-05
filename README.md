@@ -53,7 +53,7 @@ The system has several general features to make the site user-friendly and acces
 - Logged-out users can view posts from all communities in order of likes
 - System UI is responsive, hence it can be used on smartphones, tablets, or computers
 
-## **Stack**
+# **Stack**
 These are the main technologies that were used in this project:
 - [**TypeScript**](https://www.typescriptlang.org/): TypeScript is a superset of JavaScript that adds optional static typing and other features to make the development of large-scale JavaScript applications easier and more efficient. TypeScript enables developers to catch errors earlier in the development process, write more maintainable code, and benefit from advanced editor support.
 - [**Next.js**](https://nextjs.org/): Next.js is a popular React framework for building server-side rendered (SSR) and statically generated web applications. It provides a set of tools and conventions that make it easy to build modern, performant web applications that can be easily deployed to a variety of hosting environments.
