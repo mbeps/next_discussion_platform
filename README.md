@@ -55,14 +55,20 @@ The system has several general features to make the site user-friendly and acces
 
 # **Stack**
 These are the main technologies that were used in this project:
+
+## **Front-End**
 - [**TypeScript**](https://www.typescriptlang.org/): TypeScript is a superset of JavaScript that adds optional static typing and other features to make the development of large-scale JavaScript applications easier and more efficient. TypeScript enables developers to catch errors earlier in the development process, write more maintainable code, and benefit from advanced editor support.
 - [**Next.js**](https://nextjs.org/): Next.js is a popular React framework for building server-side rendered (SSR) and statically generated web applications. It provides a set of tools and conventions that make it easy to build modern, performant web applications that can be easily deployed to a variety of hosting environments.
-- [**Firebase**](https://firebase.google.com/): Firebase is a mobile and web application development platform that provides a range of tools and services to help developers build high-quality apps quickly and easily. Firebase offers features such as real-time database, cloud storage, authentication, hosting, and more, all of which can be easily integrated into your Next.js app.
 - [**Recoil State Manager**](https://recoiljs.org/): Recoil is a state management library for React applications that provides a simple, flexible, and efficient way to manage shared state in your app. Recoil is designed to work seamlessly with React and is particularly well-suited for complex or large-scale applications.
 - [**Chakra UI**](https://chakra-ui.com/): Chakra UI is a popular React component library that provides a set of customizable, accessible, and responsive UI components for building web applications. Chakra UI is built with accessibility in mind and provides a range of pre-built components that can be easily customized to fit your app's design and branding.
 
+
+## **Back-End**
+- [**Firebase**](https://firebase.google.com/): Firebase is a mobile and web application development platform that provides a range of tools and services to help developers build high-quality apps quickly and easily. Firebase offers features such as real-time database, cloud storage, authentication, hosting, and more, all of which can be easily integrated into your Next.js app.
+
 # **Running Application Locally**
-These are simple steps to run the application locally. For more detail instructions, refer to the Wiki. 
+These are simple steps to run the application locally. For more detail instructions, refer to the [Wiki](https://github.com/mbeps/next_discussion_platform/wiki). 
+
 ## 1. **Clone the Project Locally**
 ```sh
 git clone https://github.com/mbeps/next_discussion_platform.git
@@ -103,6 +109,15 @@ These are required for querying.
 npm run dev
 ```
 This should run the project on `localhost:3000`
+
+# **Running via Docker**
+You can build and run the application through Docker. This requires the `.env.local` file to be completed, refer to 
+installation instructions in the [Wiki](https://github.com/mbeps/next_discussion_platform/wiki/3.-Installation#step-32-obtain-firebase-secrets-and-add-them-to-the-envlocal-file) for setting it up.
+
+Once everything is ready, use the command bellow to run the application. 
+```sh
+docker-compose -f docker/docker-compose.yml up --build
+```
 
 # **Demo**
 This video demonstrates the features and functionality of the project. 
