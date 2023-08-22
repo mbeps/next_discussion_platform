@@ -1,8 +1,12 @@
-version: '3'
+version: "3"
+
 services:
   nextjs:
-    build: 
+    container_name: nextjs
+    build:
       context: .. # root of the project
-      dockerfile: docker/next/Dockerfile # location of the dockerfile
+      dockerfile: docker/next/Dockerfile
+    env_file:
+      - ../.env
     ports:
       - 3000:3000
