@@ -1,3 +1,6 @@
+<img width="1000" alt="cover" src="https://github.com/mbeps/next_discussion_platform/assets/58662575/21829226-db49-4f91-815c-8af72ff6dacf">
+
+---
 
 Introducing Circus, a simple yet powerful discussion platform that enables users to engage with each other in a variety of ways. Our platform is similar to popular sites like Reddit and Quora, but with a range of unique features that set us apart.
 
