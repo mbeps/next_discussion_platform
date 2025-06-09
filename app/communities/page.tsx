@@ -1,3 +1,4 @@
+"use client"
 import { Community } from "@/atoms/communitiesAtom";
 import CommunityItem from "@/components/Community/CommunityItem";
 import PersonalHome from "@/components/Community/PersonalHome";
@@ -8,7 +9,7 @@ import useCommunityData from "@/hooks/useCommunityData";
 import useCustomToast from "@/hooks/useCustomToast";
 import { Button, Flex, Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
-import { useRouter } from "next/router";
+
 import React, { useEffect, useState } from "react";
 
 /**
@@ -20,7 +21,6 @@ const Communities: React.FC = () => {
   const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
   const [loading, setLoading] = useState(false);
   const [communities, setCommunities] = useState<Community[]>([]);
-  const router = useRouter();
   const showToast = useCustomToast();
 
   /**

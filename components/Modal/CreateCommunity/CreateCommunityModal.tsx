@@ -18,7 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FC, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IconType } from "react-icons";

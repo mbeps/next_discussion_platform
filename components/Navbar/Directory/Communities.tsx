@@ -3,7 +3,7 @@ import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import CreateCommunityModal from "@/components/Modal/CreateCommunity/CreateCommunityModal";
 import useDirectory from "@/hooks/useDirectory";
 import { Box, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";

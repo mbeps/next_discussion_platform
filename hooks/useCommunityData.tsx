@@ -14,7 +14,7 @@ import {
   increment,
   writeBatch,
 } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -37,6 +37,7 @@ const useCommunityData = () => {
   const [error, setError] = useState("");
   const setAuthModalState = useSetRecoilState(authModalState);
   const router = useRouter();
+  const params = useParams();
   const showToast = useCustomToast();
 
   /**
@@ -244,12 +245,11 @@ const useCommunityData = () => {
    * The community data is stored in the communityState.
    */
   useEffect(() => {
-    const { communityId } = router.query; // get the communityId from the URL
+    const { communityId } = params as { communityId?: string };
     if (communityId && !communityStateValue.currentCommunity) {
-      // if the communityId exists and the community data is not already fetched
-      getCommunityData(communityId as string); // fetch the community data
+      getCommunityData(communityId);
     }
-  }, [communityStateValue.currentCommunity, router.query]);
+  }, [communityStateValue.currentCommunity, params]);
 
   return {
     communityStateValue,

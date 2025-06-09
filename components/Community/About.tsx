@@ -3,7 +3,7 @@ import { auth } from "@/firebase/clientApp";
 import { Box, Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import { User } from "@firebase/auth";
 import moment from "moment";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";

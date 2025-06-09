@@ -14,7 +14,7 @@ import {
 } from "@firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";

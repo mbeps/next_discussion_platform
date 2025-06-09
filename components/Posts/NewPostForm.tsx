@@ -21,7 +21,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import React, { useState } from "react";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { MdOutlineArrowBackIos } from "react-icons/md";
@@ -86,6 +86,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   currentCommunity,
 }) => {
   const router = useRouter();
+  const params = useParams();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title); // formTabs[0] = Post
   const [textInputs, setTextInputs] = useState({
     title: "",
@@ -107,7 +108,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
    * @async
    */
   const handleCreatePost = async () => {
-    const { communityId } = router.query;
+    const { communityId } = params as { communityId?: string };
     // create a new post object
     const newPost: Post = {
       communityId: communityId as string,

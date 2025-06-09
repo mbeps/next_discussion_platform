@@ -4,7 +4,7 @@ import {
   DirectoryMenuItem,
   directoryMenuState,
 } from "@/atoms/directoryMenuAtom";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -20,6 +20,7 @@ const useDirectory = () => {
   const [directoryState, setDirectoryState] =
     useRecoilState(directoryMenuState);
   const router = useRouter();
+  const pathname = usePathname();
   const communityStateValue = useRecoilValue(communityState);
 
   /**
@@ -62,8 +63,8 @@ const useDirectory = () => {
 
     if (
       currentCommunity &&
-      router.pathname !== "/" &&
-      router.pathname !== "/communities"
+      pathname !== "/" &&
+      pathname !== "/communities"
     ) {
       // if the user is currently in a community and not on the home page
       setDirectoryState((prev) => ({
@@ -76,7 +77,7 @@ const useDirectory = () => {
           iconColor: "red.500",
         },
       }));
-    } else if (router.pathname === "/communities") {
+    } else if (pathname === "/communities") {
       // if the user is on the communities page
       setDirectoryState((prev) => ({
         ...prev,
@@ -89,7 +90,7 @@ const useDirectory = () => {
         },
       }));
     }
-  }, [communityStateValue.currentCommunity, router.pathname]);
+  }, [communityStateValue.currentCommunity, pathname]);
 
   return { directoryState, toggleMenuOpen, onSelectMenuItem };
 };

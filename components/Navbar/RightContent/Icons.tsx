@@ -2,7 +2,7 @@
 import IconItem from "@/components/atoms/Icon";
 import useCallCreatePost from "@/hooks/useCallCreatePost";
 import { Flex, Icon } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { IconType } from "react-icons";
 import { GrAdd } from "react-icons/gr";

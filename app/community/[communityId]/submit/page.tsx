@@ -1,3 +1,4 @@
+"use client"
 import { authModalState } from "@/atoms/authModalAtom";
 import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
