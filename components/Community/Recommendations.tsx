@@ -7,7 +7,6 @@ import {
   Icon,
   Link,
   Skeleton,
-  SkeletonCircle,
   Stack,
   Image,
   Text,
@@ -34,7 +33,7 @@ const Recommendations: React.FC = () => {
       direction="column"
       position="relative"
       bg="white"
-      borderRadius={10}
+      borderRadius="lg"
       border="1px solid"
       borderColor="gray.300"
       shadow="md"
@@ -62,12 +61,10 @@ const SuggestionsHeader: React.FC = () => {
       color="white"
       p="6px 10px"
       height="70px"
-      borderRadius="10px 10px 0px 0px"
+      borderTopRadius="lg"
       fontWeight={700}
-      bgImage="url(/images/banners/large.png)"
+      bgImage="linear-gradient(to bottom, rgba(139, 0, 0, 0), rgba(139, 0, 0, 0.75)), url('/images/banners/large.png')"
       backgroundSize="cover"
-      bgGradient="linear-gradient(to bottom, rgba(139, 0, 0, 0), rgba(139, 0, 0, 0.75)),
-        url('/images/banners/large.png')"
     >
       Top Communities
     </Flex>
@@ -126,7 +123,7 @@ const SuggestedCommunitiesList: React.FC = () => {
             .fill(0)
             .map((_, index) => (
               <Flex justify="space-between" align="center" key={index}>
-                <SkeletonCircle size="10" />
+                <Skeleton borderRadius="full" boxSize="10" />
                 <Skeleton height="10px" width="70%" />
               </Flex>
             ))}
