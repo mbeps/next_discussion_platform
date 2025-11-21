@@ -2,15 +2,7 @@
 import { Post, postState } from "@/atoms/postsAtom";
 import { firestore } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
-import {
-  Box,
-  Divider,
-  Flex,
-  SkeletonCircle,
-  SkeletonText,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import {
   collection,
@@ -236,13 +228,13 @@ const Comments: React.FC<CommentsProps> = ({
           onCreateComment={onCreateComment}
         />
       </Flex>
-      <Stack spacing={4} m={4} ml={10}>
+      <Stack gap={4} m={4} ml={10}>
         {fetchLoading ? (
           <>
             {[0, 1, 2, 3].map((item) => (
               <Box key={item} padding="6" bg="white">
                 <SkeletonCircle size="10" />
-                <SkeletonText mt="4" noOfLines={3} spacing="4" />
+                <SkeletonText mt="4" noOfLines={3} rootProps={{ gap: 4 }} />
               </Box>
             ))}
           </>

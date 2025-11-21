@@ -127,8 +127,8 @@ const SignUp = () => {
         mt={2}
         mb={2}
         type="submit"
-        isLoading={loading} // If loading (from Firebase) is true, show loading spinner
-        isDisabled={isButtonDisabled()}
+        loading={loading} // If loading (from Firebase) is true, show loading spinner
+        disabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}

@@ -27,11 +27,11 @@ const OAuthButtons: React.FC = () => {
 
   return (
     <Box width="100%">
-      <Stack direction="row" spacing={2} width="100%" mb={1.5} mt={2}>
+      <Stack direction="row" gap={2} width="100%" mb={1.5} mt={2}>
         {/* Google */}
         <AuthButton
           provider="Google"
-          isLoading={loadingGoogle}
+          loading={loadingGoogle}
           onClick={() => signInWithGoogle()}
           image="/images/google.png"
         />
@@ -39,7 +39,7 @@ const OAuthButtons: React.FC = () => {
         {/* GitHub */}
         <AuthButton
           provider="GitHub"
-          isLoading={loadingGitHub}
+          loading={loadingGitHub}
           onClick={() => signInWithGithub()}
           image="/images/github.png"
         />
@@ -58,13 +58,13 @@ export default OAuthButtons;
 
 /**
  * @param {string} provider - The name of the provider
- * @param {boolean} isLoading - Whether the button is loading or not
+ * @param {boolean} loading - Whether the button is loading or not
  * @param {() => void} onClick - The function to execute when the button is clicked
  * @param {string} image - The image to display
  */
 interface AuthButtonProps {
   provider: string;
-  isLoading: boolean;
+  loading: boolean;
   onClick: () => void;
   image: string;
 }
@@ -75,7 +75,7 @@ interface AuthButtonProps {
  * - The provider's logo
  * - The provider's name
  * @param {string} provider - The name of the provider
- * @param {boolean} isLoading - Whether the button is loading or not
+ * @param {boolean} loading - Whether the button is loading or not
  * @param {() => void} onClick - The function to execute when the button is clicked
  * @param {string} image - The image to display
  *
@@ -83,15 +83,15 @@ interface AuthButtonProps {
  */
 const AuthButton: React.FC<AuthButtonProps> = ({
   provider,
-  isLoading,
+  loading,
   onClick,
   image,
 }) => {
   return (
     <Button
       flexGrow={1}
-      variant="oauth"
-      isLoading={isLoading}
+      variant={"oauth" as any}
+      loading={loading}
       onClick={onClick}
       width="50%"
     >

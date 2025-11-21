@@ -61,7 +61,7 @@ const Communities: React.FC = () => {
     <>
       <PageContent>
         <>
-          <Stack direction="column" borderRadius={10} spacing={3}>
+          <Stack direction="column" borderRadius={10} gap={3}>
             {loading ? (
               <Stack mt={2} p={3}>
                 {Array(5)
@@ -95,14 +95,14 @@ const Communities: React.FC = () => {
                   getCommunities(5);
                 }}
                 shadow="md"
-                isLoading={loading}
+                loading={loading}
               >
                 View More
               </Button>
             </Flex>
           </Stack>
         </>
-        <Stack spacing={2}>
+        <Stack gap={2}>
           <PersonalHome />
         </Stack>
         <></>

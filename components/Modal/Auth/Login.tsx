@@ -95,8 +95,8 @@ const Login: React.FC<LoginProps> = () => {
         mt={2}
         mb={2}
         type="submit"
-        isLoading={loading}
-        isDisabled={isButtonDisabled()}
+        loading={loading}
+        disabled={isButtonDisabled()}
       >
         {" "}
         {/* When the form is submitted, execute onSubmit function */}

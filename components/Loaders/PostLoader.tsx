@@ -24,9 +24,9 @@ const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
         mt="4"
         noOfLines={1}
         width="40%"
-        spacing="4"
+        rootProps={{ gap: 4 }}
       />
-      <SkeletonText borderRadius={10} mt="4" noOfLines={4} spacing="4" />
+      <SkeletonText borderRadius={10} mt="4" noOfLines={4} rootProps={{ gap: 4 }} />
       <Skeleton borderRadius={10} mt="4" height={height} />
     </Box>
   );
@@ -40,7 +40,7 @@ const PostLoaderItem: React.FC<PostLoaderItemProps> = ({ height }) => {
  */
 const PostLoader: React.FC = () => {
   return (
-    <Stack spacing={6}>
+    <Stack gap={6}>
       <PostLoaderItem height="200px" />
       <PostLoaderItem height="50px" />
     </Stack>

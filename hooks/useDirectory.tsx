@@ -37,8 +37,7 @@ const useDirectory = () => {
 
     router.push(menuItem.link); // redirect the user to the page
     if (directoryState.isOpen) {
-      // if the menu is open, then close it
-      toggleMenuOpen();
+      setDirectoryOpen(false);
     }
   };
 
@@ -46,11 +45,15 @@ const useDirectory = () => {
    * Toggles the directory menu open or closed.
    * If the menu is open, then the menu will close.
    */
-  const toggleMenuOpen = () => {
+  const setDirectoryOpen = (isOpen: boolean) => {
     setDirectoryState((prev) => ({
       ...prev,
-      isOpen: !directoryState.isOpen,
-    })); // toggle the menu open or closed
+      isOpen,
+    }));
+  };
+
+  const toggleMenuOpen = () => {
+    setDirectoryOpen(!directoryState.isOpen);
   };
 
   /**
@@ -91,6 +94,6 @@ const useDirectory = () => {
     }
   }, [communityStateValue.currentCommunity, router.pathname]);
 
-  return { directoryState, toggleMenuOpen, onSelectMenuItem };
+  return { directoryState, toggleMenuOpen, setDirectoryOpen, onSelectMenuItem };
 };
 export default useDirectory;

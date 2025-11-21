@@ -5,18 +5,21 @@ import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
   Button,
-  Divider,
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogPositioner,
+  DialogRoot,
+  DialogTitle,
   Flex,
   Icon,
   Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Select,
+  NativeSelectField,
+  NativeSelectRoot,
+  Separator,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -306,116 +309,124 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
   };
 
   return (
-    <>
-      <Modal isOpen={open} onClose={handleClose}>
-        <ModalOverlay
-          bg="rgba(0, 0, 0, 0.4)"
-          backdropFilter="auto"
-          backdropBlur="5px"
-        />
-        <ModalContent borderRadius={10}>
-          <ModalHeader
+    <DialogRoot
+      open={open}
+      onOpenChange={({ open }: { open: boolean }) => {
+        if (!open) handleClose();
+      }}
+    >
+      <DialogBackdrop
+        bg="rgba(0, 0, 0, 0.4)"
+        backdropFilter="blur(6px)"
+      />
+      <DialogPositioner>
+        <DialogContent borderRadius={10}>
+          <DialogHeader
             display="flex"
             flexDirection="column"
             padding={3}
             textAlign="center"
           >
-            Community Settings
-          </ModalHeader>
+            <DialogTitle>Community Settings</DialogTitle>
+          </DialogHeader>
           <Box>
-            <ModalCloseButton />
-            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
-              <>
-                <Stack fontSize="10pt" spacing={2} p={5}>
-                  {/* community image */}
-                  <Flex align="center" justify="center" p={2}>
-                    {communityStateValue.currentCommunity?.imageURL ||
-                    selectedFile ? (
-                      <Image
-                        src={
-                          selectedFile ||
-                          communityStateValue.currentCommunity?.imageURL
-                        }
-                        alt="Community Photo"
-                        height="120px"
-                        borderRadius="full"
-                        shadow="md"
-                      />
-                    ) : (
-                      <Icon
-                        fontSize={120}
-                        mr={1}
-                        color="gray.300"
-                        as={BsFillPeopleFill}
-                      />
-                    )}
-                  </Flex>
-                  <Flex align="center" justify="center">
-                    <Text fontSize="14pt" fontWeight={600} color="gray.600">
-                      {communityData.id}
-                    </Text>
-                  </Flex>
+            <DialogCloseTrigger position="absolute" top={2} right={2} />
+            <DialogBody display="flex" flexDirection="column" padding="10px 0px">
+              <Stack fontSize="10pt" gap={2} p={5}>
+                {/* community image */}
+                <Flex align="center" justify="center" p={2}>
+                  {communityStateValue.currentCommunity?.imageURL || selectedFile ? (
+                    <Image
+                      src={
+                        selectedFile ||
+                        communityStateValue.currentCommunity?.imageURL
+                      }
+                      alt="Community Photo"
+                      height="120px"
+                      borderRadius="full"
+                      shadow="md"
+                    />
+                  ) : (
+                    <Icon
+                      fontSize={120}
+                      mr={1}
+                      color="gray.300"
+                      as={BsFillPeopleFill}
+                    />
+                  )}
+                </Flex>
+                <Flex align="center" justify="center">
+                  <Text fontSize="14pt" fontWeight={600} color="gray.600">
+                    {communityData.id}
+                  </Text>
+                </Flex>
 
-                  <Stack spacing={1} direction="row" flexGrow={1}>
+                <Stack gap={1} direction="row" flexGrow={1}>
+                  <Button
+                    flex={1}
+                    height={34}
+                    onClick={() => selectFileRef.current?.click()}
+                  >
+                    {communityStateValue.currentCommunity?.imageURL
+                      ? "Change Image"
+                      : "Add Image"}
+                  </Button>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/png,image/gif,image/jpeg"
+                    hidden
+                    ref={selectFileRef}
+                    onChange={onSelectFile}
+                  />
+                  {communityStateValue.currentCommunity?.imageURL && (
                     <Button
                       flex={1}
                       height={34}
-                      onClick={() => selectFileRef.current?.click()}
+                      variant="outline"
+                      onClick={() => setDeleteImage(true)}
+                      disabled={deleteImage}
                     >
-                      {communityStateValue.currentCommunity?.imageURL
-                        ? "Change Image"
-                        : "Add Image"}
+                      Delete Image
                     </Button>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      accept="image/png,image/gif,image/jpeg"
-                      hidden
-                      ref={selectFileRef}
-                      onChange={onSelectFile}
-                    />
-                    {communityStateValue.currentCommunity?.imageURL && (
-                      <Button
-                        flex={1}
-                        height={34}
-                        variant="outline"
-                        onClick={() => setDeleteImage(true)}
-                        isDisabled={deleteImage}
-                      >
-                        Delete Image
-                      </Button>
-                    )}
+                  )}
 
-                    {/*  */}
-                  </Stack>
-                  <Divider />
-                  {/* Change community privacy type */}
-                  <Flex direction="column">
-                    <Stack spacing={2} direction="column" flexGrow={1}>
-                      <Text fontWeight={600} fontSize="12pt" color="gray.500">
-                        Community Type
-                      </Text>
-                      <Text fontWeight={500} fontSize="10pt" color="gray.500">
-                        {`Currently ${communityStateValue.currentCommunity?.privacyType}`}
-                      </Text>
+                  {/*  */}
+                </Stack>
+                <Separator />
+                {/* Change community privacy type */}
+                <Flex direction="column">
+                  <Stack gap={2} direction="column" flexGrow={1}>
+                    <Text fontWeight={600} fontSize="12pt" color="gray.500">
+                      Community Type
+                    </Text>
+                    <Text fontWeight={500} fontSize="10pt" color="gray.500">
+                      {`Currently ${communityStateValue.currentCommunity?.privacyType}`}
+                    </Text>
 
-                      <Select
+                    <NativeSelectRoot>
+                      <NativeSelectField
                         placeholder="Select option"
                         mt={2}
                         onChange={handlePrivacyTypeChange}
+                        value={
+                          selectedPrivacyType ||
+                          communityStateValue.currentCommunity?.privacyType ||
+                          ""
+                        }
                       >
                         <option value="public">Public</option>
                         <option value="restricted">Restricted</option>
                         <option value="private">Private</option>
-                      </Select>
-                    </Stack>
-                  </Flex>
-                </Stack>
-              </>
-            </ModalBody>
+                      </NativeSelectField>
+                    </NativeSelectRoot>
+                  </Stack>
+                </Flex>
+              </Stack>
+            </DialogBody>
           </Box>
 
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+          <DialogFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
             <Stack direction="row" justifyContent="space-between" width="100%">
               <Button
                 width="100%"
@@ -436,10 +447,10 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
                 Save
               </Button>
             </Stack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </DialogFooter>
+        </DialogContent>
+      </DialogPositioner>
+    </DialogRoot>
   );
 };
 

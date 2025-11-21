@@ -107,7 +107,7 @@ const PostPage: React.FC = () => {
           <PostLoader />
         ) : (
           <>
-            <Stack spacing={3} direction="column">
+            <Stack gap={3} direction="column">
               {postStateValue.selectedPost && (
                 <PostItem
                   post={postStateValue.selectedPost}

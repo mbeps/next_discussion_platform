@@ -55,7 +55,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
             handleClose={() => setProfileModalOpen(false)}
             open={isProfileModalOpen}
           />
-          <Stack direction="row" align="center" spacing={1} mb={2}>
+          <Stack direction="row" align="center" gap={1} mb={2}>
             <Text color="gray.600">Comment as</Text>
             <Text
               color="gray.600"
@@ -63,7 +63,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
               _hover={{
                 cursor: "pointer",
                 textDecoration: "underline",
-                textColor: "red.500",
+                color: "red.500",
               }}
               onClick={() => setProfileModalOpen(true)}
             >
@@ -97,14 +97,13 @@ const CommentInput: React.FC<CommentInputProps> = ({
             bg="gray.100"
             p="6px 8px"
             borderRadius="0px 0px 10px 10px"
-            zIndex="997"
+            zIndex="1"
           >
             <Button
               height="30px"
               disabled={!commentText.length}
-              isLoading={createLoading}
+              loading={createLoading}
               onClick={() => onCreateComment(commentText)}
-              zIndex="999"
             >
               Comment
             </Button>

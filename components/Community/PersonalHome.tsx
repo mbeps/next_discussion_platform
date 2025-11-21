@@ -49,7 +49,7 @@ const PersonalHome: React.FC = () => {
             />
             <Text fontWeight={600}>Home</Text>
           </Flex>
-          <Stack spacing={3}>
+          <Stack gap={3}>
             <Text fontSize="9pt">
               Home page personalized based on your subscribed communities.
             </Text>

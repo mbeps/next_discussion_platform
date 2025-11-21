@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       // Rounded props
       border="1px solid"
       borderColor="gray.300"
-      borderRadius={10}
+      borderRadius="lg"
       m={{ base: 1, md: 1.5 }}
       shadow="lg"
     >

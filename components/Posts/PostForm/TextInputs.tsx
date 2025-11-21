@@ -36,7 +36,7 @@ const TextInputs: React.FC<TextInputsProps> = ({
   loading,
 }) => {
   return (
-    <Stack spacing={3} width="100%">
+    <Stack gap={3} width="100%">
       {/* Title  of the post*/}
       <Input
         name="title"
@@ -85,8 +85,8 @@ const TextInputs: React.FC<TextInputsProps> = ({
         <Button
           height="34px"
           padding="0px 30px"
-          isDisabled={!textInputs.title} // if there is no text in the title field button is disabled
-          isLoading={loading}
+          disabled={!textInputs.title} // if there is no text in the title field button is disabled
+          loading={loading}
           onClick={handleCreatePost}
           shadow="md"
         >

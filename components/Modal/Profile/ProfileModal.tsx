@@ -4,17 +4,19 @@ import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
   Button,
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogPositioner,
+  DialogRoot,
+  DialogTitle,
   Flex,
   Icon,
   Image,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -246,143 +248,145 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   };
 
   return (
-    <>
-      <Modal isOpen={open} onClose={handleClose}>
-        <ModalOverlay
-          bg="rgba(0, 0, 0, 0.4)"
-          backdropFilter="auto"
-          backdropBlur="5px"
-        />
-        <ModalContent borderRadius={10}>
-          <ModalHeader
+    <DialogRoot
+      open={open}
+      onOpenChange={({ open }: { open: boolean }) => {
+        if (!open) handleClose();
+      }}
+    >
+      <DialogBackdrop
+        bg="rgba(0, 0, 0, 0.4)"
+        backdropFilter="blur(6px)"
+      />
+      <DialogPositioner>
+        <DialogContent borderRadius={10}>
+          <DialogHeader
             display="flex"
             flexDirection="column"
             padding={3}
             textAlign="center"
           >
-            Profile
-          </ModalHeader>
-          <Box>
-            <ModalCloseButton />
-            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
-              <Stack p={5} spacing={5}>
-                {/* image */}
-                <Stack direction="column" align="center" justify="center" p={2}>
-                  {user?.photoURL || selectedFile ? (
-                    <Image
-                      src={selectedFile || (user?.photoURL as string)}
-                      alt="User Photo"
-                      height="120px"
-                      borderRadius="full"
-                      shadow="md"
-                    />
-                  ) : (
-                    <Icon
-                      fontSize={120}
-                      mr={1}
-                      color="gray.300"
-                      as={MdAccountCircle}
-                    />
-                  )}
-                  <Text fontSize="xl" color="gray.700">
-                    {user?.displayName}
-                  </Text>
-                </Stack>
+            <DialogTitle>Profile</DialogTitle>
+          </DialogHeader>
+          <DialogCloseTrigger position="absolute" top={2} right={2} />
+          <DialogBody display="flex" flexDirection="column" padding="10px 0px">
+            <Stack p={5} gap={5}>
+              {/* image */}
+              <Stack direction="column" align="center" justify="center" p={2}>
+                {user?.photoURL || selectedFile ? (
+                  <Image
+                    src={selectedFile || (user?.photoURL as string)}
+                    alt="User Photo"
+                    height="120px"
+                    borderRadius="full"
+                    shadow="md"
+                  />
+                ) : (
+                  <Icon
+                    fontSize={120}
+                    mr={1}
+                    color="gray.300"
+                    as={MdAccountCircle}
+                  />
+                )}
+                <Text fontSize="xl" color="gray.700">
+                  {user?.displayName}
+                </Text>
+              </Stack>
 
-                {isEditing && (
-                  <Stack spacing={1} direction="row" flexGrow={1}>
+              {isEditing && (
+                <Stack gap={1} direction="row" flexGrow={1}>
+                  <Button
+                    flex={1}
+                    height={34}
+                    onClick={() => selectFileRef.current?.click()}
+                  >
+                    {user?.photoURL ? "Change Image" : "Add Image"}
+                  </Button>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept="image/png,image/gif,image/jpeg"
+                    hidden
+                    ref={selectFileRef}
+                    onChange={onSelectFile}
+                  />
+                  {user?.photoURL && (
                     <Button
                       flex={1}
                       height={34}
-                      onClick={() => selectFileRef.current?.click()}
+                      variant="outline"
+                      onClick={() => setDeleteImage(true)}
+                      disabled={deleteImage}
                     >
-                      {user?.photoURL ? "Change Image" : "Add Image"}
+                      Delete Image
                     </Button>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      accept="image/png,image/gif,image/jpeg"
-                      hidden
-                      ref={selectFileRef}
-                      onChange={onSelectFile}
-                    />
-                    {user?.photoURL && (
-                      <Button
-                        flex={1}
-                        height={34}
-                        variant="outline"
-                        onClick={() => setDeleteImage(true)}
-                        isDisabled={deleteImage}
-                      >
-                        Delete Image
-                      </Button>
-                    )}
-                  </Stack>
-                )}
-                {/*  */}
+                  )}
+                </Stack>
+              )}
+              {/*  */}
 
-                {/* name */}
-                {!isEditing && (
-                  <Flex direction="column">
-                    <Flex direction="row">
-                      <Text
-                        fontSize="12pt"
-                        color="gray.600"
-                        mr={1}
-                        fontWeight={600}
-                      >
-                        Email:
-                      </Text>
-                      <Text fontSize="12pt">{user?.email}</Text>
-                    </Flex>
-                    <Flex direction="row">
-                      <Text
-                        fontSize="12pt"
-                        color="gray.600"
-                        mr={1}
-                        fontWeight={600}
-                      >
-                        User Name:
-                      </Text>
-                      <Text fontSize="12pt">{user?.displayName || ""}</Text>
-                    </Flex>
-                  </Flex>
-                )}
-                {isEditing && (
-                  <Flex direction="column">
-                    <Text fontSize="sm" color="gray.500" mb={1}>
-                      User Name
+              {/* name */}
+              {!isEditing && (
+                <Flex direction="column">
+                  <Flex direction="row">
+                    <Text
+                      fontSize="12pt"
+                      color="gray.600"
+                      mr={1}
+                      fontWeight={600}
+                    >
+                      Email:
                     </Text>
-                    <Input
-                      name="displayName"
-                      placeholder="User Name"
-                      value={userName}
-                      type="text"
-                      onChange={handleNameChange}
-                      _hover={{
-                        bg: "white",
-                        border: "1px solid",
-                        borderColor: "red.500",
-                      }}
-                      _focus={{
-                        bg: "white",
-                        border: "1px solid",
-                        borderColor: "red.500",
-                      }}
-                      borderRadius={10}
-                    />
+                    <Text fontSize="12pt">{user?.email}</Text>
                   </Flex>
-                )}
-                {/*  */}
-              </Stack>
-            </ModalBody>
-          </Box>
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Stack direction="row" justifyContent="space-between" width="100%">
+                  <Flex direction="row">
+                    <Text
+                      fontSize="12pt"
+                      color="gray.600"
+                      mr={1}
+                      fontWeight={600}
+                    >
+                      User Name:
+                    </Text>
+                    <Text fontSize="12pt">{user?.displayName || ""}</Text>
+                  </Flex>
+                </Flex>
+              )}
+              {isEditing && (
+                <Flex direction="column">
+                  <Text fontSize="sm" color="gray.500" mb={1}>
+                    User Name
+                  </Text>
+                  <Input
+                    name="displayName"
+                    placeholder="User Name"
+                    value={userName}
+                    type="text"
+                    onChange={handleNameChange}
+                    _hover={{
+                      bg: "white",
+                      border: "1px solid",
+                      borderColor: "red.500",
+                    }}
+                    _focus={{
+                      bg: "white",
+                      border: "1px solid",
+                      borderColor: "red.500",
+                    }}
+                    borderRadius={10}
+                  />
+                </Flex>
+              )}
+              {/*  */}
+            </Stack>
+          </DialogBody>
+          <DialogFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+            <Stack direction="row" width="100%" gap={2}>
               <Button
                 variant="outline"
                 height="30px"
-                width="100%"
+                flex={1}
                 onClick={closeModal}
               >
                 Cancel
@@ -390,7 +394,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
               {isEditing ? (
                 <Button
                   height="30px"
-                  width="100%"
+                  flex={1}
                   onClick={handleSaveButtonClick}
                 >
                   Save
@@ -398,7 +402,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
               ) : (
                 <Button
                   height="30px"
-                  width="100%"
+                  flex={1}
                   onClick={() => {
                     setIsEditing(true);
                   }}
@@ -407,10 +411,10 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
                 </Button>
               )}
             </Stack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </DialogFooter>
+        </DialogContent>
+      </DialogPositioner>
+    </DialogRoot>
   );
 };
 export default ProfileModal;
