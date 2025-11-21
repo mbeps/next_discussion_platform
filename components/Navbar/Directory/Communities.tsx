@@ -1,17 +1,18 @@
 import { communityState } from "@/atoms/communitiesAtom";
 import CustomMenuButton from "@/components/atoms/CustomMenuButton";
-import CreateCommunityModal from "@/components/Modal/CreateCommunity/CreateCommunityModal";
 import useDirectory from "@/hooks/useDirectory";
 import { Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { useRecoilValue } from "recoil";
 import MenuListItem from "./MenuListItem";
 
-type CommunitiesProps = {};
+type CommunitiesProps = {
+  handleCreateCommunity: () => void;
+};
 
 /**
  * In the `Directory` component, a list of communities the user is subscribed to is displayed.
@@ -23,22 +24,18 @@ type CommunitiesProps = {};
  *
  * @requires ./MenuListItem - menu item for each community
  */
-const Communities: React.FC<CommunitiesProps> = () => {
-  const [open, setOpen] = useState(false); // modal initially closed
+const Communities: React.FC<CommunitiesProps> = ({ handleCreateCommunity }) => {
   const mySnippets = useRecoilValue(communityState).mySnippets;
   const router = useRouter();
   const { toggleMenuOpen } = useDirectory();
 
   return (
     <>
-      {/* Sets the state of the community creation modal to true which opens the modal */}
-      <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
-
       <CustomMenuButton
         icon={<GrAdd />}
         text="Create Community"
         onClick={() => {
-          setOpen(true);
+          handleCreateCommunity();
           toggleMenuOpen();
         }}
       />
