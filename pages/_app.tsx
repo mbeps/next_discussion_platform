@@ -12,20 +12,20 @@ import {
 import type { AppProps } from "next/app";
 import { theme } from "@/chakra/theme";
 import Layout from "@/components/Layout/Layout";
-import { RecoilRoot } from "recoil";
+import { Provider as JotaiProvider } from "jotai";
 import Head from "next/head";
 import { toaster } from "@/hooks/useCustomToast";
 
 /**
  * Represents the entire application.
- * `RecoilRoot` allows the entire app (children) to be able to manage its state via Recoil.
+ * `JotaiProvider` allows the entire app (children) to be able to manage its state via Jotai.
  * `ChakraProvider` allows the entire app (children) to be able to use Chakra UI.
  * @param param0 - every page and component is a child of this component
  * @returns App component
  */
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
+    <JotaiProvider>
       <ChakraProvider value={theme}>
         <Layout>
           <Head>
@@ -59,6 +59,6 @@ export default function App({ Component, pageProps }: AppProps) {
           )}
         </Toaster>
       </ChakraProvider>
-    </RecoilRoot>
+    </JotaiProvider>
   );
 }

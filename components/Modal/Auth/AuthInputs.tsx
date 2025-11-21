@@ -1,7 +1,7 @@
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { Flex } from "@chakra-ui/react";
+import { useAtomValue } from "jotai";
 import React from "react";
-import { useRecoilValue } from "recoil";
 import Login from "./Login";
 import Signup from "./Signup";
 
@@ -17,7 +17,7 @@ type AuthInputsProps = {};
  * @requires ./Signup - sign up view
  */
 const AuthInputs: React.FC<AuthInputsProps> = () => {
-  const modalState = useRecoilValue(authModalState);
+  const modalState = useAtomValue(authModalStateAtom);
 
   return (
     <Flex direction="column" align="center" width="100%" mt={4}>

@@ -1,8 +1,8 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import { useSetAtom } from "jotai";
 import React, { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useSetRecoilState } from "recoil";
-import { authModalState } from "../../../atoms/authModalAtom";
+import { authModalStateAtom } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import InputField from "./InputField";
@@ -23,7 +23,7 @@ type LoginProps = {};
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const Login: React.FC<LoginProps> = () => {
-  const setAuthModalState = useSetRecoilState(authModalState); // Set global state
+  const setAuthModalState = useSetAtom(authModalStateAtom); // Set global state
   const [loginForm, setLoginForm] = useState({
     email: "", // Initially empty email
     password: "", // Initially empty password

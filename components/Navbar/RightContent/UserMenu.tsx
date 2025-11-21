@@ -1,25 +1,25 @@
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import ProfileModal from "@/components/Modal/Profile/ProfileModal";
 import { auth } from "@/firebase/clientApp";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   Flex,
   Icon,
+  Image,
   MenuContent,
   MenuPositioner,
   MenuRoot,
   MenuTrigger,
   Stack,
   Text,
-  Image,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
+import { useSetAtom } from "jotai";
 import React, { useState } from "react";
 import { CgProfile } from "react-icons/cg";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { MdAccountCircle, MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
-import { useSetRecoilState } from "recoil";
 
 /**
  * @param {User | null} user - user currently logged in if any
@@ -67,10 +67,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       >
         <UserMenuButton user={user} isMenuOpen={isMenuOpen} />
         <MenuPositioner>
-          <UserMenuList
-            user={user}
-            setProfileModalOpen={setProfileModalOpen}
-          />
+          <UserMenuList user={user} setProfileModalOpen={setProfileModalOpen} />
         </MenuPositioner>
       </MenuRoot>
     </>
@@ -191,7 +188,7 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
   user,
   setProfileModalOpen,
 }) => {
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetAtom(authModalStateAtom);
 
   /**
    * Signs the user out of the app.

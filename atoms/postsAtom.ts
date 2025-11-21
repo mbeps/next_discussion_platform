@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 /**
  * Interface representing a post.
@@ -47,7 +47,7 @@ export type PostVote = {
 };
 
 /**
- * Represents the base state for the Recoil atom.
+ * Represents the base state for the atom.
  * @property {Post | null} selectedPost - the post that is currently selected
  * @property {Post[]} posts - all the posts
  * @property {PostVote[]} postVotes - all the post votes
@@ -59,7 +59,7 @@ interface PostState {
 }
 
 /**
- * Represents the default state of the Recoil atom.
+ * Represents the default state of the atom.
  * Initially:
  *  - No post is selected
  *  - There are no posts to be displayed
@@ -77,20 +77,15 @@ const defaultPostState: PostState = {
 };
 
 /**
- * Atom which describes the recoil state of the posts.
+ * Atom which describes the state of the posts.
  * Initially:
  *  - No post is selected
  *  - There are no posts to be displayed
  *  - Posts have not been voted on by the current user
- * @property {"postState"} key - "postState"
- * @property {PostState} default - default state of the atom
  *
  * @requires PostState - type of the state
  * @requires defaultPostState - default state of the atom
  *
- * @see https://recoiljs.org/docs/basic-tutorial/atoms/
+ * @see https://jotai.org/docs/core/atom
  */
-export const postState = atom<PostState>({
-  key: "postState",
-  default: defaultPostState,
-});
+export const postStateAtom = atom<PostState>(defaultPostState);

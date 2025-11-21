@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 import { IconType } from "react-icons";
 import { TiHome } from "react-icons/ti";
 
@@ -55,11 +55,6 @@ export const defaultMenuState: DirectoryMenuState = {
 };
 
 /**
- * Recoil atom which stores the state of the directory menu.
- * @property {"directoryMenuState"} key - "directoryMenuState"
- * @property {DirectoryMenuState} default - default state of the directory menu (closed and home page selected)
+ * Atom which stores the state of the directory menu.
  */
-export const directoryMenuState = atom<DirectoryMenuState>({
-  key: "directoryMenuState",
-  default: defaultMenuState,
-});
+export const directoryMenuAtom = atom<DirectoryMenuState>(defaultMenuState);

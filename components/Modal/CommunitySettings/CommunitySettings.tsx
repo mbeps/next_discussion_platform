@@ -1,4 +1,4 @@
-import { Community, communityState } from "@/atoms/communitiesAtom";
+import { Community, communityStateAtom } from "@/atoms/communitiesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
@@ -36,10 +36,10 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
+import { useAtom } from "jotai";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillPeopleFill } from "react-icons/bs";
-import { useRecoilState } from "recoil";
 
 /**
  * @param {boolean} open - boolean to determine if the modal is open or not
@@ -76,7 +76,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
   const selectFileRef = useRef<HTMLInputElement>(null);
   // const setCommunityStateValue = useSetRecoilState(communityState);
   const [communityStateValue, setCommunityStateValue] =
-    useRecoilState(communityState);
+    useAtom(communityStateAtom);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [deleteImage, setDeleteImage] = useState(false);
   const showToast = useCustomToast();
@@ -315,10 +315,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
         if (!open) handleClose();
       }}
     >
-      <DialogBackdrop
-        bg="rgba(0, 0, 0, 0.4)"
-        backdropFilter="blur(6px)"
-      />
+      <DialogBackdrop bg="rgba(0, 0, 0, 0.4)" backdropFilter="blur(6px)" />
       <DialogPositioner>
         <DialogContent borderRadius={10}>
           <DialogHeader
@@ -331,11 +328,16 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
           </DialogHeader>
           <Box>
             <DialogCloseTrigger position="absolute" top={2} right={2} />
-            <DialogBody display="flex" flexDirection="column" padding="10px 0px">
+            <DialogBody
+              display="flex"
+              flexDirection="column"
+              padding="10px 0px"
+            >
               <Stack fontSize="10pt" gap={2} p={5}>
                 {/* community image */}
                 <Flex align="center" justify="center" p={2}>
-                  {communityStateValue.currentCommunity?.imageURL || selectedFile ? (
+                  {communityStateValue.currentCommunity?.imageURL ||
+                  selectedFile ? (
                     <Image
                       src={
                         selectedFile ||

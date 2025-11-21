@@ -1,4 +1,4 @@
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
 import AuthButtons from "@/components/Navbar/RightContent/AuthButtons";
@@ -6,9 +6,9 @@ import NewPostForm from "@/components/Posts/NewPostForm";
 import { auth } from "@/firebase/clientApp";
 import useCommunityData from "@/hooks/useCommunityData";
 import { Box, Stack, Text } from "@chakra-ui/react";
+import { useSetAtom } from "jotai";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useSetRecoilState } from "recoil";
 
 /**
  * Post submission page where the user can create a new post.
@@ -22,7 +22,7 @@ const SubmitPostPage: React.FC = () => {
   const [user] = useAuthState(auth);
   // const communityStateValue = useRecoilValue(communityState);
   const { communityStateValue } = useCommunityData();
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetAtom(authModalStateAtom);
 
   return (
     <PageContent>

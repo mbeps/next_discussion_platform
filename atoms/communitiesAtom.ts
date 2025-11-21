@@ -1,5 +1,5 @@
 import { Timestamp } from "firebase/firestore";
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 /**
  * Interface representing a community.
@@ -53,22 +53,17 @@ interface CommunityState {
  * @property {CommunitySnippet[]} mySnippets - empty array
  * @property {boolean} snippetFetched - false by default
  */
-const defaultCommunityState: CommunityState = {
+export const defaultCommunityState: CommunityState = {
   mySnippets: [],
   snippetFetched: false,
 };
 
 /**
  * Atom which describes the state of the community state.
- * @property {CommunityState} key - unique identifier for the atom
- * @property {CommunityState} default - default state of the atom for tracking community state
  *
  * @requires CommunityState - state definition
  * @requires defaultCommunityState - default state
  *
- * @see https://recoiljs.org/docs/basic-tutorial/atoms/
+ * @see https://jotai.org/docs/core/atom
  */
-export const communityState = atom<CommunityState>({
-  key: "communityState",
-  default: defaultCommunityState,
-});
+export const communityStateAtom = atom<CommunityState>(defaultCommunityState);

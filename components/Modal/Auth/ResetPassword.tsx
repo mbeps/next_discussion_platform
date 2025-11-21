@@ -1,9 +1,9 @@
 import { Button, Flex, Icon, Image, Input, Text } from "@chakra-ui/react";
+import { useSetAtom } from "jotai";
 import React, { useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { BsDot } from "react-icons/bs";
-import { useSetRecoilState } from "recoil";
-import { authModalState } from "../../../atoms/authModalAtom";
+import { authModalStateAtom } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 
 /**
@@ -15,7 +15,7 @@ import { auth } from "../../../firebase/clientApp";
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const ResetPassword: React.FC = () => {
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetAtom(authModalStateAtom);
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
   const [sendPasswordResetEmail, sending, error] =

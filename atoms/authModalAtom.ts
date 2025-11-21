@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
 /**
  * Interface which describes the state of the authentication modal.
@@ -6,7 +6,7 @@ import { atom } from "recoil";
  * @property {boolean} open - whether the modal is open or not
  * @property {"login" | "signup" | "resetPassword"} view - which specific view of the modal should be displayed
  *
- * @see https://recoiljs.org/docs/basic-tutorial/atoms/
+ * @see https://jotai.org/docs/core/atom
  */
 export interface AuthModalState {
   open: boolean;
@@ -27,15 +27,10 @@ const defaultModalState: AuthModalState = {
 
 /**
  * Atom which describes the state of the authentication modal.
- * @property {AuthModalState} key - unique identifier for the atom
- * @property {AuthModalState} default - default state of the atom for tracking authentication modal state
  *
  * @requires AuthModalState - state definition
  * @requires defaultModalState - default state
  *
- * @see https://recoiljs.org/docs/basic-tutorial/atoms/
+ * @see https://jotai.org/docs/core/atom
  */
-export const authModalState = atom<AuthModalState>({
-  key: "authModalState", // unique identifier for the atom
-  default: defaultModalState,
-});
+export const authModalStateAtom = atom<AuthModalState>(defaultModalState);
