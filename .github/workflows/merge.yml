@@ -30,10 +30,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - name: Setup Node (v22)
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -75,9 +75,9 @@ jobs:
           fi
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -104,7 +104,7 @@ jobs:
       - name: Run Docker Compose
         run: |
           cd docker
-          docker-compose -f docker-compose.yml up -d
+          docker compose -f docker-compose.yml up -d
 
       - name: Run tests
         run: |
@@ -113,4 +113,4 @@ jobs:
       - name: Stop Docker Compose
         run: |
           cd docker
-          docker-compose -f docker-compose.yml down
+          docker compose -f docker-compose.yml down
