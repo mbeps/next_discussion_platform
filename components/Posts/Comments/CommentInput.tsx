@@ -97,14 +97,13 @@ const CommentInput: React.FC<CommentInputProps> = ({
             bg="gray.100"
             p="6px 8px"
             borderRadius="0px 0px 10px 10px"
-            zIndex="997"
+            zIndex="1"
           >
             <Button
               height="30px"
               disabled={!commentText.length}
               loading={createLoading}
               onClick={() => onCreateComment(commentText)}
-              zIndex="999"
             >
               Comment
             </Button>
