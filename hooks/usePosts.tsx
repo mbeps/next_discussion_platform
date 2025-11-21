@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
   writeBatch,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";

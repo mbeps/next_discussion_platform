@@ -10,7 +10,7 @@ import useCommunityData from "@/hooks/useCommunityData";
 import useCustomToast from "@/hooks/useCustomToast";
 import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
-import { doc, getDoc } from "@firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";

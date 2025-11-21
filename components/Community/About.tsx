@@ -1,7 +1,7 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
 import { Box, Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
-import { User } from "@firebase/auth";
+import { User } from "firebase/auth";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
