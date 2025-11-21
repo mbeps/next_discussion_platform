@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import {
   DialogBackdrop,
@@ -14,9 +14,9 @@ import {
   Separator,
   Text,
 } from "@chakra-ui/react";
+import { useAtom } from "jotai";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState } from "recoil";
 import AuthInputs from "./AuthInputs";
 import OAuthButtons from "./OAuthButtons";
 import ResetPassword from "./ResetPassword";
@@ -44,7 +44,7 @@ import ResetPassword from "./ResetPassword";
  * @see https://chakra-ui.com/docs/components/modal/usage
  */
 const AuthModal: React.FC = () => {
-  const [modalState, setModalState] = useRecoilState(authModalState);
+  const [modalState, setModalState] = useAtom(authModalStateAtom);
   /**
    * Keeps track of whether a user is authenticated via Firebase.
    * It returns the `user` details, if it fails then `null` is stored.
@@ -79,10 +79,7 @@ const AuthModal: React.FC = () => {
         if (!open) handleClose();
       }}
     >
-      <DialogBackdrop
-        bg="rgba(0, 0, 0, 0.4)"
-        backdropFilter="blur(6px)"
-      />
+      <DialogBackdrop bg="rgba(0, 0, 0, 0.4)" backdropFilter="blur(6px)" />
       <DialogPositioner>
         <DialogContent borderRadius={10}>
           <DialogHeader textAlign="center">

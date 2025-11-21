@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { authModalState } from "@/atoms/authModalAtom";
-import { communityState } from "@/atoms/communitiesAtom";
-import { Post, postState, PostVote } from "@/atoms/postsAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { Post, postStateAtom, PostVote } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
   collection,
@@ -14,10 +14,10 @@ import {
 } from "@firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Router, useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import useCustomToast from "./useCustomToast";
 
 /**
@@ -34,9 +34,9 @@ import useCustomToast from "./useCustomToast";
  */
 const usePosts = () => {
   const [user] = useAuthState(auth);
-  const [postStateValue, setPostStateValue] = useRecoilState(postState);
-  const currentCommunity = useRecoilValue(communityState).currentCommunity;
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const [postStateValue, setPostStateValue] = useAtom(postStateAtom);
+  const currentCommunity = useAtomValue(communityStateAtom).currentCommunity;
+  const setAuthModalState = useSetAtom(authModalStateAtom);
   const router = useRouter();
   const showToast = useCustomToast();
   // TODO: create postVote variable

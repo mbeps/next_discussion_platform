@@ -1,13 +1,13 @@
-import { communityState } from "@/atoms/communitiesAtom";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import useDirectory from "@/hooks/useDirectory";
 import { Box, Text } from "@chakra-ui/react";
+import { useAtomValue } from "jotai";
 import { useRouter } from "next/router";
 import React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import { useRecoilValue } from "recoil";
 import MenuListItem from "./MenuListItem";
 
 type CommunitiesProps = {
@@ -25,7 +25,7 @@ type CommunitiesProps = {
  * @requires ./MenuListItem - menu item for each community
  */
 const Communities: React.FC<CommunitiesProps> = ({ handleCreateCommunity }) => {
-  const mySnippets = useRecoilValue(communityState).mySnippets;
+  const mySnippets = useAtomValue(communityStateAtom).mySnippets;
   const router = useRouter();
   const { toggleMenuOpen } = useDirectory();
 

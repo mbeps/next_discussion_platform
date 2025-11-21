@@ -1,7 +1,7 @@
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { Button } from "@chakra-ui/react";
+import { useSetAtom } from "jotai";
 import React from "react";
-import { useSetRecoilState } from "recoil";
 
 /**
  * Displays 2 authentication buttons which open the authentication modal when clicked:
@@ -10,7 +10,7 @@ import { useSetRecoilState } from "recoil";
  * @returns {React.FC} - Authentication buttons (log in and sign up)
  */
 const AuthButtons: React.FC = () => {
-  const setAuthModalState = useSetRecoilState(authModalState); // Set global state
+  const setAuthModalState = useSetAtom(authModalStateAtom); // Set global state
   return (
     <>
       <Button

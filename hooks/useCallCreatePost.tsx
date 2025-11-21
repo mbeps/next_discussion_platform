@@ -1,8 +1,8 @@
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
+import { useSetAtom } from "jotai";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useSetRecoilState } from "recoil";
 import useDirectory from "./useDirectory";
 
 /**
@@ -13,7 +13,7 @@ import useDirectory from "./useDirectory";
 const useCallCreatePost = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetAtom(authModalStateAtom);
   const { toggleMenuOpen } = useDirectory();
 
   /**

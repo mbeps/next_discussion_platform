@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { communityState } from "@/atoms/communitiesAtom";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 import {
   DirectoryMenuItem,
-  directoryMenuState,
+  directoryMenuAtom,
 } from "@/atoms/directoryMenuAtom";
+import { useAtom, useAtomValue } from "jotai";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import { useRecoilState, useRecoilValue } from "recoil";
 
 /**
  * Hook for managing the directory menu from various components.
@@ -17,10 +17,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
  * @returns {DirectoryMenuState} directoryState - object containing the current directory state
  */
 const useDirectory = () => {
-  const [directoryState, setDirectoryState] =
-    useRecoilState(directoryMenuState);
+  const [directoryState, setDirectoryState] = useAtom(directoryMenuAtom);
   const router = useRouter();
-  const communityStateValue = useRecoilValue(communityState);
+  const communityStateValue = useAtomValue(communityStateAtom);
 
   /**
    * Allows the user to select a menu item from the directory menu.

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { authModalState } from "@/atoms/authModalAtom";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import {
   Community,
   CommunitySnippet,
-  communityState,
+  communityStateAtom,
 } from "@/atoms/communitiesAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import {
@@ -14,10 +14,10 @@ import {
   increment,
   writeBatch,
 } from "firebase/firestore";
+import { useAtom, useSetAtom } from "jotai";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import useCustomToast from "./useCustomToast";
 
 /**
@@ -32,10 +32,10 @@ import useCustomToast from "./useCustomToast";
 const useCommunityData = () => {
   const [user] = useAuthState(auth);
   const [communityStateValue, setCommunityStateValue] =
-    useRecoilState(communityState);
+    useAtom(communityStateAtom);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const setAuthModalState = useSetRecoilState(authModalState);
+  const setAuthModalState = useSetAtom(authModalStateAtom);
   const router = useRouter();
   const showToast = useCustomToast();
 

@@ -1,8 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Post, postState } from "@/atoms/postsAtom";
+import { Post, postStateAtom } from "@/atoms/postsAtom";
 import { firestore } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Box, Flex, SkeletonCircle, SkeletonText, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import {
   collection,
@@ -16,8 +23,8 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
+import { useSetAtom } from "jotai";
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import CommentInput from "./CommentInput";
 import CommentItem, { Comment } from "./CommentItem";
 
@@ -56,7 +63,7 @@ const Comments: React.FC<CommentsProps> = ({
   const [fetchLoading, setFetchLoading] = useState(true);
   const [createLoading, setCreateLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState("");
-  const setPostState = useSetRecoilState(postState);
+  const setPostState = useSetAtom(postStateAtom);
   const showToast = useCustomToast();
 
   /**
