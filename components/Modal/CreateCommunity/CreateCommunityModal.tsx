@@ -3,17 +3,22 @@ import useCustomToast from "@/hooks/useCustomToast";
 import {
   Box,
   Button,
-  Checkbox,
+  CheckboxControl,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxRoot,
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogPositioner,
+  DialogRoot,
+  DialogTitle,
   Flex,
   Icon,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -96,7 +101,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
    * If the community name entered is within the limit:
    *  - Updates the state of `communityName` which allows the creation of the community with the inputted name
    *  - Updates the number of characters remaining based on the number of characters used so far.
-   * @param {React.ChangeEvent<HTMLInputElement>} event - change in HTML input field
+   * @param {string} value - selected community type
    */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > communityNameLengthLimit) return; // community is not created if the name is above the limit
@@ -110,10 +115,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
    * toggling another checkbox would untoggle the previous one.
    * @param {React.ChangeEvent<HTMLInputElement>} event - change in HTML input field
    */
-  const onCommunityTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setCommunityType(event.target.name);
+  const onCommunityTypeChange = (value: string) => {
+    setCommunityType(value);
   };
 
   /**
@@ -198,26 +201,29 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   };
 
   return (
-    <>
-      <Modal isOpen={open} onClose={handleClose}>
-        <ModalOverlay
-          bg="rgba(0, 0, 0, 0.4)"
-          backdropFilter="auto"
-          backdropBlur="5px"
-        />
-        <ModalContent borderRadius={10}>
-          <ModalHeader
+    <DialogRoot
+      open={open}
+      onOpenChange={({ open }: { open: boolean }) => {
+        if (!open) handleClose();
+      }}
+    >
+      <DialogBackdrop
+        bg="rgba(0, 0, 0, 0.4)"
+        backdropFilter="blur(6px)"
+      />
+      <DialogPositioner>
+        <DialogContent borderRadius={10}>
+          <DialogHeader
             display="flex"
             flexDirection="column"
-            // fontSize={15}
             padding={3}
             textAlign="center"
           >
-            Create Community
-          </ModalHeader>
+            <DialogTitle>Create Community</DialogTitle>
+          </DialogHeader>
           <Box pl={3} pr={3}>
-            <ModalCloseButton />
-            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
+            <DialogCloseTrigger position="absolute" top={2} right={2} />
+            <DialogBody display="flex" flexDirection="column" padding="10px 0px">
               <CommunityNameSection
                 communityName={communityName}
                 handleChange={handleChange}
@@ -235,32 +241,32 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                   onCommunityTypeChange={onCommunityTypeChange}
                 />
               </Box>
-            </ModalBody>
+            </DialogBody>
           </Box>
 
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
-            <Stack direction="row" justifyContent="space-between" width="100%">
+          <DialogFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+            <Stack direction="row" gap={3} width="100%">
               <Button
                 variant="outline"
                 height="30px"
-                width="100%"
+                flex={1}
                 onClick={handleClose}
               >
                 Cancel
               </Button>
               <Button
                 height="30px"
-                width="100%"
+                flex={1}
                 onClick={handleCreateCommunity}
-                isLoading={loading}
+                loading={loading}
               >
                 Create Community
               </Button>
             </Stack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          </DialogFooter>
+        </DialogContent>
+      </DialogPositioner>
+    </DialogRoot>
   );
 };
 export default CreateCommunityModal;
@@ -271,7 +277,7 @@ export default CreateCommunityModal;
  * @param {string} label - label of the community type
  * @param {string} description - description of the community type
  * @param {boolean} isChecked - whether the checkbox for selecting community is checked or not
- * @param {React.ChangeEvent<HTMLInputElement>} onChange - change in HTML input field
+ * @param {(value: string) => void} onChange - change handler for the selected community type
  */
 type CommunityTypeOptionProps = {
   name: string;
@@ -279,7 +285,7 @@ type CommunityTypeOptionProps = {
   label: string;
   description: string;
   isChecked: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
 };
 
 /**
@@ -303,29 +309,39 @@ const CommunityTypeOption: FC<CommunityTypeOptionProps> = ({
   onChange,
 }) => {
   return (
-    <Checkbox
-      name={name}
-      isChecked={isChecked}
-      onChange={onChange}
-      colorScheme="red"
+    <CheckboxRoot
+      value={name}
+      checked={isChecked}
+      onCheckedChange={() => onChange(name)}
+      colorPalette="red"
+      display="flex"
+      alignItems="center"
+      gap={2}
+      cursor="pointer"
+      py={1}
     >
-      <Flex align="center">
-        <Icon as={icon} color="gray.500" mr={2} />
-        <Text fontSize="10pt" mr={1}>
-          {label}
-        </Text>
-        <Text fontSize="8pt" color="gray.500" pt={1}>
-          {description}
-        </Text>
-      </Flex>
-    </Checkbox>
+      <CheckboxControl>
+        <CheckboxIndicator />
+      </CheckboxControl>
+      <CheckboxLabel flex="1">
+        <Flex align="center">
+          <Icon as={icon} color="gray.500" mr={2} />
+          <Text fontSize="10pt" mr={1}>
+            {label}
+          </Text>
+          <Text fontSize="8pt" color="gray.500" pt={1}>
+            {description}
+          </Text>
+        </Flex>
+      </CheckboxLabel>
+    </CheckboxRoot>
   );
 };
 
 /**
  * @param {CommunityTypeOptionProps[]} options - array of community type options
  * @param {string} communityType - community type selected
- * @param {React.ChangeEvent<HTMLInputElement>} onCommunityTypeChange - change in HTML input field
+ * @param {(value: string) => void} onCommunityTypeChange - change handler for the selected community type
  */
 interface CommunityTypeOptionsProps {
   options: {
@@ -335,7 +351,7 @@ interface CommunityTypeOptionsProps {
     description: string;
   }[];
   communityType: string;
-  onCommunityTypeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCommunityTypeChange: (value: string) => void;
 }
 
 /**

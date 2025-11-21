@@ -1,12 +1,13 @@
 import useDirectory from "@/hooks/useDirectory";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   Flex,
   Icon,
   Image,
-  Menu,
-  MenuButton,
-  MenuList,
+  MenuContent,
+  MenuPositioner,
+  MenuRoot,
+  MenuTrigger,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -26,12 +27,14 @@ import Communities from "./Communities";
  * @returns {React.FC} - button to open the directory menu and the directory menu itself
  */
 const UserMenu: React.FC = () => {
-  const { directoryState, toggleMenuOpen } = useDirectory();
+  const { directoryState, setDirectoryOpen } = useDirectory();
 
   return (
-    <Menu isOpen={directoryState.isOpen}>
-      <MenuButton
-        onClick={toggleMenuOpen}
+    <MenuRoot
+      open={directoryState.isOpen}
+      onOpenChange={({ open }: { open: boolean }) => setDirectoryOpen(open)}
+    >
+      <MenuTrigger
         cursor="pointer"
         padding="0px 6px"
         borderRadius={10}
@@ -71,26 +74,20 @@ const UserMenu: React.FC = () => {
               </Text>
             </Flex>
           </Flex>
-          {directoryState.isOpen ? (
-            <>
-              <ChevronUpIcon />
-            </>
-          ) : (
-            <>
-              <ChevronDownIcon />
-            </>
-          )}
+          {directoryState.isOpen ? <FiChevronUp /> : <FiChevronDown />}
         </Flex>
-      </MenuButton>
-      <MenuList borderRadius={10} mt={2} shadow="lg">
-        <Flex justifyContent="center">
-          <Stack spacing={1} width="95%">
-            {/* Communities menu to open the community creation modal */}
-            <Communities />
-          </Stack>
-        </Flex>
-      </MenuList>
-    </Menu>
+      </MenuTrigger>
+      <MenuPositioner>
+        <MenuContent borderRadius={10} mt={2} shadow="lg">
+          <Flex justifyContent="center">
+            <Stack gap={1} width="95%">
+              {/* Communities menu to open the community creation modal */}
+              <Communities />
+            </Stack>
+          </Flex>
+        </MenuContent>
+      </MenuPositioner>
+    </MenuRoot>
   );
 };
 export default UserMenu;

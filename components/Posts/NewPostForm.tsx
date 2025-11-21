@@ -4,8 +4,9 @@ import { firestore, storage } from "@/firebase/clientApp";
 import useCustomToast from "@/hooks/useCustomToast";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
-  Alert,
-  AlertIcon,
+  AlertContent,
+  AlertIndicator,
+  AlertRoot,
   Button,
   Flex,
   Icon,
@@ -223,7 +224,7 @@ const TabList: React.FC<TabListProps> = ({
   setSelectedTab,
 }) => {
   return (
-    <Stack width="100%" direction="row" spacing={2} p={2}>
+    <Stack width="100%" direction="row" gap={2} p={2}>
       {/* create a tab item for each tab in the formTabs array */}
       {formTabs.map((item) => (
         <TabItem
@@ -373,12 +374,14 @@ const PostCreateError: React.FC<Props> = ({ error }) => {
   return (
     <>
       {error && (
-        <Alert status="error">
-          <AlertIcon />
-          <Text mr={2} fontWeight={600} color="red.500">
-            There has been an error when creating your post
-          </Text>
-        </Alert>
+        <AlertRoot status="error" borderRadius={10} p={2} mt={2}>
+          <AlertIndicator />
+          <AlertContent>
+            <Text mr={2} fontWeight={600} color="red.500">
+              There has been an error when creating your post
+            </Text>
+          </AlertContent>
+        </AlertRoot>
       )}
     </>
   );

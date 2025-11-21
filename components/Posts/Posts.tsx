@@ -83,7 +83,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         <PostLoader />
       ) : (
         // If the posts are available, display the post item components
-        <Stack spacing={3}>
+        <Stack gap={3}>
           {/* For each post (item) iterebly create a post car component */}
           {postStateValue.posts.map((item) => (
             <PostItem

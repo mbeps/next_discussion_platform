@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { createToaster } from "@chakra-ui/react";
 
 /**
  * Interface for the options of the toast.
@@ -12,6 +12,11 @@ interface CustomToastOptions {
   status: "success" | "error" | "warning" | "info";
 }
 
+export const toaster = createToaster({
+  placement: "top",
+  gap: 16,
+});
+
 /**
  * Displays a toast with the given options.
  * Depending on the status, the toast will have a different color.
@@ -23,15 +28,13 @@ interface CustomToastOptions {
  * @returns {function} - function which shows a toast
  */
 const useCustomToast = () => {
-  const toast = useToast();
-
   const showToast = ({ title, description, status }: CustomToastOptions) => {
-    toast({
+    toaster.create({
       title,
       description,
-      status,
-      duration: 5000, // Hardcoded duration
-      isClosable: true, // Hardcoded isClosable
+      type: status,
+      closable: true,
+      duration: 5000,
     });
   };
 

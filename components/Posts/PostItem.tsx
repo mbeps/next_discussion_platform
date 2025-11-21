@@ -1,5 +1,6 @@
 import { Post } from "@/atoms/postsAtom";
 import useCustomToast from "@/hooks/useCustomToast";
+import { useClipboard } from "@/hooks/useClipboard";
 import {
   Button,
   Flex,
@@ -9,8 +10,6 @@ import {
   Skeleton,
   Stack,
   Text,
-  useClipboard,
-  useToast,
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -145,7 +144,7 @@ const PostItem: React.FC<PostItemProps> = ({
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
     const postLink = `${baseUrl}/community/${post.communityId}/comments/${post.id}`;
     setValue(postLink);
-    onCopy(); // copy link to clipboard
+    onCopy(postLink); // copy link to clipboard
 
     showToast({
       title: "Link Copied",
@@ -174,7 +173,7 @@ const PostItem: React.FC<PostItemProps> = ({
       borderRadius={10}
       _hover={{
         borderColor: singlePostPage ? "none" : "gray.400",
-        boxShadow: !singlePostPage && "xl",
+        boxShadow: singlePostPage ? undefined : "xl",
       }}
       cursor={singlePostPage ? "unset" : "pointer"}
       onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
@@ -198,7 +197,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
       {/* Right Section  */}
       <Flex direction="column" width="100%">
-        <Stack spacing={1} p="10px">
+        <Stack gap={1} p="10px">
           <PostDetails showCommunityImage={true} post={post} />
           <PostTitle post={post} />
           <PostBody
@@ -320,7 +319,7 @@ const PostDetails = ({ showCommunityImage, post }: PostDetailsProps) => {
   return (
     <Stack
       direction="row"
-      spacing={0.5}
+      gap={0.5}
       align="center"
       fontSize="9pt"
       borderRadius="full"
@@ -470,24 +469,24 @@ const PostActions: React.FC<PostActionsProps> = ({
     color="gray.500"
     fontWeight={600}
     direction="row"
-    spacing={1}
+    gap={1}
   >
-    <Button variant="action" height="32px" onClick={handleShare}>
+    <Button variant={"action" as any} height="32px" onClick={handleShare}>
       <Icon as={FiShare2} mr={2} />
       <Text fontSize="9pt">Share</Text>
     </Button>
 
-    <Button variant="action" height="32px" onClick={handleSave}>
+    <Button variant={"action" as any} height="32px" onClick={handleSave}>
       <Icon as={BsBookmark} mr={2} />
       <Text fontSize="9pt">Save</Text>
     </Button>
 
     {userIsCreator && (
       <Button
-        variant="action"
+        variant={"action" as any}
         height="32px"
         onClick={handleDelete}
-        isLoading={loadingDelete}
+        loading={loadingDelete}
       >
         <Icon as={MdOutlineDelete} mr={2} />
         <Text fontSize="9pt">Delete</Text>

@@ -1,72 +1,84 @@
-import { ComponentStyleConfig } from "@chakra-ui/theme";
+import { defaultConfig, defineRecipe } from "@chakra-ui/react";
+
+const baseRecipe = (defaultConfig.theme?.recipes?.button as Record<string, any>) ?? {};
+const baseStyles = (baseRecipe.base as Record<string, any>) ?? {};
+const sizeVariants = (baseRecipe.variants?.size as Record<string, Record<string, any>>) ?? {};
+const variantVariants = (baseRecipe.variants?.variant as Record<string, Record<string, any>>) ?? {};
+const solidBase = variantVariants.solid ?? {};
+const outlineBase = variantVariants.outline ?? {};
 
 /**
- * A universal button theme for the entire app.
- * There are different variances of the buttons:
- *  - `solid` (default): button with solid fill
- *  - `outline`: button with outline colour
- *  - `oauth`: button specifically for authentication providers
- *
- * @param props The component props, which are passed through to the underlying `button` element.
- * @param children The component children, which are rendered as the
- * @returns {ComponentStyleConfig} - The rendered `button` element
- * @see https://chakra-ui.com/docs/theming/component-style
+ * Custom button recipe used throughout the app.
+ * Keeps the previous styling from Chakra v2 while leveraging the v3 recipe API.
  */
-export const Button: ComponentStyleConfig = {
-  baseStyle: {
-    // Base styles applied to all variants
+export const buttonRecipe = defineRecipe({
+  ...baseRecipe,
+  base: {
+    ...baseStyles,
     borderRadius: "10px",
     fontSize: "10pt",
     fontWeight: 700,
     _focus: {
       boxShadow: "none",
     },
-    _hover: { boxShadow: "lg" },
-  },
-  sizes: {
-    sm: {
-      fontSize: "8pt",
-    },
-    md: {
-      fontSize: "10pt",
-      // height: "28px",
+    _hover: {
+      ...(baseStyles._hover ?? {}),
+      boxShadow: "lg",
     },
   },
-  // Different visual variants of the button
   variants: {
-    solid: {
-      // Default button
-      color: "white",
-      bg: "red.500",
-      _hover: {
-        bg: "red.400",
+    ...baseRecipe.variants,
+    size: {
+      ...sizeVariants,
+      sm: {
+        ...(sizeVariants.sm ?? {}),
+        fontSize: "8pt",
+      },
+      md: {
+        ...(sizeVariants.md ?? {}),
+        fontSize: "10pt",
       },
     },
-    outline: {
-      color: "red.500",
-      border: "1px solid",
-      borderColor: "red.500",
-      _hover: {
-        bg: "red.50",
+    variant: {
+      ...variantVariants,
+      solid: {
+        ...solidBase,
+        color: "white",
+        bg: "red.500",
+        borderColor: "red.500",
+        _hover: {
+          ...(solidBase._hover ?? {}),
+          bg: "red.400",
+        },
       },
-    },
-    oauth: {
-      height: "34px",
-      border: "1px solid",
-      borderColor: "gray.300",
-      _hover: {
-        bg: "gray.50",
-        borderColor: "red.400",
+      outline: {
+        ...outlineBase,
+        color: "red.500",
+        borderWidth: "1px",
+        borderColor: "red.500",
+        _hover: {
+          ...(outlineBase._hover ?? {}),
+          bg: "red.50",
+        },
       },
-    },
-    action: {
-      height: "34px",
-      border: "1px solid",
-      borderColor: "white",
-      _hover: {
-        bg: "gray.50",
-        borderColor: "red.400",
+      oauth: {
+        height: "34px",
+        borderWidth: "1px",
+        borderColor: "gray.300",
+        _hover: {
+          bg: "gray.50",
+          borderColor: "red.400",
+        },
+      },
+      action: {
+        height: "34px",
+        borderWidth: "1px",
+        borderColor: "white",
+        _hover: {
+          bg: "gray.50",
+          borderColor: "red.400",
+        },
       },
     },
   },
-};
+});

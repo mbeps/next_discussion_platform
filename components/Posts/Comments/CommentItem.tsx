@@ -72,7 +72,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
         <Box>
           <Icon as={CgProfile} fontSize={30} color="gray.300" mr={2} />
         </Box>
-        <Stack spacing={1}>
+        <Stack gap={1}>
           <Stack direction="row" align="center" fontSize="8pt">
             <Text fontWeight={600}>{comment.creatorDisplayText}</Text>
             {/* <Text>{createdAtString}</Text> */}

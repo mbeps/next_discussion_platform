@@ -12,7 +12,7 @@ const PageNotFound: React.FC = () => {
       <Text fontSize="2xl" fontWeight="bold" color="gray.600">
         Sorry, this page does not exist!
       </Text>
-      <Stack direction="row" spacing={4} mt={4}>
+      <Stack direction="row" gap={4} mt={4}>
         <Link href="/">
           <Button mt={4} width="150px">
             Home

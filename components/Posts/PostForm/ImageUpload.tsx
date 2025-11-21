@@ -44,14 +44,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             borderRadius={10}
             shadow="md"
           />
-          <Stack direction="row" mt={4}>
-            <Button onClick={() => setSelectedTab("Post")} w="100%" shadow="md">
+          <Stack direction="row" mt={4} justify="center" gap={4} width="100%">
+            <Button
+              onClick={() => setSelectedTab("Post")}
+              shadow="md"
+              flex={1}
+              maxW="200px"
+            >
               Back to Post
             </Button>
             <Button
               variant="outline"
               onClick={() => setSelectedFile("")} // clearing image state removed uploaded image
-              w="100%"
+              flex={1}
+              maxW="200px"
               shadow="md"
             >
               Remove Content

@@ -2,14 +2,16 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import {
-  Divider,
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogPositioner,
+  DialogRoot,
+  DialogTitle,
   Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
+  Separator,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
@@ -71,24 +73,29 @@ const AuthModal: React.FC = () => {
     }));
   };
   return (
-    <>
-      <Modal isOpen={modalState.open} onClose={handleClose}>
-        <ModalOverlay
-          bg="rgba(0, 0, 0, 0.4)"
-          backdropFilter="auto"
-          backdropBlur="5px"
-        />
-        <ModalContent borderRadius={10}>
-          {/* Dynamically display header depending on the authentication state */}
-          <ModalHeader textAlign="center">
-            {modalState.view === "login" && "Login"}
-            {modalState.view === "signup" && "Sign Up"}
-            {modalState.view === "resetPassword" && "Reset Password"}
-          </ModalHeader>
+    <DialogRoot
+      open={modalState.open}
+      onOpenChange={({ open }: { open: boolean }) => {
+        if (!open) handleClose();
+      }}
+    >
+      <DialogBackdrop
+        bg="rgba(0, 0, 0, 0.4)"
+        backdropFilter="blur(6px)"
+      />
+      <DialogPositioner>
+        <DialogContent borderRadius={10}>
+          <DialogHeader textAlign="center">
+            <DialogTitle>
+              {modalState.view === "login" && "Login"}
+              {modalState.view === "signup" && "Sign Up"}
+              {modalState.view === "resetPassword" && "Reset Password"}
+            </DialogTitle>
+          </DialogHeader>
 
-          <ModalCloseButton />
+          <DialogCloseTrigger position="absolute" top={2} right={2} />
 
-          <ModalBody
+          <DialogBody
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -106,7 +113,7 @@ const AuthModal: React.FC = () => {
                 <>
                   <OAuthButtons />
                   {/* <Text color='gray.500' fontWeight={700}>OR</Text> */}
-                  <Divider />
+                  <Separator />
                   <AuthInputs />
                 </>
               ) : (
@@ -114,10 +121,10 @@ const AuthModal: React.FC = () => {
                 <ResetPassword />
               )}
             </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+          </DialogBody>
+        </DialogContent>
+      </DialogPositioner>
+    </DialogRoot>
   );
 };
 export default AuthModal;

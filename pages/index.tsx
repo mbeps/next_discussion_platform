@@ -185,7 +185,7 @@ export default function Home() {
         {loading ? (
           <PostLoader />
         ) : (
-          <Stack spacing={3}>
+          <Stack gap={3}>
             {postStateValue.posts.map((post) => (
               <PostItem
                 key={post.id}
@@ -205,7 +205,7 @@ export default function Home() {
           </Stack>
         )}
       </>
-      <Stack spacing={2}>
+      <Stack gap={2}>
         <Recommendations />
         <PersonalHome />
       </Stack>

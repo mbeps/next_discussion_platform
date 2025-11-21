@@ -117,6 +117,7 @@ const SuggestedCommunitiesList: React.FC = () => {
   useEffect(() => {
     getCommunityRecommendations();
   }, []);
+
   return (
     <Flex direction="column" mb={0}>
       {loading ? (
@@ -137,62 +138,61 @@ const SuggestedCommunitiesList: React.FC = () => {
               (snippet) => snippet.communityId === item.id
             );
             return (
-              <Link key={item.id} href={`/community/${item.id}`}>
+              <Link
+                key={item.id}
+                href={`/community/${item.id}`}
+                display="block"
+                w="100%"
+              >
                 <Flex
-                  key={item.id}
                   align="center"
+                  justify="space-between"
                   fontSize="10pt"
-                  borderBottom="1px solid"
-                  borderColor="gray.300"
                   p="10px 12px"
                 >
-                  <Flex width="80%" align="center">
-                    <Flex width="15%">
-                      <Text>{index + 1}</Text>
-                    </Flex>
-                    <Flex align="center" width="80%">
-                      {item.imageURL ? (
-                        <Image
-                          src={item.imageURL}
-                          borderRadius="full"
-                          boxSize="28px"
-                          mr={2}
-                          alt="Community Icon"
-                        />
-                      ) : (
-                        <Icon
-                          as={IoPeopleCircleOutline}
-                          fontSize={34}
-                          color="red.500"
-                          mr={1}
-                        />
-                      )}
-                      {/* show dots when community name doesnt fit */}
-                      <span
-                        style={{
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {`${item.id}`}
-                      </span>
-                    </Flex>
-                  </Flex>
-                  <Box position="absolute" right="10px">
-                    <Button
-                      height="24px"
-                      width="100px"
-                      fontSize="8pt"
-                      variant={isJoined ? "outline" : "solid"}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onJoinOrLeaveCommunity(item, isJoined);
-                      }}
+                  <Flex align="center" gap={2} minWidth={0} flex={1} mr={2}>
+                    <Text flexShrink={0} width="20px">
+                      {index + 1}
+                    </Text>
+                    {item.imageURL ? (
+                      <Image
+                        src={item.imageURL}
+                        borderRadius="full"
+                        boxSize="28px"
+                        alt="Community Icon"
+                        flexShrink={0}
+                      />
+                    ) : (
+                      <Icon
+                        as={IoPeopleCircleOutline}
+                        fontSize={34}
+                        color="red.500"
+                        flexShrink={0}
+                      />
+                    )}
+                    <Text
+                      fontWeight={600}
+                      fontSize="10pt"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
                     >
-                      {isJoined ? "Unsubscribe" : "Subscribe"}
-                    </Button>
-                  </Box>
+                      {item.id}
+                    </Text>
+                  </Flex>
+                  <Button
+                    height="24px"
+                    fontSize="8pt"
+                    px={4}
+                    variant={isJoined ? "outline" : "solid"}
+                    flexShrink={0}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      onJoinOrLeaveCommunity(item, isJoined);
+                    }}
+                  >
+                    {isJoined ? "Unsubscribe" : "Subscribe"}
+                  </Button>
                 </Flex>
               </Link>
             );

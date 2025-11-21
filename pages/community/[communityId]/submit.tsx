@@ -47,7 +47,7 @@ const SubmitPostPage: React.FC = () => {
             borderRadius={10}
           >
             <Text fontWeight={600}>Log in or sign up to post</Text>
-            <Stack direction="row" spacing={2} ml={4}>
+            <Stack direction="row" gap={2} ml={4}>
               <AuthButtons />
             </Stack>
           </Stack>

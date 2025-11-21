@@ -2,13 +2,14 @@ import { authModalState } from "@/atoms/authModalAtom";
 import CustomMenuButton from "@/components/atoms/CustomMenuButton";
 import ProfileModal from "@/components/Modal/Profile/ProfileModal";
 import { auth } from "@/firebase/clientApp";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   Flex,
   Icon,
-  Menu,
-  MenuButton,
-  MenuList,
+  MenuContent,
+  MenuPositioner,
+  MenuRoot,
+  MenuTrigger,
   Stack,
   Text,
   Image,
@@ -53,17 +54,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
-  /**
-   * Toggles the menu open and closed.
-   */
-  const toggle = () => {
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-    } else {
-      setIsMenuOpen(true);
-    }
-  };
-
   return (
     <>
       <ProfileModal
@@ -71,10 +61,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         handleClose={() => setProfileModalOpen(false)}
       />
 
-      <Menu isOpen={isMenuOpen} onOpen={toggle} onClose={toggle}>
+      <MenuRoot
+        open={isMenuOpen}
+        onOpenChange={({ open }: { open: boolean }) => setIsMenuOpen(open)}
+      >
         <UserMenuButton user={user} isMenuOpen={isMenuOpen} />
-        <UserMenuList user={user} setProfileModalOpen={setProfileModalOpen} />
-      </Menu>
+        <MenuPositioner>
+          <UserMenuList
+            user={user}
+            setProfileModalOpen={setProfileModalOpen}
+          />
+        </MenuPositioner>
+      </MenuRoot>
     </>
   );
 };
@@ -110,7 +108,7 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
   user,
   isMenuOpen,
 }) => (
-  <MenuButton
+  <MenuTrigger
     cursor="pointer"
     height="100%"
     padding="0px 6px"
@@ -162,9 +160,9 @@ const UserMenuButton: React.FC<UserMenuButtonProps> = ({
         // If user is unauthenticated, display generic user icon
         <Icon fontSize={24} color="gray.400" mr={1} as={VscAccount} />
       )}
-      {isMenuOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+      {isMenuOpen ? <FiChevronUp /> : <FiChevronDown />}
     </Flex>
-  </MenuButton>
+  </MenuTrigger>
 );
 
 /**
@@ -206,9 +204,9 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
   };
 
   return (
-    <MenuList borderRadius={10} mt={2} shadow="lg">
+    <MenuContent borderRadius={10} mt={2} shadow="lg">
       <Flex justifyContent="center">
-        <Stack spacing={1} width="95%">
+        <Stack gap={1} width="95%">
           {user ? (
             <>
               <CustomMenuButton
@@ -234,6 +232,6 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
           )}
         </Stack>
       </Flex>
-    </MenuList>
+    </MenuContent>
   );
 };

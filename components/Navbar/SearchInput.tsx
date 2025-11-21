@@ -1,16 +1,15 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
   Icon,
   Input,
   InputGroup,
-  InputLeftElement,
-  Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
+  PopoverCloseTrigger,
   PopoverContent,
+  PopoverPositioner,
+  PopoverRoot,
   PopoverTrigger,
   Portal,
   Text,
@@ -36,23 +35,25 @@ const SearchInput: React.FC = () => {
     // navbar limit is 600px when the user is logged in and automatic when not logged in
     <Flex flexGrow={1} maxWidth="auto" mr={2} align="center">
       {isMobile && (
-        <Popover>
+        <PopoverRoot>
           <PopoverTrigger>
-            <Button variant="action">
+            <Button variant={"action" as any}>
               <Icon as={AiOutlineSearch} fontSize={16} />
               <Text ml={2}>Search</Text>
             </Button>
           </PopoverTrigger>
           <Portal>
-            <PopoverContent borderRadius={10} mt={2}>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverBody>
-                <SearchBox />
-              </PopoverBody>
-            </PopoverContent>
+            <PopoverPositioner>
+              <PopoverContent borderRadius={10} mt={2}>
+                <PopoverArrow />
+                <PopoverCloseTrigger position="absolute" top={2} right={2} />
+                <PopoverBody>
+                  <SearchBox />
+                </PopoverBody>
+              </PopoverContent>
+            </PopoverPositioner>
           </Portal>
-        </Popover>
+        </PopoverRoot>
       )}
       {!isMobile && <SearchBox />}
     </Flex>
@@ -66,11 +67,12 @@ export default SearchInput;
  */
 const SearchBox: React.FC = () => {
   return (
-    <InputGroup>
-      <InputLeftElement pointerEvents="none">
-        <SearchIcon color="gray.400" />
-      </InputLeftElement>
-
+    <InputGroup
+      startElement={
+        <Icon as={AiOutlineSearch} color="gray.400" fontSize={16} />
+      }
+      startElementProps={{ pointerEvents: "none" }}
+    >
       <Input
         placeholder="Search"
         fontSize="10pt"

@@ -81,7 +81,7 @@ const ResetPassword: React.FC = () => {
               mb={2}
               mt={2}
               type="submit"
-              isLoading={sending}
+              loading={sending}
             >
               Reset Password
             </Button>
