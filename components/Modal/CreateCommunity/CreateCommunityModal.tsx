@@ -23,7 +23,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FC, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { IconType } from "react-icons";
@@ -207,10 +207,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
         if (!open) handleClose();
       }}
     >
-      <DialogBackdrop
-        bg="rgba(0, 0, 0, 0.4)"
-        backdropFilter="blur(6px)"
-      />
+      <DialogBackdrop bg="rgba(0, 0, 0, 0.4)" backdropFilter="blur(6px)" />
       <DialogPositioner>
         <DialogContent borderRadius={10}>
           <DialogHeader
@@ -223,7 +220,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
           </DialogHeader>
           <Box pl={3} pr={3}>
             <DialogCloseTrigger position="absolute" top={2} right={2} />
-            <DialogBody display="flex" flexDirection="column" padding="10px 0px">
+            <DialogBody
+              display="flex"
+              flexDirection="column"
+              padding="10px 0px"
+            >
               <CommunityNameSection
                 communityName={communityName}
                 handleChange={handleChange}

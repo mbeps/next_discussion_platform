@@ -15,7 +15,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { useAtom, useSetAtom } from "jotai";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useCustomToast from "./useCustomToast";
@@ -36,7 +36,7 @@ const useCommunityData = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const setAuthModalState = useSetAtom(authModalStateAtom);
-  const router = useRouter();
+  const params = useParams();
   const showToast = useCustomToast();
 
   /**
@@ -244,12 +244,16 @@ const useCommunityData = () => {
    * The community data is stored in the communityState.
    */
   useEffect(() => {
-    const { communityId } = router.query; // get the communityId from the URL
-    if (communityId && !communityStateValue.currentCommunity) {
+    const communityId = params?.communityId as string; // get the communityId from the URL
+    if (
+      communityId &&
+      (!communityStateValue.currentCommunity ||
+        communityStateValue.currentCommunity.id !== communityId)
+    ) {
       // if the communityId exists and the community data is not already fetched
-      getCommunityData(communityId as string); // fetch the community data
+      getCommunityData(communityId); // fetch the community data
     }
-  }, [communityStateValue.currentCommunity, router.query]);
+  }, [communityStateValue.currentCommunity, params?.communityId]);
 
   return {
     communityStateValue,

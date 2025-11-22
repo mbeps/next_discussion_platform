@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { HiArrowCircleUp } from "react-icons/hi";
 import useCommunityData from "@/hooks/useCommunityData";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
 import { FiSettings } from "react-icons/fi";
@@ -165,8 +165,8 @@ type CommunitySettingsProps = {
 export const CommunitySettings: React.FC<CommunitySettingsProps> = ({
   communityData,
 }) => {
-  const router = useRouter();
-  const { communityId } = router.query;
+  const params = useParams();
+  const communityId = params?.communityId;
   const [user] = useAuthState(auth);
   const [isCommunitySettingsModalOpen, setCommunitySettingsModalOpen] =
     useState(false);

@@ -1,6 +1,6 @@
 import { Community } from "@/atoms/communitiesAtom";
 import { Button, Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoPeopleCircleOutline } from "react-icons/io5";

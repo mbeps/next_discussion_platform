@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Post } from "@/atoms/postsAtom";
 import About from "@/components/Community/About";
@@ -12,7 +14,7 @@ import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { doc, getDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -31,6 +33,7 @@ const PostPage: React.FC = () => {
   const { communityStateValue } = useCommunityData();
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const params = useParams();
   const showToast = useCustomToast();
   const [hasFetched, setHasFetched] = useState(false);
   const [postExists, setPostExists] = useState(true);
@@ -86,18 +89,18 @@ const PostPage: React.FC = () => {
    * if the post data is not valid, it will redirect to the `404` page.
    */
   useEffect(() => {
-    const { pid } = router.query;
+    const pid = params?.pid as string;
 
     if (pid && !postStateValue.selectedPost) {
-      fetchPost(pid as string);
+      fetchPost(pid);
     }
 
     // If fetching attempt has been completed and post does not exist, redirect to `NotFound` page
     if (hasFetched && !postExists) {
-      router.push("/404");
+      router.push("/404"); // Or /not-found
       return;
     }
-  }, [postStateValue.selectedPost, router.query, hasFetched, postExists]);
+  }, [postStateValue.selectedPost, params?.pid, hasFetched, postExists]);
 
   return (
     <PageContent>

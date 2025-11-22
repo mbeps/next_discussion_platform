@@ -18,9 +18,9 @@
     "@fontsource/open-sans": "^5.0.28",
     "@next/font": "14.2.3",
     "@types/node": "20.14.0",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
-    "eslint-config-next": "14.2.3",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
+    "eslint-config-next": "^16.0.3",
     "firebase": "^12.6.0",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.0",
@@ -28,16 +28,17 @@
     "jotai": "^2.15.1",
     "jotai-utils": "^0.0.0",
     "moment": "^2.29.4",
-    "next": "14.2.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "^16.0.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-icons": "^5.2.1",
     "safe-json-stringify": "^1.2.0",
     "typescript": "5.4.5"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
     "@types/safe-json-stringify": "^1.1.2",
-    "eslint": "8"
+    "eslint": "^9"
   }
 }

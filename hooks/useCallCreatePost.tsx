@@ -1,7 +1,7 @@
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import { useSetAtom } from "jotai";
-import { useRouter } from "next/router";
+import { useRouter, useParams } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useDirectory from "./useDirectory";
 
@@ -12,6 +12,7 @@ import useDirectory from "./useDirectory";
  */
 const useCallCreatePost = () => {
   const router = useRouter();
+  const params = useParams();
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetAtom(authModalStateAtom);
   const { toggleMenuOpen } = useDirectory();
@@ -29,7 +30,7 @@ const useCallCreatePost = () => {
       setAuthModalState({ open: true, view: "login" }); // open login modal
       return; // exit function
     }
-    const { communityId } = router.query; // get community id from router
+    const communityId = params?.communityId; // get community id from router
 
     if (communityId) {
       // if the user is in a community then can post
