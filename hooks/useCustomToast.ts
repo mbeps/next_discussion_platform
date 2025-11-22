@@ -1,4 +1,5 @@
 import { createToaster } from "@chakra-ui/react";
+import { useCallback } from "react";
 
 /**
  * Interface for the options of the toast.
@@ -28,15 +29,18 @@ export const toaster = createToaster({
  * @returns {function} - function which shows a toast
  */
 const useCustomToast = () => {
-  const showToast = ({ title, description, status }: CustomToastOptions) => {
-    toaster.create({
-      title,
-      description,
-      type: status,
-      closable: true,
-      duration: 5000,
-    });
-  };
+  const showToast = useCallback(
+    ({ title, description, status }: CustomToastOptions) => {
+      toaster.create({
+        title,
+        description,
+        type: status,
+        closable: true,
+        duration: 5000,
+      });
+    },
+    []
+  );
 
   return showToast;
 };

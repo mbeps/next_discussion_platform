@@ -10,11 +10,11 @@ const firebaseConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: ""
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 /**
- * Initialize Firebase (Changes made as Next.JS uses server side rendering). 
+ * Initialize Firebase (Changes made as Next.JS uses server side rendering).
  * If the app is already initialized, then use the existing app.
  * If the app is not initialized, then initialize the app.
  * This way, when the app is already initialized in the server, it is not re-initialized in the client.

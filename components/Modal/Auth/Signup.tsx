@@ -118,7 +118,7 @@ const SignUp = () => {
 
       <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
         {error ||
-          FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+          FIREBASE_ERRORS[userError?.code as keyof typeof FIREBASE_ERRORS]}
       </Text>
 
       <Button
