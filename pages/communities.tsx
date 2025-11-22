@@ -9,7 +9,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { Button, Flex, Stack } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 /**
  * Displays the communities page with the top 5 communities.
@@ -27,35 +27,38 @@ const Communities: React.FC = () => {
    * Gets the top 5 communities with the most members.
    * @param {number} numberOfExtraPosts - number of extra posts to display
    */
-  const getCommunities = async (numberOfExtraPosts: number) => {
-    setLoading(true);
-    try {
-      const communityQuery = query(
-        collection(firestore, "communities"),
-        orderBy("numberOfMembers", "desc"),
-        limit(5 + numberOfExtraPosts)
-      );
-      const communityDocs = await getDocs(communityQuery);
-      const communities = communityDocs.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setCommunities(communities as Community[]);
-    } catch (error) {
-      console.log("Error: getCommunityRecommendations", error);
-      showToast({
-        title: "Could not Find Communities",
-        description: "There was an error getting communities",
-        status: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const getCommunities = useCallback(
+    async (numberOfExtraPosts: number) => {
+      setLoading(true);
+      try {
+        const communityQuery = query(
+          collection(firestore, "communities"),
+          orderBy("numberOfMembers", "desc"),
+          limit(5 + numberOfExtraPosts)
+        );
+        const communityDocs = await getDocs(communityQuery);
+        const communities = communityDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCommunities(communities as Community[]);
+      } catch (error) {
+        console.log("Error: getCommunityRecommendations", error);
+        showToast({
+          title: "Could not Find Communities",
+          description: "There was an error getting communities",
+          status: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [showToast]
+  );
 
   useEffect(() => {
     getCommunities(0);
-  }, []);
+  }, [getCommunities]);
 
   return (
     <>

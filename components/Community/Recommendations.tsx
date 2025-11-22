@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
 /**
@@ -85,7 +85,7 @@ const SuggestedCommunitiesList: React.FC = () => {
   /**
    * Gets the top 5 communities with the most members.
    */
-  const getCommunityRecommendations = async () => {
+  const getCommunityRecommendations = useCallback(async () => {
     setLoading(true);
     try {
       const communityQuery = query(
@@ -109,11 +109,11 @@ const SuggestedCommunitiesList: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
     getCommunityRecommendations();
-  }, []);
+  }, [getCommunityRecommendations]);
 
   return (
     <Flex direction="column" mb={0}>
