@@ -12,9 +12,9 @@ Our platform is also designed to be user-friendly and accessible, with a respons
 
 # **Requirements**
 These are the requirements needed to run the project:
-- Node 18 LTS
-- Next.JS 12+
-- Firebase V9
+- Node.js 20+
+- Yarn 1.22+
+- Firebase
 
 # **Features**
 ## **Authentication and Account Management**
@@ -61,7 +61,7 @@ These are the main technologies that were used in this project:
 
 ## **Front-End**
 - [**TypeScript**](https://www.typescriptlang.org/): TypeScript is a superset of JavaScript that adds optional static typing and other features to make the development of large-scale JavaScript applications easier and more efficient. TypeScript enables developers to catch errors earlier in the development process, write more maintainable code, and benefit from advanced editor support.
-- [**Next.js**](https://nextjs.org/): Next.js is a popular React framework for building server-side rendered (SSR) and statically generated web applications. It provides a set of tools and conventions that make it easy to build modern, performant web applications that can be easily deployed to a variety of hosting environments.
+- [**Next.js (App Router)**](https://nextjs.org/): The project runs on Next.js 16 with the App Router + React 19, enabling server components, streaming layouts, and route handlers all defined in the `app/` directory.
 - [**Jotai State Manager**](https://github.com/pmndrs/jotai/): Jotai is a state management library for React applications that provides a simple, flexible, and efficient way to manage shared state in your app. Jotai is designed to work seamlessly with React and is particularly well-suited for complex or large-scale applications.
 - [**Chakra UI**](https://chakra-ui.com/): Chakra UI is a popular React component library that provides a set of customizable, accessible, and responsive UI components for building web applications. Chakra UI is built with accessibility in mind and provides a range of pre-built components that can be easily customized to fit your app's design and branding.
 
@@ -77,11 +77,16 @@ These are simple steps to run the application locally. For more detail instructi
 git clone https://github.com/mbeps/next_discussion_platform.git
 ```
 
-## 2. **Set Up Environment**
+## 2. **Install Dependencies**
+```sh
+yarn install
+```
+
+## 3. **Set Up Environment**
 1. Copy the `.env.example` file and call it `.env.local`
 2. Populate the `.env.local` with the required Firebase secrets 
 
-## 3. **Set Up Firebase**
+## 4. **Set Up Firebase**
 ### **Set Up Cloud Functions**
 1. **Install Firebase tools**
 ```sh
@@ -107,9 +112,9 @@ These are required for querying.
 | `posts`       | `communityId` Ascending `createdAt` Descending __name__ Descending |
 | `comments`    | `postId` Ascending `createdAt` Descending __name__ Descending      |
 
-## 3. **Run Project**
+## 5. **Run Project**
 ```sh
-npm run dev
+yarn dev
 ```
 This should run the project on `localhost:3000`
 
@@ -126,4 +131,3 @@ docker-compose -f docker/docker-compose.yml up --build
 This video demonstrates the features and functionality of the project. 
 
 https://user-images.githubusercontent.com/58662575/236821702-25dfb59c-162f-4de5-af8f-e0e7b8315aae.mp4
-
