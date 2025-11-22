@@ -11,6 +11,8 @@ export default async function Page({
 }) {
   const { communityId } = await params;
 
+  let communityData;
+
   try {
     const communityDocRef = doc(firestore, "communities", communityId);
     const communityDoc = await getDoc(communityDocRef);
@@ -19,13 +21,13 @@ export default async function Page({
       notFound();
     }
 
-    const communityData = JSON.parse(
+    communityData = JSON.parse(
       safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
     );
-
-    return <CommunityClientPage communityData={communityData} />;
   } catch (error) {
     console.log("Error: Page", error);
     return <div>Error loading community</div>;
   }
+
+  return <CommunityClientPage communityData={communityData} />;
 }
