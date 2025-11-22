@@ -34,7 +34,6 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
-import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { MdAccountCircle } from "react-icons/md";
@@ -57,7 +56,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   const showToast = useCustomToast();
   const [userName, setUserName] = useState(user?.displayName || "");
   const [isEditing, setIsEditing] = useState(false);
-  const router = useRouter();
 
   /**
    * Closes the modal and resets the states.
@@ -254,10 +252,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
         if (!open) handleClose();
       }}
     >
-      <DialogBackdrop
-        bg="rgba(0, 0, 0, 0.4)"
-        backdropFilter="blur(6px)"
-      />
+      <DialogBackdrop bg="rgba(0, 0, 0, 0.4)" backdropFilter="blur(6px)" />
       <DialogPositioner>
         <DialogContent borderRadius={10}>
           <DialogHeader
@@ -392,11 +387,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
                 Cancel
               </Button>
               {isEditing ? (
-                <Button
-                  height="30px"
-                  flex={1}
-                  onClick={handleSaveButtonClick}
-                >
+                <Button height="30px" flex={1} onClick={handleSaveButtonClick}>
                   Save
                 </Button>
               ) : (

@@ -5,7 +5,7 @@ import {
   directoryMenuAtom,
 } from "@/atoms/directoryMenuAtom";
 import { useAtom, useAtomValue } from "jotai";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 
@@ -19,6 +19,7 @@ import { IoPeopleCircleOutline } from "react-icons/io5";
 const useDirectory = () => {
   const [directoryState, setDirectoryState] = useAtom(directoryMenuAtom);
   const router = useRouter();
+  const pathname = usePathname();
   const communityStateValue = useAtomValue(communityStateAtom);
 
   /**
@@ -62,11 +63,7 @@ const useDirectory = () => {
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 
-    if (
-      currentCommunity &&
-      router.pathname !== "/" &&
-      router.pathname !== "/communities"
-    ) {
+    if (currentCommunity && pathname !== "/" && pathname !== "/communities") {
       // if the user is currently in a community and not on the home page
       setDirectoryState((prev) => ({
         ...prev,
@@ -78,7 +75,7 @@ const useDirectory = () => {
           iconColor: "red.500",
         },
       }));
-    } else if (router.pathname === "/communities") {
+    } else if (pathname === "/communities") {
       // if the user is on the communities page
       setDirectoryState((prev) => ({
         ...prev,
@@ -91,7 +88,7 @@ const useDirectory = () => {
         },
       }));
     }
-  }, [communityStateValue.currentCommunity, router.pathname]);
+  }, [communityStateValue.currentCommunity, pathname]);
 
   return { directoryState, toggleMenuOpen, setDirectoryOpen, onSelectMenuItem };
 };

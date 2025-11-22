@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChakraProvider,
   Toaster,
@@ -9,30 +11,16 @@ import {
   Flex,
   Stack,
 } from "@chakra-ui/react";
-import type { AppProps } from "next/app";
 import { theme } from "@/chakra/theme";
 import Layout from "@/components/Layout/Layout";
 import { Provider as JotaiProvider } from "jotai";
-import Head from "next/head";
 import { toaster } from "@/hooks/useCustomToast";
 
-/**
- * Represents the entire application.
- * `JotaiProvider` allows the entire app (children) to be able to manage its state via Jotai.
- * `ChakraProvider` allows the entire app (children) to be able to use Chakra UI.
- * @param param0 - every page and component is a child of this component
- * @returns App component
- */
-export default function App({ Component, pageProps }: AppProps) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <JotaiProvider>
       <ChakraProvider value={theme}>
-        <Layout>
-          <Head>
-            <title>Circus Discussions</title>
-          </Head>
-          <Component {...pageProps} />
-        </Layout>
+        <Layout>{children}</Layout>
         <Toaster toaster={toaster} gap={4} placement="top">
           {(toast: any) => (
             <ToastRoot

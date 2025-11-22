@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Post, PostVote } from "@/atoms/postsAtom";
 import CreatePostLink from "@/components/Community/CreatePostLink";
@@ -11,7 +13,6 @@ import useCommunityData from "@/hooks/useCommunityData";
 import useCustomToast from "@/hooks/useCustomToast";
 import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
-import { Inter } from "@next/font/google";
 import {
   collection,
   getDocs,
@@ -22,8 +23,6 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [user, loadingUser] = useAuthState(auth);

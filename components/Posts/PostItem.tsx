@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import moment from "moment";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { BsBookmark } from "react-icons/bs";
 import { FiShare2 } from "react-icons/fi";
