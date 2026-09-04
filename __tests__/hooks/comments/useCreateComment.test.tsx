@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { Provider, createStore, useAtomValue } from "jotai";
+import type { User } from "firebase/auth";
+import { createStore, Provider, useAtomValue } from "jotai";
 import type { ReactNode } from "react";
-import { User } from "firebase/auth";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({

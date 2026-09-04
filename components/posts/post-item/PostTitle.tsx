@@ -1,6 +1,6 @@
-import React from "react";
 import { Text } from "@chakra-ui/react";
-import { Post } from "@/types/post";
+import type React from "react";
+import type { Post } from "@/types/post";
 
 type PostTitleProps = {
   post: Post;

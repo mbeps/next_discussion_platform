@@ -1,6 +1,3 @@
-import { auth } from "@/firebase/clientApp";
-import useSelectFile from "@/hooks/useSelectFile";
-import useUserProfile from "@/hooks/useUserProfile";
 import {
   Button,
   DialogBackdrop,
@@ -14,13 +11,17 @@ import {
   DialogTitle,
   Stack,
 } from "@chakra-ui/react";
-import React, { useRef, useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { auth } from "@/firebase/clientApp";
+import useSelectFile from "@/hooks/useSelectFile";
+import useUserProfile from "@/hooks/useUserProfile";
+import { type EditProfileInput, editProfileSchema } from "@/schema/profile";
 import UserImageSection from "./UserImageSection";
 import UserInfoSection from "./UserInfoSection";
-import { editProfileSchema, EditProfileInput } from "@/schema/profile";
 
 type ProfileModalProps = {
   open: boolean;
@@ -38,7 +39,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, handleClose }) => {
   const { updateImage, removeImage, updateName, loading } = useUserProfile();
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
     300,
-    300
+    300,
   );
   const selectFileRef = useRef<HTMLInputElement>(null);
   const [deleteImage, setDeleteImage] = useState(false);

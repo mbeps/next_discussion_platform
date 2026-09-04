@@ -1,16 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+import { useSetAtom } from "jotai";
+import type React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
-import { useSetAtom } from "jotai";
-import { useAuthState } from "react-firebase-hooks/auth";
-import useCustomToast from "../useCustomToast";
-import React from "react";
-import { Post, PostVote } from "@/types/post";
-import { handlePostVote } from "@/lib/posts/handlePostVote";
-import { getPostVotes as getPostVotesLib } from "@/lib/posts/getPostVotes";
-import { getPost as getPostLib } from "@/lib/posts/getPost";
-import useCommunityState from "../community/useCommunityState";
 import { getCommunityData } from "@/lib/community/getCommunityData";
+import { getPost as getPostLib } from "@/lib/posts/getPost";
+import { getPostVotes as getPostVotesLib } from "@/lib/posts/getPostVotes";
+import { handlePostVote } from "@/lib/posts/handlePostVote";
+import type { Post, PostVote } from "@/types/post";
+import useCommunityState from "../community/useCommunityState";
+import useCustomToast from "../useCustomToast";
 
 type SetPostState = React.Dispatch<
   React.SetStateAction<{
@@ -34,7 +33,7 @@ const usePostVote = (
     posts: Post[];
     postVotes: PostVote[];
   },
-  setPostStateValue: SetPostState
+  setPostStateValue: SetPostState,
 ) => {
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetAtom(authModalStateAtom);
@@ -45,7 +44,7 @@ const usePostVote = (
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
     vote: number,
-    communityId: string
+    communityId: string,
   ) => {
     event.stopPropagation();
 
@@ -56,7 +55,7 @@ const usePostVote = (
 
     // Check permissions
     const isMember = !!communityStateValue.mySnippets.find(
-      (snippet) => snippet.communityId === communityId
+      (snippet) => snippet.communityId === communityId,
     );
 
     if (!isMember) {
@@ -68,7 +67,7 @@ const usePostVote = (
         } catch (error) {
           console.log(
             "Error fetching community data for vote permission",
-            error
+            error,
           );
         }
       }
@@ -89,7 +88,7 @@ const usePostVote = (
 
     try {
       const existingVote = postStateValue.postVotes.find(
-        (v) => v.postId === post.id
+        (v) => v.postId === post.id,
       );
 
       const { voteChange, newVote, voteIdToDelete } = await handlePostVote(
@@ -97,7 +96,7 @@ const usePostVote = (
         post,
         vote,
         communityId,
-        existingVote
+        existingVote,
       );
 
       let updatedPostVotes = [...postStateValue.postVotes];
@@ -106,12 +105,12 @@ const usePostVote = (
 
       if (voteIdToDelete) {
         updatedPostVotes = updatedPostVotes.filter(
-          (v) => v.id !== voteIdToDelete
+          (v) => v.id !== voteIdToDelete,
         );
       } else if (newVote) {
         if (existingVote) {
           const voteIndexPosition = postStateValue.postVotes.findIndex(
-            (v) => v.id === existingVote.id
+            (v) => v.id === existingVote.id,
           );
           updatedPostVotes[voteIndexPosition] = newVote;
         } else {
@@ -120,7 +119,7 @@ const usePostVote = (
       }
 
       const postIndexPosition = postStateValue.posts.findIndex(
-        (item) => item.id === post.id
+        (item) => item.id === post.id,
       );
       updatedPosts[postIndexPosition] = updatedPost;
       setPostStateValue((prev) => ({

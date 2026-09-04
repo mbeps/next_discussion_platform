@@ -1,13 +1,14 @@
 /// <reference types="vitest" />
 import { Timestamp } from "firebase/firestore";
-import { Comment } from "@/types/comment";
-import { Community, CommunitySnippet } from "@/types/community";
-import { Post, PostVote } from "@/types/post";
-import { SavedPost } from "@/types/savedPost";
+import type { Comment } from "@/types/comment";
+import type { Community, CommunitySnippet } from "@/types/community";
+import type { Post as PostType, PostVote } from "@/types/post";
+import type { SavedPost } from "@/types/savedPost";
 
+export { Timestamp };
 export const TS = Timestamp.fromDate(new Date("2026-01-01"));
 
-export function Post(over: Partial<Post> = {}): Post {
+export function Post(over: Partial<PostType> = {}): PostType {
   return {
     id: "p1",
     communityId: "c1",

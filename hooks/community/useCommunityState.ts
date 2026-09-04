@@ -1,5 +1,5 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { useAtom } from "jotai";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 
 /**
  * A custom hook that provides access to the global community state managed by Jotai.

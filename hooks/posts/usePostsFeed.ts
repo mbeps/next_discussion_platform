@@ -1,10 +1,10 @@
-import { postStateAtom } from "@/atoms/postsAtom";
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
-import useCustomToast from "../useCustomToast";
-import { Post } from "@/types/post";
+import { postStateAtom } from "@/atoms/postsAtom";
 import { getPosts as getPostsLib } from "@/lib/posts/getPosts";
+import type { Post } from "@/types/post";
+import useCustomToast from "../useCustomToast";
 
 type UsePostsFeedProps = {
   communityId?: string;
@@ -43,7 +43,7 @@ const usePostsFeed = ({
         communityId,
         communityIds,
         isGenericHome,
-        initial ? null : lastVisible
+        initial ? null : lastVisible,
       );
 
       if (posts.length < 10) setNoMorePosts(true);
@@ -70,6 +70,7 @@ const usePostsFeed = ({
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Reset feed state on communityId or isGenericHome change
   useEffect(() => {
     setNoMorePosts(false);
     setLastVisible(null);

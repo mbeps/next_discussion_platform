@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { Provider, useAtomValue, useSetAtom, createStore } from "jotai";
+import { createStore, Provider, useAtomValue, useSetAtom } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -31,7 +31,7 @@ vi.mock("@/lib/community/leaveCommunity", () => ({
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
 
 // One shared store per test so writes from the hook are visible to readers.
 let store: ReturnType<typeof createStore>;
@@ -40,7 +40,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <Provider store={store}>{children}</Provider>
 );
 
-const readAtom = <T,>(anAtom: Parameters<typeof useAtomValue>[0]): T =>
+const readAtom = (anAtom: any): any =>
   renderHook(() => useAtomValue(anAtom), { wrapper }).result.current;
 
 const community = (over: Partial<Community> = {}): Community => ({
@@ -174,7 +174,7 @@ describe("useCommunityMembershipActions", () => {
     const { result } = renderHook(() => useCommunityMembershipActions(), {
       wrapper,
     });
-    let pending!: Promise<void>;
+    let pending!: unknown;
     act(() => {
       pending = result.current.onJoinOrLeaveCommunity(community(), false);
     });

@@ -20,11 +20,14 @@ vi.mock("firebase/storage", () => ({
 
 import { createPost } from "@/lib/posts/createPost";
 
-const user = {
+import type { User } from "firebase/auth";
+
+const userObj = {
   uid: "u1",
   email: "jane@x.com",
   displayName: "Jane",
-} as never;
+};
+const user = userObj as unknown as User;
 
 beforeEach(resetFsMocks);
 
@@ -54,7 +57,7 @@ describe("createPost", () => {
 
   it("falls back to email prefix when no displayName and empty imageURL", async () => {
     await createPost(
-      { ...user, displayName: null } as never,
+      { ...userObj, displayName: null } as unknown as User,
       "react",
       undefined,
       {

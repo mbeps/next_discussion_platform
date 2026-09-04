@@ -1,6 +1,3 @@
-import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
-import useCommunityState from "@/hooks/community/useCommunityState";
-import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
 import {
   Box,
   Button,
@@ -10,7 +7,10 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import type React from "react";
+import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
+import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
+import useCommunityState from "@/hooks/community/useCommunityState";
 import RecommendationRow from "./RecommendationRow";
 import SuggestionsHeader from "./SuggestionsHeader";
 
@@ -49,22 +49,20 @@ const Recommendations: React.FC = () => {
               ))}
           </Stack>
         ) : (
-          <>
-            {communities.map((item, index) => {
-              const isJoined = !!communityStateValue.mySnippets.find(
-                (snippet) => snippet.communityId === item.id
-              );
-              return (
-                <RecommendationRow
-                  key={item.id}
-                  item={item}
-                  index={index}
-                  isJoined={isJoined}
-                  onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
-                />
-              );
-            })}
-          </>
+          communities.map((item, index) => {
+            const isJoined = !!communityStateValue.mySnippets.find(
+              (snippet) => snippet.communityId === item.id,
+            );
+            return (
+              <RecommendationRow
+                key={item.id}
+                item={item}
+                index={index}
+                isJoined={isJoined}
+                onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
+              />
+            );
+          })
         )}
         <Box p="10px 20px">
           <Button

@@ -1,4 +1,3 @@
-import { Comment } from "@/types/comment";
 import {
   Box,
   Button,
@@ -8,12 +7,14 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React, { useState } from "react";
+import type { User } from "firebase/auth";
+import type React from "react";
+import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { LuPencil, LuReply, LuTrash } from "react-icons/lu";
-import CommentInput from "./CommentInput";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import type { Comment } from "@/types/comment";
+import CommentInput from "./CommentInput";
 
 /**
  * Props for the CommentItem component.
@@ -36,7 +37,7 @@ type CommentItemProps = {
     user: User,
     text: string,
     parentId: string,
-    depth: number
+    depth: number,
   ) => Promise<void>;
   user?: User;
   canComment?: boolean;

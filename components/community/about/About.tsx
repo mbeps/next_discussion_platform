@@ -1,13 +1,14 @@
-import { Community } from "@/types/community";
-import useCommunityState from "@/hooks/community/useCommunityState";
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
+import useCommunityState from "@/hooks/community/useCommunityState";
+import type { Community } from "@/types/community";
 import CommunityMembersModal from "../../modal/community-members/CommunityMembersModal";
 import AboutCommunity from "./AboutCommunity";
 import AboutHeaderBar from "./AboutHeaderBar";
 import AdminSectionAbout from "./AdminSectionAbout";
-import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 
 /**
  * @param {string} communityName - Name of the community
@@ -35,7 +36,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
   const router = useRouter();
   const { communityStateValue } = useCommunityState();
   const isJoined = !!communityStateValue.mySnippets.find(
-    (item) => item.communityId === communityData.id
+    (item) => item.communityId === communityData.id,
   );
   const [isMembersModalOpen, setMembersModalOpen] = useState(false);
   const { canView, canPost } = useCommunityPermissions(communityData);

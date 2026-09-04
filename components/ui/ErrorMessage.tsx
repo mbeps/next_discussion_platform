@@ -1,11 +1,11 @@
 import {
-  Flex,
   AlertContent,
   AlertIndicator,
   AlertRoot,
+  Flex,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 interface PostItemErrorProps {
   error: boolean;

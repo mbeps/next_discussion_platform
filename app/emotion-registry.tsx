@@ -26,6 +26,7 @@ export default function EmotionRegistry({
     return (
       <style
         data-emotion={`${cache.key} ${Object.keys(cache.inserted).join(" ")}`}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Emotion SSR style insertion
         dangerouslySetInnerHTML={{
           __html: Object.values(cache.inserted).join(" "),
         }}

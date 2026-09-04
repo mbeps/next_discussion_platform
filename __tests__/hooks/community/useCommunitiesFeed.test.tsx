@@ -17,7 +17,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
 }));
 
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
 
 const community = (i: number): Community => ({
   id: `c${i}`,

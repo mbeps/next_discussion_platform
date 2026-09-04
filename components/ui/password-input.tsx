@@ -12,8 +12,8 @@ import {
   IconButton,
   Input,
   InputGroup,
-  Stack,
   mergeRefs,
+  Stack,
   useControllableState,
 } from "@chakra-ui/react";
 import * as React from "react";
@@ -113,7 +113,7 @@ const VisibilityTrigger = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 interface PasswordStrengthMeterProps extends StackProps {

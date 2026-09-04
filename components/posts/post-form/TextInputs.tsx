@@ -1,7 +1,7 @@
 import { Button, Flex, Input, Stack, Text, Textarea } from "@chakra-ui/react";
-import React from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { CreatePostInput } from "@/schema/post";
+import type React from "react";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { CreatePostInput } from "@/schema/post";
 
 type TextInputsProps = {
   register: UseFormRegister<CreatePostInput>;

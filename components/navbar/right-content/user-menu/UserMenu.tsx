@@ -1,7 +1,8 @@
-import ProfileModal from "@/components/modal/profile/ProfileModal";
 import { MenuPositioner, MenuRoot } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React, { useState } from "react";
+import type { User } from "firebase/auth";
+import type React from "react";
+import { useState } from "react";
+import ProfileModal from "@/components/modal/profile/ProfileModal";
 import UserMenuButton from "./UserMenuButton";
 import UserMenuList from "./UserMenuList";
 

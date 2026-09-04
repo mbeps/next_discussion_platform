@@ -1,10 +1,10 @@
-import React from "react";
 import {
-  AlertRoot,
-  AlertIndicator,
   AlertContent,
+  AlertIndicator,
+  AlertRoot,
   Text,
 } from "@chakra-ui/react";
+import type React from "react";
 
 type Props = {
   error: boolean;

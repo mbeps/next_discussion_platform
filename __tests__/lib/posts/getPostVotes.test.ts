@@ -29,7 +29,7 @@ describe("getPostVotes", () => {
     await getPostVotes("u1", ids);
 
     expect(fsMocks.getDocs).toHaveBeenCalledTimes(3);
-    const chunkSizes = fsMocks.getDocs.mock.calls.map((call) => {
+    const chunkSizes = fsMocks.getDocs.mock.calls.map((call: any[]) => {
       const q = call[0];
       const whereC = q.__query.slice(1)[0];
       return (whereC as { value: string[] }).value.length;

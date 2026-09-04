@@ -1,13 +1,13 @@
+import { useSetAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import { postStateAtom } from "@/atoms/postsAtom";
 import { auth } from "@/firebase/clientApp";
 import { deleteProfileImage } from "@/lib/user-profile/deleteProfileImage";
 import { updateUserCommentsName } from "@/lib/user-profile/updateUserCommentsName";
 import { updateUserPostsName } from "@/lib/user-profile/updateUserPostsName";
 import { uploadProfileImage } from "@/lib/user-profile/uploadProfileImage";
-import { useSetAtom } from "jotai";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useAuthState, useUpdateProfile } from "react-firebase-hooks/auth";
 import useCustomToast from "./useCustomToast";
 
 /**
@@ -18,7 +18,7 @@ import useCustomToast from "./useCustomToast";
  */
 const useUserProfile = () => {
   const [user] = useAuthState(auth);
-  const [updateProfile, updating, error] = useUpdateProfile(auth);
+  const [updateProfile, updating] = useUpdateProfile(auth);
   const setPostStateValue = useSetAtom(postStateAtom);
   const router = useRouter();
   const showToast = useCustomToast();

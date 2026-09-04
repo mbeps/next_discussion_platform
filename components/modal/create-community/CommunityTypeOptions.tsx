@@ -1,5 +1,5 @@
-import React from "react";
 import { VStack } from "@chakra-ui/react";
+import type React from "react";
 import CommunityTypeOption from "./CommunityTypeOption";
 
 interface CommunityTypeOptionsProps {

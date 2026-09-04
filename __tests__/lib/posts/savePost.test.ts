@@ -12,11 +12,11 @@ vi.mock("firebase/firestore", async () => {
   return { ...fsMocks };
 });
 
-import { savePost, unsavePost, getSavedPosts } from "@/lib/posts/savePost";
-import { unsavePost as unsavePostFn } from "@/lib/posts/unsavePost";
 import { getSavedPosts as getSavedPostsFn } from "@/lib/posts/getSavedPosts";
-import { querySnap, snap as mkSnap } from "../helpers/firestore-mock";
-import { Post } from "@/types/post";
+import { savePost } from "@/lib/posts/savePost";
+import { unsavePost as unsavePostFn } from "@/lib/posts/unsavePost";
+import type { Post } from "@/types/post";
+import { snap as mkSnap, querySnap } from "../helpers/firestore-mock";
 
 const post = { id: "p1", communityId: "react", title: "T" } as Post;
 

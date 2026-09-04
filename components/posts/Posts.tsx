@@ -1,16 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Community } from "@/types/community";
+import { Button, Stack, Text } from "@chakra-ui/react";
+import type React from "react";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
-import usePostState from "@/hooks/posts/usePostState";
-import usePostSelection from "@/hooks/posts/usePostSelection";
-import usePostVote from "@/hooks/posts/usePostVote";
 import usePostDeletion from "@/hooks/posts/usePostDeletion";
-import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
+import usePostSelection from "@/hooks/posts/usePostSelection";
+import usePostState from "@/hooks/posts/usePostState";
 import usePostsFeed from "@/hooks/posts/usePostsFeed";
-import { Button, Stack, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import usePostVote from "@/hooks/posts/usePostVote";
+import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
+import type { Community } from "@/types/community";
 import PostLoader from "../loaders/post-loader/PostLoader";
 import PostItem from "./post-item/PostItem";
 
@@ -37,6 +37,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
     communityId: communityData.id,
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Refetch posts on community change
   useEffect(() => {
     fetchPosts(true);
   }, [communityData]);

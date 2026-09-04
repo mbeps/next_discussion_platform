@@ -1,7 +1,7 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
-import { AdminUser } from "../../types/adminUser";
+import type { AdminUser } from "../../types/adminUser";
 
 /**
  * Retrieves the profile information for all administrators of a community.
@@ -12,13 +12,13 @@ import { AdminUser } from "../../types/adminUser";
  */
 export const fetchCommunityAdmins = async (
   creatorId: string,
-  adminIds?: string[]
+  adminIds?: string[],
 ): Promise<AdminUser[]> => {
   const allAdminIds = [creatorId, ...(adminIds || [])];
   const uniqueAdminIds = Array.from(new Set(allAdminIds));
 
   const adminPromises = uniqueAdminIds.map((uid) =>
-    getDoc(doc(firestore, "users", uid))
+    getDoc(doc(firestore, "users", uid)),
   );
   const adminDocs = await Promise.all(adminPromises);
 

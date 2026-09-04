@@ -1,9 +1,7 @@
 "use client";
 
-/* eslint-disable react-hooks/exhaustive-deps */
-import { authModalStateAtom } from "@/atoms/authModalAtom";
-import { auth } from "@/firebase/clientApp";
 import {
+  Box,
   DialogBackdrop,
   DialogBody,
   DialogCloseTrigger,
@@ -14,14 +12,16 @@ import {
   DialogTitle,
   Flex,
   Separator,
-  Box,
 } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/clientApp";
 import AuthInputs from "./AuthInputs";
-import ResetPassword from "./ResetPassword";
 import OAuthButtons from "./oauth-buttons/OAuthButtons";
+import ResetPassword from "./ResetPassword";
 
 /**
  * Auth modal that switches between login, signup, and reset views based on atom state.
@@ -38,13 +38,14 @@ const AuthModal: React.FC = () => {
    * once the communication is complete it is set to `false`.
    * `error` is null until an error takes place while communicating with Firebase.
    */
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   /**
    * If a user is authenticated, the modal will automatically close.
    * This is used after signing up or logging in as once the user is authenticated,
    * the modal does not need to be open.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Close modal on user change
   useEffect(() => {
     if (user) handleClose();
   }, [user]);

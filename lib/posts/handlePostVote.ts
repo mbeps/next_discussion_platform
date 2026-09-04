@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
-import { Post, PostVote } from "@/types/post";
 import { collection, doc, writeBatch } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { Post, PostVote } from "@/types/post";
 
 /**
  * Processes a vote (upvote or downvote) on a post and updates the aggregate vote count.
@@ -21,7 +21,7 @@ export const handlePostVote = async (
   post: Post,
   vote: number,
   communityId: string,
-  existingVote?: PostVote
+  existingVote?: PostVote,
 ) => {
   const batch = writeBatch(firestore);
   let voteChange = vote;
@@ -30,7 +30,7 @@ export const handlePostVote = async (
 
   if (!existingVote) {
     const postVoteRef = doc(
-      collection(firestore, "users", `${userId}/postVotes`)
+      collection(firestore, "users", `${userId}/postVotes`),
     );
     newVote = {
       id: postVoteRef.id,
@@ -45,7 +45,7 @@ export const handlePostVote = async (
     const postVoteRef = doc(
       firestore,
       "users",
-      `${userId}/postVotes/${existingVote.id}`
+      `${userId}/postVotes/${existingVote.id}`,
     );
 
     if (existingVote.voteValue === vote) {

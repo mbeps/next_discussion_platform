@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Community } from "@/types/community";
-import useCustomToast from "../useCustomToast";
+import { useState } from "react";
 import { deleteCommunity } from "@/lib/community/deleteCommunity";
+import type { Community } from "@/types/community";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for deleting a community and all its associated data.

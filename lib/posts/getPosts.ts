@@ -1,17 +1,17 @@
-import { firestore } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
 import {
   collection,
-  DocumentData,
+  type DocumentData,
   getDocs,
   limit,
   orderBy,
+  type QueryConstraint,
+  type QueryDocumentSnapshot,
   query,
-  QueryConstraint,
-  QueryDocumentSnapshot,
   startAfter,
   where,
 } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
 
 /**
  * Fetches a paginated list of posts based on various filtering criteria.
@@ -27,7 +27,7 @@ export const getPosts = async (
   communityId?: string,
   communityIds?: string[],
   isGenericHome?: boolean,
-  lastVisible?: QueryDocumentSnapshot<DocumentData> | null
+  lastVisible?: QueryDocumentSnapshot<DocumentData> | null,
 ) => {
   const constraints: QueryConstraint[] = [];
 

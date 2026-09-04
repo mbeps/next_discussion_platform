@@ -1,15 +1,11 @@
-import React from "react";
-import { MenuContent, Flex, Stack } from "@chakra-ui/react";
-import CustomMenuButton from "@/components/ui/CustomMenuButton";
+import { Flex, MenuContent, Stack } from "@chakra-ui/react";
+import { signOut, type User } from "firebase/auth";
+import { useSetAtom } from "jotai";
+import type React from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
-import {
-  MdOutlineLogin as MdOutlineLoginAlias,
-  MdOutlineLogin as MdOutlineLoginAlias2,
-} from "react-icons/md";
-import { useSetAtom } from "jotai";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
-import { signOut, User } from "firebase/auth";
+import CustomMenuButton from "@/components/ui/CustomMenuButton";
 import { auth } from "@/firebase/clientApp";
 
 interface UserMenuListProps {
@@ -52,13 +48,11 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
               />
             </>
           ) : (
-            <>
-              <CustomMenuButton
-                icon={<MdOutlineLoginAlias />}
-                text="Log In / Sign Up"
-                onClick={() => setAuthModalState({ open: true, view: "login" })}
-              />
-            </>
+            <CustomMenuButton
+              icon={<MdOutlineLogin />}
+              text="Log In / Sign Up"
+              onClick={() => setAuthModalState({ open: true, view: "login" })}
+            />
           )}
         </Stack>
       </Flex>

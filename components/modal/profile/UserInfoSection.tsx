@@ -1,8 +1,8 @@
 import { Flex, Input, Text } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React from "react";
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { EditProfileInput } from "@/schema/profile";
+import type { User } from "firebase/auth";
+import type React from "react";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { EditProfileInput } from "@/schema/profile";
 
 type UserInfoSectionProps = {
   user: User | null | undefined;

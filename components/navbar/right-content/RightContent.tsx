@@ -1,11 +1,10 @@
+import { Flex, Spinner } from "@chakra-ui/react";
+import type { User } from "firebase/auth";
+import type React from "react";
 import AuthModal from "@/components/modal/auth/AuthModal";
 import SavedPostsModal from "@/components/modal/saved-posts/SavedPostsModal";
-import { Flex, Spinner } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React from "react";
 import AuthButtons from "./AuthButtons";
 import Icons from "./Icons";
-import LogOutButton from "./LogOutButton";
 import UserMenu from "./user-menu/UserMenu";
 
 type RightContentProps = {

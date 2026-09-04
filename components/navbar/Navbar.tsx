@@ -1,9 +1,9 @@
+import { Flex, Image, Text } from "@chakra-ui/react";
+import type React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { defaultMenuItem } from "@/atoms/directoryMenuAtom";
 import { auth } from "@/firebase/clientApp";
 import useDirectory from "@/hooks/useDirectory";
-import { Flex, Image, Text } from "@chakra-ui/react";
-import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Directory from "./directory/Directory";
 import RightContent from "./right-content/RightContent";
 import SearchInput from "./SearchInput";
@@ -14,7 +14,7 @@ import SearchInput from "./SearchInput";
  * @returns A sticky, responsive navbar component.
  */
 const Navbar: React.FC = () => {
-  const [user, loading, error] = useAuthState(auth); // will be passed to child components
+  const [user, loading] = useAuthState(auth); // will be passed to child components
   const { onSelectMenuItem } = useDirectory();
 
   return (

@@ -1,10 +1,10 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { useSetAtom } from "jotai";
 import { useState } from "react";
-import useCustomToast from "../useCustomToast";
-import { Community } from "@/types/community";
-import { updateCommunityImage } from "@/lib/community/updateCommunityImage";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { deleteCommunityImage } from "@/lib/community/deleteCommunityImage";
+import { updateCommunityImage } from "@/lib/community/updateCommunityImage";
+import type { Community } from "@/types/community";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for managing a community's profile image.
@@ -25,7 +25,7 @@ const useCommunityImage = (communityData: Community) => {
     try {
       const downloadURL = await updateCommunityImage(
         communityData.id,
-        selectedFile
+        selectedFile,
       );
 
       setCommunityStateValue((prev) => ({

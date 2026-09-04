@@ -1,5 +1,5 @@
-import { getCommunityData } from "@/lib/community/getCommunityData";
 import { notFound } from "next/navigation";
+import { getCommunityData } from "@/lib/community/getCommunityData";
 import CommunityClientPage from "./comments/CommunityClientPage";
 
 /**

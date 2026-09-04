@@ -1,6 +1,6 @@
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import type React from "react";
 
 /**
  * The default 404 error page for the application.

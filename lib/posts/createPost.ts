@@ -1,15 +1,15 @@
-import { firestore, storage } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
-import { User } from "firebase/auth";
+import type { User } from "firebase/auth";
 import {
   addDoc,
   collection,
   doc,
   serverTimestamp,
-  Timestamp,
+  type Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { firestore, storage } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
 
 /**
  * Creates a new post within a community and optionally uploads an associated image.
@@ -26,7 +26,7 @@ export const createPost = async (
   communityId: string,
   communityImageURL: string | undefined,
   postData: { title: string; body: string },
-  selectedFile?: string
+  selectedFile?: string,
 ) => {
   const newPost: Post = {
     communityId,

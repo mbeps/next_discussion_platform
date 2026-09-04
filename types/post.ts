@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 
 /**
  * Shape of a post document stored in Firestore and consumed by the UI.

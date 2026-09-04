@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { CheckboxCard, Icon, Flex, VStack } from "@chakra-ui/react";
+import { CheckboxCard, Flex, Icon, VStack } from "@chakra-ui/react";
+import type { FC } from "react";
 import type { IconType } from "react-icons";
 
 type CommunityTypeOptionProps = {

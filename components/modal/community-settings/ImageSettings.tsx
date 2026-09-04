@@ -1,6 +1,6 @@
-import { Community } from "@/types/community";
 import { Box, Button, Flex, Image, Input, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
+import type { Community } from "@/types/community";
 
 type ImageSettingsProps = {
   selectedFile: string;

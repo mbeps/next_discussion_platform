@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useCustomToast from "../useCustomToast";
 import { removeCommunityMember } from "@/lib/community/removeCommunityMember";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for an administrator to remove a member from a community.

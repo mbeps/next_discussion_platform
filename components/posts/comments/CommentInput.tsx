@@ -1,14 +1,23 @@
+import {
+  Box,
+  Button,
+  Flex,
+  Icon,
+  Stack,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { User } from "firebase/auth";
+import type React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { LuSend, LuTrash } from "react-icons/lu";
 import ProfileModal from "@/components/modal/profile/ProfileModal";
 import AuthButtons from "@/components/navbar/right-content/AuthButtons";
-import { Flex, Textarea, Button, Text, Stack, Icon, Box } from "@chakra-ui/react";
-import { LuSend, LuTrash } from "react-icons/lu";
-import { User } from "firebase/auth";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  type CommentInput as CommentInputType,
   commentSchema,
-  CommentInput as CommentInputType,
 } from "@/schema/comment";
 
 type CommentInputProps = {
@@ -68,7 +77,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
             </Text>
           </Stack>
 
-          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(onSubmit)(e); }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(onSubmit)(e);
+            }}
+          >
             <Flex
               direction="column"
               bg={{ base: "white", _dark: "gray.800" }}

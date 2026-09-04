@@ -1,10 +1,10 @@
+import { useSetAtom } from "jotai";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
-import { useSetAtom } from "jotai";
-import { useAuthState } from "react-firebase-hooks/auth";
-import useCustomToast from "../useCustomToast";
 import { leaveCommunity } from "@/lib/community/leaveCommunity";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for a user to leave a community.
@@ -28,7 +28,7 @@ const useLeaveCommunity = () => {
       setCommunityStateValue((prev) => ({
         ...prev,
         mySnippets: prev.mySnippets.filter(
-          (item) => item.communityId !== communityId
+          (item) => item.communityId !== communityId,
         ),
         currentCommunity:
           prev.currentCommunity?.id === communityId

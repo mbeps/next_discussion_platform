@@ -1,5 +1,5 @@
-import React from "react";
 import { Flex } from "@chakra-ui/react";
+import type React from "react";
 
 const SuggestionsHeader: React.FC = () => {
   return (

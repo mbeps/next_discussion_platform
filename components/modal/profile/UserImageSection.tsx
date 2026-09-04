@@ -1,6 +1,7 @@
 import { Button, Icon, Image, Stack, Text } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React, { RefObject } from "react";
+import type { User } from "firebase/auth";
+import type React from "react";
+import type { RefObject } from "react";
 import { MdAccountCircle } from "react-icons/md";
 
 type UserImageSectionProps = {

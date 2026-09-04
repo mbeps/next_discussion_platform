@@ -1,4 +1,4 @@
-import { Community, CommunitySnippet } from "@/types/community";
+import type { Community, CommunitySnippet } from "@/types/community";
 
 /**
  * Checks if a user has permission to perform an action in a community.
@@ -10,14 +10,14 @@ import { Community, CommunitySnippet } from "@/types/community";
  */
 export const checkCommunityPermission = (
   community: Community,
-  userSnippets: CommunitySnippet[]
+  userSnippets: CommunitySnippet[],
 ): boolean => {
   if (
     community.privacyType === "restricted" ||
     community.privacyType === "private"
   ) {
     return !!userSnippets.find(
-      (snippet) => snippet.communityId === community.id
+      (snippet) => snippet.communityId === community.id,
     );
   }
   // Public communities allow everyone to post/comment (assuming they are authenticated, which is checked elsewhere)
@@ -33,11 +33,11 @@ export const checkCommunityPermission = (
  */
 export const checkCommunityViewPermission = (
   community: Community,
-  userSnippets: CommunitySnippet[]
+  userSnippets: CommunitySnippet[],
 ): boolean => {
   if (community.privacyType === "private") {
     return !!userSnippets.find(
-      (snippet) => snippet.communityId === community.id
+      (snippet) => snippet.communityId === community.id,
     );
   }
   // Public and restricted communities allow everyone to view content

@@ -1,7 +1,7 @@
-import React from "react";
-import { Community } from "@/types/community";
-import { Stack, Flex, Icon, Button } from "@chakra-ui/react";
+import { Button, Flex, Icon, Stack } from "@chakra-ui/react";
+import type React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
+import type { Community } from "@/types/community";
 
 type CommunityItemButtonMembersSectionProps = {
   community: Community;

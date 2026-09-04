@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Orchestrates the creation of a new community and the initial membership for the creator.
@@ -12,7 +12,7 @@ import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 export const createCommunity = async (
   communityName: string,
   communityType: string,
-  userId: string
+  userId: string,
 ) => {
   const communityDocRef = doc(firestore, "communities", communityName);
 
@@ -36,7 +36,7 @@ export const createCommunity = async (
       {
         communityId: communityName,
         isAdmin: true,
-      }
+      },
     );
   });
 };

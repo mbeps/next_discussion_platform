@@ -1,14 +1,14 @@
-import { firestore } from "@/firebase/clientApp";
-import { Comment } from "@/types/comment";
+import type { User } from "firebase/auth";
 import {
   collection,
   doc,
   increment,
   serverTimestamp,
-  Timestamp,
+  type Timestamp,
   writeBatch,
 } from "firebase/firestore";
-import { User } from "firebase/auth";
+import { firestore } from "@/firebase/clientApp";
+import type { Comment } from "@/types/comment";
 
 /**
  * Creates a new comment on a post and updates the post's comment count.
@@ -31,11 +31,11 @@ export const createComment = async (
   postTitle: string,
   commentText: string,
   depth: number,
-  parentId?: string
+  parentId?: string,
 ) => {
   if (depth > 2) {
     throw new Error(
-      "Maximum comment depth reached. You cannot reply to this comment."
+      "Maximum comment depth reached. You cannot reply to this comment.",
     );
   }
 

@@ -1,5 +1,5 @@
-import { Input, InputProps } from "@chakra-ui/react";
-import React, { forwardRef } from "react";
+import { Input, type InputProps } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
 /**
  * Input field for various forms used in the Auth modal component.

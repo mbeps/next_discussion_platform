@@ -1,16 +1,17 @@
-import { Community } from "@/types/community";
 import { Box, Flex } from "@chakra-ui/react";
-import React, { useState } from "react";
-import useCommunityState from "@/hooks/community/useCommunityState";
-import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
-import CommunityIcon from "./CommunityIcon";
-import CommunityName from "./CommunityName";
-import JoinOrLeaveButton from "./JoinOrLeaveButton";
-import CommunitySettings from "./CommunitySettings";
-import CommunityMembersButton from "./CommunityMembersButton";
+import type React from "react";
+import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
 import { auth } from "@/firebase/clientApp";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
+import useCommunityState from "@/hooks/community/useCommunityState";
+import type { Community } from "@/types/community";
+import CommunityIcon from "./CommunityIcon";
+import CommunityMembersButton from "./CommunityMembersButton";
+import CommunityName from "./CommunityName";
+import CommunitySettings from "./CommunitySettings";
+import JoinOrLeaveButton from "./JoinOrLeaveButton";
 
 /**
  * @param {communityData} - data required to be displayed
@@ -38,7 +39,7 @@ const CommunityHeader: React.FC<HeaderProps> = ({ communityData }) => {
   const { onJoinOrLeaveCommunity, loading } = useCommunityMembershipActions();
   const [user, authLoading] = useAuthState(auth);
   const isJoined = !!communityStateValue.mySnippets.find(
-    (item) => item.communityId === communityData.id
+    (item) => item.communityId === communityData.id,
   );
   const [leaveConfirmationOpen, setLeaveConfirmationOpen] = useState(false);
 

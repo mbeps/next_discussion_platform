@@ -1,7 +1,14 @@
 "use client";
 
+import { Stack } from "@chakra-ui/react";
+import type { User } from "firebase/auth";
+import { useAtom } from "jotai";
+import type React from "react";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import About from "@/components/community/about/About";
+import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
 import PageContent from "@/components/layout/PageContent";
 import PostLoader from "@/components/loaders/post-loader/PostLoader";
 import Comments from "@/components/posts/comments/Comments";
@@ -12,14 +19,8 @@ import usePostDeletion from "@/hooks/posts/usePostDeletion";
 import usePostState from "@/hooks/posts/usePostState";
 import usePostVote from "@/hooks/posts/usePostVote";
 import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
-import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
-import { Community } from "@/types/community";
-import { Post } from "@/types/post";
-import { Stack } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import { useAtom } from "jotai";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import type { Community } from "@/types/community";
+import type { Post } from "@/types/post";
 
 type PostPageProps = {
   communityData: Community;
@@ -68,7 +69,7 @@ const PostPage: React.FC<PostPageProps> = ({ communityData, postData }) => {
     return (
       <PageContent>
         <PostLoader />
-        <></>
+        {null}
       </PageContent>
     );
   }
@@ -77,43 +78,37 @@ const PostPage: React.FC<PostPageProps> = ({ communityData, postData }) => {
     return (
       <PageContent>
         <RestrictedCommunityBanner />
-        <></>
+        {null}
       </PageContent>
     );
   }
 
   return (
     <PageContent>
-      <>
-        <Stack gap={4}>
-          {postStateValue.selectedPost && (
-            <PostItem
-              post={postStateValue.selectedPost}
-              onVote={onVote}
-              onDeletePost={onDeletePost}
-              userVoteValue={
-                postStateValue.postVotes.find(
-                  (item) => item.postId === postStateValue.selectedPost!.id
-                )?.voteValue
-              }
-              userIsCreator={
-                user?.uid === postStateValue.selectedPost.creatorId
-              }
-              userIsAdmin={isAdmin}
-              votingDisabled={!canPost}
-            />
-          )}
-          <Comments
-            user={user as User}
-            selectedPost={postStateValue.selectedPost}
-            communityId={postStateValue.selectedPost?.communityId as string}
-            isCommunityAdmin={isAdmin}
+      <Stack gap={4}>
+        {postStateValue.selectedPost && (
+          <PostItem
+            post={postStateValue.selectedPost}
+            onVote={onVote}
+            onDeletePost={onDeletePost}
+            userVoteValue={
+              postStateValue.postVotes.find(
+                (item) => item.postId === postStateValue.selectedPost!.id,
+              )?.voteValue
+            }
+            userIsCreator={user?.uid === postStateValue.selectedPost.creatorId}
+            userIsAdmin={isAdmin}
+            votingDisabled={!canPost}
           />
-        </Stack>
-      </>
-      <>
-        <About communityData={communityData} />
-      </>
+        )}
+        <Comments
+          user={user as User}
+          selectedPost={postStateValue.selectedPost}
+          communityId={postStateValue.selectedPost?.communityId as string}
+          isCommunityAdmin={isAdmin}
+        />
+      </Stack>
+      <About communityData={communityData} />
     </PageContent>
   );
 };

@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
-import { PostVote } from "@/types/post";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { PostVote } from "@/types/post";
 
 /**
  * Retrieves all post votes cast by a specific user within a particular community.
@@ -11,11 +11,11 @@ import { collection, getDocs, query, where } from "firebase/firestore";
  */
 export const getCommunityPostVotes = async (
   userId: string,
-  communityId: string
+  communityId: string,
 ) => {
   const postVotesQuery = query(
     collection(firestore, "users", `${userId}/postVotes`),
-    where("communityId", "==", communityId)
+    where("communityId", "==", communityId),
   );
 
   const postVoteDocs = await getDocs(postVotesQuery);

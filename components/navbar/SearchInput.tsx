@@ -7,7 +7,8 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import SearchModal from "./SearchModal";
 

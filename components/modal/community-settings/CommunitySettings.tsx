@@ -1,9 +1,3 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import useCommunityImage from "@/hooks/community/useCommunityImage";
-import useCommunityPrivacy from "@/hooks/community/useCommunityPrivacy";
-import useDeleteCommunity from "@/hooks/community/useDeleteCommunity";
-import useCustomToast from "@/hooks/useCustomToast";
-import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
   DialogBackdrop,
@@ -18,7 +12,15 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useAtom } from "jotai";
-import React, { useRef, useState } from "react";
+import type React from "react";
+import { useRef, useState } from "react";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import useCommunityImage from "@/hooks/community/useCommunityImage";
+import useCommunityPrivacy from "@/hooks/community/useCommunityPrivacy";
+import useDeleteCommunity from "@/hooks/community/useDeleteCommunity";
+import useCustomToast from "@/hooks/useCustomToast";
+import useSelectFile from "@/hooks/useSelectFile";
+import type { Community } from "@/types/community";
 import {
   AdminManager,
   DangerZone,
@@ -26,7 +28,6 @@ import {
   ModalFooter,
   PrivacySettings,
 } from ".";
-import { Community } from "@/types/community";
 
 type CommunitySettingsModalProps = {
   open: boolean;
@@ -44,7 +45,7 @@ const CommunitySettingsModal: React.FC<CommunitySettingsModalProps> = ({
 }) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
     300,
-    300
+    300,
   );
   const selectFileRef = useRef<HTMLInputElement>(null);
   const [communityStateValue] = useAtom(communityStateAtom);

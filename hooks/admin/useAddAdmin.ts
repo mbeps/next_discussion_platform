@@ -1,9 +1,9 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { AdminUser } from "@/types/adminUser";
-import { addCommunityAdmin } from "@/lib/community/addCommunityAdmin";
 import { useSetAtom } from "jotai";
-import { Dispatch, SetStateAction, useCallback } from "react";
-import { Community } from "@/types/community";
+import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { addCommunityAdmin } from "@/lib/community/addCommunityAdmin";
+import type { AdminUser } from "@/types/adminUser";
+import type { Community } from "@/types/community";
 
 /**
  * A custom hook that provides functionality for adding a new administrator to a community.
@@ -18,7 +18,7 @@ const useAddAdmin = () => {
       communityId: string,
       newUser: AdminUser,
       communityImageURL?: string,
-      updateAdmins?: Dispatch<SetStateAction<AdminUser[]>>
+      updateAdmins?: Dispatch<SetStateAction<AdminUser[]>>,
     ) => {
       await addCommunityAdmin(communityId, newUser.uid, communityImageURL);
 
@@ -34,7 +34,7 @@ const useAddAdmin = () => {
         } as Community,
       }));
     },
-    [setCommunityStateValue]
+    [setCommunityStateValue],
   );
 
   return { handleAddAdmin };

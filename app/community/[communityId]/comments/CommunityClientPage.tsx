@@ -1,18 +1,18 @@
 "use client";
 
+import { useAtom } from "jotai";
+import type React from "react";
+import { useEffect } from "react";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
-import CreatePostLink from "@/components/community/CreatePostLink";
 import About from "@/components/community/about/About";
+import CreatePostLink from "@/components/community/CreatePostLink";
 import CommunityHeader from "@/components/community/community-header/CommunityHeader";
+import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
 import PageContent from "@/components/layout/PageContent";
+import PostLoader from "@/components/loaders/post-loader/PostLoader";
 import Posts from "@/components/posts/Posts";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
-import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
-import PostLoader from "@/components/loaders/post-loader/PostLoader";
-import { Community } from "@/types/community";
-import { Stack } from "@chakra-ui/react";
-import { useAtom } from "jotai";
-import React, { useEffect } from "react";
+import type { Community } from "@/types/community";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -51,19 +51,17 @@ const CommunityClientPage: React.FC<CommunityPageProps> = ({
     <>
       <CommunityHeader communityData={currentCommunity} />
       <PageContent>
-        <>
-          {loading ? (
-            <PostLoader />
-          ) : canView ? (
-            <>
-              <CreatePostLink />
-              <Posts communityData={currentCommunity} />
-            </>
-          ) : (
-            <RestrictedCommunityBanner />
-          )}
-        </>
-        <>{canView && <About communityData={currentCommunity} />}</>
+        {loading ? (
+          <PostLoader />
+        ) : canView ? (
+          <>
+            <CreatePostLink />
+            <Posts communityData={currentCommunity} />
+          </>
+        ) : (
+          <RestrictedCommunityBanner />
+        )}
+        {canView && <About communityData={currentCommunity} />}
       </PageContent>
     </>
   );

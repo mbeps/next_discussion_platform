@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { renderHook, waitFor } from "@testing-library/react";
-import { Provider, createStore } from "jotai";
+import { createStore, Provider } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -25,8 +25,8 @@ vi.mock("@/lib/community/communityPermissions", () => ({
   checkCommunityViewPermission: mocks.checkCommunityViewPermission,
 }));
 
-import { Community } from "@/types/community";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
+import type { Community } from "@/types/community";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <Provider store={createStore()}>{children}</Provider>

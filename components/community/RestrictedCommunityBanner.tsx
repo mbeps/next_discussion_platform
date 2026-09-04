@@ -1,5 +1,5 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FaLock } from "react-icons/fa";
 
 type RestrictedCommunityBannerProps = {

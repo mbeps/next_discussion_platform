@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { fetchCommunityMembers } from "@/lib/community/fetchCommunityMembers";
-import { CommunityMember } from "@/types/communityMember";
+import type { CommunityMember } from "@/types/communityMember";
 
 /**
  * A custom hook that manages the retrieval and state of a community's member list.

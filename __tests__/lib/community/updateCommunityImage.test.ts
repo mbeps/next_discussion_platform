@@ -23,8 +23,8 @@ vi.mock("firebase/storage", () => ({
   getDownloadURL: vi.fn().mockResolvedValue("http://new-url"),
 }));
 
-import { updateCommunityImage } from "@/lib/community/updateCommunityImage";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { updateCommunityImage } from "@/lib/community/updateCommunityImage";
 
 beforeEach(resetFsMocks);
 

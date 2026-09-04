@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { Community, CommunitySnippet } from "@/types/community";
+import type { Community, CommunitySnippet } from "@/types/community";
 
 /**
  * Stores the community snippets to track the state of the communities atom.

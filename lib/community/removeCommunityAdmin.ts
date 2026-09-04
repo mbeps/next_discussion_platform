@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { arrayRemove, doc, getDoc, writeBatch } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Demotes a user from an admin role within a specific community.
@@ -11,11 +11,11 @@ import { arrayRemove, doc, getDoc, writeBatch } from "firebase/firestore";
  */
 export const removeCommunityAdmin = async (
   communityId: string,
-  userId: string
+  userId: string,
 ): Promise<void> => {
   const snippetRef = doc(
     firestore,
-    `users/${userId}/communitySnippets/${communityId}`
+    `users/${userId}/communitySnippets/${communityId}`,
   );
   const snippetDoc = await getDoc(snippetRef);
 

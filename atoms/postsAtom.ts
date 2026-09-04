@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { Post, PostVote } from "@/types/post";
+import type { Post, PostVote } from "@/types/post";
 
 /**
  * Represents the base state for the atom.

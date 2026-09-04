@@ -10,10 +10,10 @@ vi.mock("@/lib/search/getSearchData", () => ({
   getSearchData: mocks.getSearchData,
 }));
 
-import useSearch from "@/hooks/useSearch";
-import { Community } from "@/types/community";
-import { Post } from "@/types/post";
 import { Timestamp } from "firebase/firestore";
+import useSearch from "@/hooks/useSearch";
+import type { Community } from "@/types/community";
+import type { Post } from "@/types/post";
 
 const ts = Timestamp.fromDate(new Date("2026-01-01"));
 

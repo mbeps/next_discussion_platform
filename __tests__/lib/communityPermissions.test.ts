@@ -4,7 +4,7 @@ import {
   checkCommunityPermission,
   checkCommunityViewPermission,
 } from "@/lib/community/communityPermissions";
-import { Community, CommunitySnippet } from "@/types/community";
+import type { Community, CommunitySnippet } from "@/types/community";
 
 const baseCommunity: Community = {
   id: "fitness",
@@ -18,9 +18,7 @@ const noMembership: CommunitySnippet[] = [];
 
 describe("checkCommunityPermission", () => {
   it("allows actions in public communities", () => {
-    expect(
-      checkCommunityPermission(baseCommunity, noMembership)
-    ).toBeTruthy();
+    expect(checkCommunityPermission(baseCommunity, noMembership)).toBeTruthy();
   });
 
   it("allows members in restricted communities", () => {

@@ -17,8 +17,8 @@ vi.mock("firebase/firestore", async () => {
   return { ...fsMocks };
 });
 
-import { updateUserPostsName } from "@/lib/user-profile/updateUserPostsName";
 import { updateUserCommentsName } from "@/lib/user-profile/updateUserCommentsName";
+import { updateUserPostsName } from "@/lib/user-profile/updateUserPostsName";
 
 beforeEach(resetFsMocks);
 

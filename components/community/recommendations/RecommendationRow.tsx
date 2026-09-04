@@ -1,8 +1,8 @@
-import React from "react";
-import { Community } from "@/types/community";
-import { Flex, Icon, Image, Text, Button } from "@chakra-ui/react";
+import { Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import type { Community } from "@/types/community";
 
 type RecommendationRowProps = {
   item: Community;

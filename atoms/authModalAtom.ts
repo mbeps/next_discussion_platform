@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { AuthModalState } from "@/types/authModal";
+import type { AuthModalState } from "@/types/authModal";
 
 /**
  * Describes the default state of the authentication modal.

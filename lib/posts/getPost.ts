@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
 import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
 
 /**
  * Retrieves a single post by its unique identifier from Firestore.

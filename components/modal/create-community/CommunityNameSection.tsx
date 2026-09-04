@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Text, Input, InputProps } from "@chakra-ui/react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { Box, Input, type InputProps, Text } from "@chakra-ui/react";
+import type React from "react";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface CommunityNameSectionProps extends InputProps {
   charRemaining?: number;

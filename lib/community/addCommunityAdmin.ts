@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { arrayUnion, doc, increment, runTransaction } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Promotes a user to an admin role within a specific community.
@@ -13,13 +13,13 @@ import { arrayUnion, doc, increment, runTransaction } from "firebase/firestore";
 export const addCommunityAdmin = async (
   communityId: string,
   userId: string,
-  communityImageURL?: string
+  communityImageURL?: string,
 ): Promise<void> => {
   await runTransaction(firestore, async (transaction) => {
     const communityRef = doc(firestore, "communities", communityId);
     const snippetRef = doc(
       firestore,
-      `users/${userId}/communitySnippets/${communityId}`
+      `users/${userId}/communitySnippets/${communityId}`,
     );
 
     const snippetDoc = await transaction.get(snippetRef);

@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { SavedPost } from "@/types/savedPost";
+import type { SavedPost } from "@/types/savedPost";
 
 interface SavedPostState {
   savedPosts: SavedPost[];

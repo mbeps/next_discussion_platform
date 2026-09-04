@@ -1,7 +1,7 @@
-import React from "react";
-import { Community } from "@/types/community";
-import { Flex, Image, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Image, Text } from "@chakra-ui/react";
+import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import type { Community } from "@/types/community";
 
 type CommunityItemNameIconSectionProps = {
   community: Community;

@@ -1,16 +1,17 @@
-import { Post } from "@/types/post";
-import useCustomToast from "@/hooks/useCustomToast";
-import useSavedPosts from "@/hooks/posts/useSavedPosts";
 import { Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
+import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import useSavedPosts from "@/hooks/posts/useSavedPosts";
+import useCustomToast from "@/hooks/useCustomToast";
+import type { Post } from "@/types/post";
 import PostItemError from "../../ui/ErrorMessage";
-import VoteSection from "./VoteSection";
+import PostActions from "./PostActions";
+import PostBody from "./PostBody";
 import PostDetails from "./PostDetails";
 import PostTitle from "./PostTitle";
-import PostBody from "./PostBody";
-import PostActions from "./PostActions";
-import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import VoteSection from "./VoteSection";
 
 /**
  * Interface for the PostItem component properties.
@@ -33,7 +34,7 @@ type PostItemProps = {
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
     vote: number,
-    communityId: string
+    communityId: string,
   ) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post) => void;
@@ -55,8 +56,8 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
-  showCommunityImage,
-  votingDisabled,
+  showCommunityImage: _showCommunityImage,
+  votingDisabled: _votingDisabled,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState(false);
@@ -70,7 +71,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const singlePostPage = !onSelectPost;
 
   const handleDeleteClick = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
     setDeleteConfirmationOpen(true);
@@ -119,7 +120,7 @@ const PostItem: React.FC<PostItemProps> = ({
   };
 
   const handleSave = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
     await onSavePost(post);
@@ -138,7 +139,7 @@ const PostItem: React.FC<PostItemProps> = ({
         boxShadow: singlePostPage ? undefined : "sm",
       }}
       cursor={singlePostPage ? "unset" : "pointer"}
-      onClick={() => onSelectPost && onSelectPost(post)} // if a post is selected then open post
+      onClick={() => onSelectPost?.(post)} // if a post is selected then open post
       shadow="md"
     >
       {/* Left Section */}

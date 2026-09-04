@@ -1,12 +1,12 @@
-import React from "react";
-import { Clipboard, Button, Icon, Stack, Text } from "@chakra-ui/react";
-import { FiShare2 } from "react-icons/fi";
+import { Button, Clipboard, Icon, Stack, Text } from "@chakra-ui/react";
+import type React from "react";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { FiShare2 } from "react-icons/fi";
 import { LuTrash } from "react-icons/lu";
 
 interface PostActionsProps {
   handleDelete: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => Promise<void>;
   loadingDelete: boolean;
   userIsCreator: boolean;

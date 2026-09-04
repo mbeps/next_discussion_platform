@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
-import { CommunitySnippet } from "@/types/community";
 import { doc, increment, writeBatch } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { CommunitySnippet } from "@/types/community";
 
 /**
  * Joins a user to a community by creating a membership snippet and incrementing the member count.
@@ -15,7 +15,7 @@ export const joinCommunity = async (
   userId: string,
   communityId: string,
   communityImageURL: string,
-  isCreatorOrAdmin: boolean
+  isCreatorOrAdmin: boolean,
 ) => {
   const batch = writeBatch(firestore);
 
@@ -27,7 +27,7 @@ export const joinCommunity = async (
 
   batch.set(
     doc(firestore, `users/${userId}/communitySnippets`, communityId),
-    newSnippet
+    newSnippet,
   );
 
   batch.update(doc(firestore, "communities", communityId), {

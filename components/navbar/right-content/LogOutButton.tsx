@@ -1,7 +1,7 @@
-import { auth } from "@/firebase/clientApp";
 import { Button } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
-import React from "react";
+import type React from "react";
+import { auth } from "@/firebase/clientApp";
 
 /**
  * Displays a log out button which signs out the currently logged in user.

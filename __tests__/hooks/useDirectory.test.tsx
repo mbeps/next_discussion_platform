@@ -1,12 +1,12 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, useAtomValue, useSetAtom, createStore } from "jotai";
+import { createStore, Provider, useAtomValue, useSetAtom } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   push: vi.fn(),
-  pathname: vi.fn<[], string>(),
+  pathname: vi.fn<() => string>(),
 }));
 
 vi.mock("next/navigation", () => ({
@@ -14,10 +14,10 @@ vi.mock("next/navigation", () => ({
   usePathname: () => mocks.pathname(),
 }));
 
-import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
 import useDirectory from "@/hooks/useDirectory";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
 
 let store: ReturnType<typeof createStore>;
 const wrapper = ({ children }: { children: ReactNode }) => (

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { User } from "firebase/auth";
+import { useState } from "react";
 import useCustomToast from "@/hooks/useCustomToast";
+import { checkCommunityPermission } from "@/lib/community/communityPermissions";
 import { createPost } from "@/lib/posts/createPost";
 import useCommunityState from "../community/useCommunityState";
-import { checkCommunityPermission } from "@/lib/community/communityPermissions";
 
 /**
  * A custom hook that provides functionality for creating a new post.
@@ -23,7 +23,7 @@ const useCreatePost = () => {
     communityId: string,
     communityImageURL: string | undefined,
     postData: { title: string; body: string },
-    selectedFile?: string
+    selectedFile?: string,
   ) => {
     if (!user) return;
     setLoading(true);
@@ -33,7 +33,7 @@ const useCreatePost = () => {
     if (currentCommunity?.id === communityId) {
       const hasPermission = checkCommunityPermission(
         currentCommunity,
-        communityStateValue.mySnippets
+        communityStateValue.mySnippets,
       );
 
       if (!hasPermission) {
@@ -53,7 +53,7 @@ const useCreatePost = () => {
         communityId,
         communityImageURL,
         postData,
-        selectedFile
+        selectedFile,
       );
 
       router.back();

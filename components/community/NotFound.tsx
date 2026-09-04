@@ -1,6 +1,6 @@
-import React from "react";
-import { Flex, Button, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import type React from "react";
 
 /**
  * Friendly empty state shown when a community id is invalid.

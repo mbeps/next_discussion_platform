@@ -1,8 +1,8 @@
+import { useSetAtom } from "jotai";
+import { useParams, useRouter } from "next/navigation";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
-import { useSetAtom } from "jotai";
-import { useRouter, useParams } from "next/navigation";
-import { useAuthState } from "react-firebase-hooks/auth";
 import useDirectory from "../useDirectory";
 
 /**

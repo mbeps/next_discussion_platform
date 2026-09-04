@@ -22,8 +22,8 @@ vi.mock("firebase/storage", () => ({
   deleteObject: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { deleteCommunityImage } from "@/lib/community/deleteCommunityImage";
 import { deleteObject, ref } from "firebase/storage";
+import { deleteCommunityImage } from "@/lib/community/deleteCommunityImage";
 
 beforeEach(resetFsMocks);
 

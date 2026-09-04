@@ -1,7 +1,7 @@
-import { firestore } from "@/firebase/clientApp";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
-import { AdminUser } from "../../types/adminUser";
+import type { AdminUser } from "../../types/adminUser";
 
 /**
  * Searches for a user in the Firestore 'users' collection by their exact email address.
@@ -10,11 +10,11 @@ import { AdminUser } from "../../types/adminUser";
  * @returns A promise that resolves to the user object if found, or null if no match exists.
  */
 export const findUserByEmail = async (
-  email: string
+  email: string,
 ): Promise<AdminUser | null> => {
   const usersQuery = query(
     collection(firestore, "users"),
-    where("email", "==", email)
+    where("email", "==", email),
   );
   const userDocs = await getDocs(usersQuery);
 

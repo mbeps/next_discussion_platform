@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import {
   Box,
   DialogBackdrop,
@@ -18,14 +17,16 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { CommunityMember } from "@/types/communityMember";
-import useCommunityMembers from "@/hooks/community/useCommunityMembers";
-import { LuTrash } from "react-icons/lu";
 import { useAtomValue } from "jotai";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { LuTrash } from "react-icons/lu";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
+import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import useCommunityMembers from "@/hooks/community/useCommunityMembers";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 import useRemoveCommunityMember from "@/hooks/community/useRemoveCommunityMember";
-import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import type { CommunityMember } from "@/types/communityMember";
 
 type CommunityMembersModalProps = {
   isOpen: boolean;
@@ -50,7 +51,7 @@ const CommunityMembersModal: React.FC<CommunityMembersModalProps> = ({
   const memberCount = members?.length ?? 0;
   const communityStateValue = useAtomValue(communityStateAtom);
   const { isAdmin } = useCommunityPermissions(
-    communityStateValue.currentCommunity
+    communityStateValue.currentCommunity,
   );
   const { removeMember, loading: removeLoading } = useRemoveCommunityMember();
   const [memberToRemove, setMemberToRemove] = useState<string | null>(null);

@@ -1,6 +1,6 @@
-import React from "react";
 import { Text } from "@chakra-ui/react";
-import { AuthError } from "firebase/auth";
+import type { AuthError } from "firebase/auth";
+import type React from "react";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
 
 interface ErrorMessageProps {
@@ -14,7 +14,9 @@ interface ErrorMessageProps {
  */
 const AuthenticationErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   if (!error) return null;
-  const message = FIREBASE_ERRORS[error.code as keyof typeof FIREBASE_ERRORS] || error.message;
+  const message =
+    FIREBASE_ERRORS[error.code as keyof typeof FIREBASE_ERRORS] ||
+    error.message;
   return (
     <Text textAlign="center" color="red" fontSize="10pt" fontWeight="800">
       {message}

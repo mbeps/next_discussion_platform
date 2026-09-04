@@ -1,14 +1,14 @@
+import { useAtom, useSetAtom } from "jotai";
+import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
 import { auth } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
-import { useAtom, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import useCustomToast from "../useCustomToast";
 import { getSavedPosts as getSavedPostsLib } from "@/lib/posts/getSavedPosts";
 import { savePost } from "@/lib/posts/savePost";
 import { unsavePost } from "@/lib/posts/unsavePost";
+import type { Post } from "@/types/post";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that manages the user's saved posts.
@@ -52,7 +52,7 @@ const useSavedPosts = () => {
 
     try {
       const isSaved = savedPostState.savedPosts.find(
-        (item) => item.postId === post.id
+        (item) => item.postId === post.id,
       );
 
       if (isSaved) {

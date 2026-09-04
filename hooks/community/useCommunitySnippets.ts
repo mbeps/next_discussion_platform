@@ -1,10 +1,10 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { CommunitySnippet } from "@/types/community";
-import { auth, firestore } from "@/firebase/clientApp";
 import { collection, getDocs } from "firebase/firestore";
 import { useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { auth, firestore } from "@/firebase/clientApp";
+import type { CommunitySnippet } from "@/types/community";
 import useCustomToast from "../useCustomToast";
 
 /**
@@ -23,7 +23,7 @@ export const useCommunitySnippets = () => {
     setLoading(true);
     try {
       const snippetDocs = await getDocs(
-        collection(firestore, `users/${user?.uid}/communitySnippets`)
+        collection(firestore, `users/${user?.uid}/communitySnippets`),
       );
       const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
       setCommunityStateValue((prev) => ({
@@ -44,6 +44,7 @@ export const useCommunitySnippets = () => {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Fetch snippets only when user changes
   useEffect(() => {
     if (!user) {
       setCommunityStateValue((prev) => ({
@@ -54,7 +55,6 @@ export const useCommunitySnippets = () => {
       return;
     }
     getMySnippets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return { loading, error };

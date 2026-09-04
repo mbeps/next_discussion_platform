@@ -1,5 +1,8 @@
 "use client";
 
+import { Button, Stack, Text } from "@chakra-ui/react";
+import { useEffect, useMemo } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import CreatePostLink from "@/components/community/CreatePostLink";
 import PersonalHome from "@/components/community/PersonalHome";
 import Recommendations from "@/components/community/recommendations/Recommendations";
@@ -11,13 +14,9 @@ import useCommunityState from "@/hooks/community/useCommunityState";
 import usePostDeletion from "@/hooks/posts/usePostDeletion";
 import usePostSelection from "@/hooks/posts/usePostSelection";
 import usePostState from "@/hooks/posts/usePostState";
+import usePostsFeed from "@/hooks/posts/usePostsFeed";
 import usePostVote from "@/hooks/posts/usePostVote";
 import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
-import usePostsFeed from "@/hooks/posts/usePostsFeed";
-import useCustomToast from "@/hooks/useCustomToast";
-import { Button, Stack, Text } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 /**
  * The main landing page of the application.
@@ -32,15 +31,14 @@ export default function Home() {
   const { onSelectPost } = usePostSelection(setPostStateValue);
   const { onVote, getPostVotes } = usePostVote(
     postStateValue,
-    setPostStateValue
+    setPostStateValue,
   );
   const { onDeletePost } = usePostDeletion(setPostStateValue);
   usePostVoteSync(setPostStateValue);
-  const showToast = useCustomToast();
 
   const communityIds = useMemo(
     () => communityStateValue.mySnippets.map((snippet) => snippet.communityId),
-    [communityStateValue.mySnippets]
+    [communityStateValue.mySnippets],
   );
 
   const { loading, fetchPosts, noMorePosts } = usePostsFeed({
@@ -52,6 +50,7 @@ export default function Home() {
    * Loads the home feed for authenticated users.
    * Runs when the community snippets have been fetched when the user
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Refetch posts when user authentication, snippets, or community count changes
   useEffect(() => {
     if (communityStateValue.snippetFetched) {
       fetchPosts(true);
@@ -63,6 +62,7 @@ export default function Home() {
    * Runs when there is no user and the system is no longer attempting to fetch a user.
    * While the system is attempting to fetch user, the user is null.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Fetch generic posts when unauthenticated
   useEffect(() => {
     if (!user && !loadingUser) {
       fetchPosts(true);
@@ -72,6 +72,7 @@ export default function Home() {
   /**
    * Posts need to exist before trying to fetch votes for posts
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Fetch post votes when posts or user changes
   useEffect(() => {
     if (user && postStateValue.posts.length) {
       const postIds = postStateValue.posts.map((post) => post.id!);
@@ -88,7 +89,7 @@ export default function Home() {
 
   return (
     <PageContent>
-      <>
+      <Stack gap={3}>
         <CreatePostLink />
         {loading && postStateValue.posts.length === 0 ? (
           <PostLoader />
@@ -103,13 +104,13 @@ export default function Home() {
                 onVote={onVote}
                 userVoteValue={
                   postStateValue.postVotes.find(
-                    (item) => item.postId === post.id
+                    (item) => item.postId === post.id,
                   )?.voteValue
                 }
                 userIsCreator={user?.uid === post.creatorId}
                 userIsAdmin={
                   !!communityStateValue.mySnippets.find(
-                    (snippet) => snippet.communityId === post.communityId
+                    (snippet) => snippet.communityId === post.communityId,
                   )?.isAdmin
                 }
                 showCommunityImage={true}
@@ -132,7 +133,7 @@ export default function Home() {
             )}
           </Stack>
         )}
-      </>
+      </Stack>
       <Stack gap={2}>
         <Recommendations />
         <PersonalHome />

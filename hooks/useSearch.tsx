@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Community } from "@/types/community";
-import { Post } from "@/types/post";
+import { useEffect, useState } from "react";
 import { getSearchData } from "@/lib/search/getSearchData";
+import type { Community } from "@/types/community";
+import type { Post } from "@/types/post";
 
 /**
  * A custom hook that handles client-side search logic for communities and posts.
@@ -48,13 +48,13 @@ const useSearch = (searchTerm: string) => {
     const lowerTerm = searchTerm.toLowerCase();
 
     const filteredCommunities = allData.communities.filter((comm) =>
-      comm.id.toLowerCase().includes(lowerTerm)
+      comm.id.toLowerCase().includes(lowerTerm),
     );
 
     const filteredPosts = allData.posts.filter(
       (post) =>
         post.title.toLowerCase().includes(lowerTerm) ||
-        post.body.toLowerCase().includes(lowerTerm)
+        post.body.toLowerCase().includes(lowerTerm),
     );
 
     setResults({

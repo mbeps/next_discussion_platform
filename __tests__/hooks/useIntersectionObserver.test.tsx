@@ -18,14 +18,16 @@ class IntersectionObserverMock {
     triggerIntersection = (isIntersecting: boolean) =>
       callback(
         [{ isIntersecting } as IntersectionObserverEntry],
-        this as unknown as IntersectionObserver
+        this as unknown as IntersectionObserver,
       );
   }
 }
 
 describe("useIntersectionObserver", () => {
   beforeAll(() => {
-    (global as unknown as { IntersectionObserver: typeof IntersectionObserver }).IntersectionObserver =
+    (
+      global as unknown as { IntersectionObserver: typeof IntersectionObserver }
+    ).IntersectionObserver =
       IntersectionObserverMock as unknown as typeof IntersectionObserver;
   });
 
@@ -38,7 +40,7 @@ describe("useIntersectionObserver", () => {
     const target = document.createElement("div");
     const { result, unmount } = renderHook(() => {
       const hook = useIntersectionObserver();
-      hook.ref.current = target;
+      (hook.ref as any).current = target;
       return hook;
     });
 

@@ -1,18 +1,19 @@
-import { Community } from "@/types/community";
+import { Flex, Icon, Tabs, Text } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { User } from "firebase/auth";
+import { useParams } from "next/navigation";
+import type React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import useCreatePost from "@/hooks/posts/useCreatePost";
 import useSelectFile from "@/hooks/useSelectFile";
-import { Flex, Icon, Tabs, Text } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import { useParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { IoDocumentText, IoImageOutline } from "react-icons/io5";
+import { type CreatePostInput, createPostSchema } from "@/schema/post";
+import type { Community } from "@/types/community";
+import ImageUpload from "../post-form/ImageUpload";
+import TextInputs from "../post-form/TextInputs";
 import BackToCommunityButton from "./BackToCommunityButton";
 import PostCreateError from "./PostCreateError";
-import TextInputs from "../post-form/TextInputs";
-import ImageUpload from "../post-form/ImageUpload";
-import { createPostSchema, CreatePostInput } from "@/schema/post";
 
 type NewPostFormProps = {
   user: User; // parent component checks user so additional checks aer not needed ut
@@ -56,12 +57,11 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   communityImageURL,
   currentCommunity,
 }) => {
-  const router = useRouter();
   const params = useParams();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title); // formTabs[0] = Post
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile(
     3000,
-    3000
+    3000,
   );
   const { handleCreatePost, loading, error } = useCreatePost();
 
@@ -90,7 +90,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       communityId,
       communityImageURL,
       { title: data.title, body: data.body || "" },
-      selectedFile
+      selectedFile,
     );
   };
 
