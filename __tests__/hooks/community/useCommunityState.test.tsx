@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, useAtomValue, createStore } from "jotai";
+import { createStore, Provider, useAtomValue } from "jotai";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
 

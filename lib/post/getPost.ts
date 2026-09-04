@@ -1,7 +1,7 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import safeJsonStringify from "safe-json-stringify";
-import { Post } from "@/types/post";
+import { firestore } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
 
 /**
  * Retrieves a single post by its unique identifier from Firestore.
@@ -19,7 +19,7 @@ export async function getPost(postId: string) {
     }
 
     return JSON.parse(
-      safeJsonStringify({ id: postDoc.id, ...postDoc.data() })
+      safeJsonStringify({ id: postDoc.id, ...postDoc.data() }),
     ) as Post;
   } catch (error) {
     console.log("Error: getPost", error);

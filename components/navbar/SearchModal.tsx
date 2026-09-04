@@ -1,25 +1,26 @@
 import {
   Box,
-  Flex,
-  Icon,
-  Input,
-  InputGroup,
-  DialogRoot,
+  DialogBackdrop,
   DialogBody,
   DialogContent,
-  DialogBackdrop,
   DialogPositioner,
+  DialogRoot,
+  Flex,
+  Icon,
+  Image,
+  Input,
+  InputGroup,
+  Spinner,
   Stack,
   Text,
-  Image,
-  Spinner,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import moment from "moment";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import useSearch from "@/hooks/useSearch";
-import { useRouter } from "next/navigation";
-import { Post } from "@/types/post";
-import moment from "moment";
+import type { Post } from "@/types/post";
 
 type SearchModalProps = {
   isOpen: boolean;
@@ -197,7 +198,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
                                 {item.communityId} • Posted by u/
                                 {item.creatorUsername}{" "}
                                 {moment(
-                                  new Date(item.createTime?.seconds * 1000)
+                                  new Date(item.createTime?.seconds * 1000),
                                 ).fromNow()}
                               </Text>
                             </Flex>

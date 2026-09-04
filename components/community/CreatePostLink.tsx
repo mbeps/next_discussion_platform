@@ -1,13 +1,13 @@
-import useCallCreatePost from "@/hooks/posts/useCallCreatePost";
 import { Flex, Icon, Input } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { BsLink45Deg } from "react-icons/bs";
 import { IoIosCreate } from "react-icons/io";
 import { IoImageOutline } from "react-icons/io5";
-import useCommunityState from "@/hooks/community/useCommunityState";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
+import useCommunityState from "@/hooks/community/useCommunityState";
+import useCallCreatePost from "@/hooks/posts/useCallCreatePost";
 
-type CreatePostProps = {};
+type CreatePostProps = Record<string, never>;
 
 /**
  * A call-to-action bar that provides a shortcut to the post creation page.
@@ -18,7 +18,7 @@ const CreatePostLink: React.FC<CreatePostProps> = () => {
   const { onClick } = useCallCreatePost(); // hook for creating a new post
   const { communityStateValue } = useCommunityState();
   const { canPost } = useCommunityPermissions(
-    communityStateValue.currentCommunity
+    communityStateValue.currentCommunity,
   );
 
   if (communityStateValue.currentCommunity && !canPost) {

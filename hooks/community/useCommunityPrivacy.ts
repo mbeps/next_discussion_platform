@@ -1,8 +1,8 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { Community } from "@/types/community";
 import { useSetAtom } from "jotai";
-import useCustomToast from "../useCustomToast";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { updateCommunityPrivacy } from "@/lib/community/updateCommunityPrivacy";
+import type { Community } from "@/types/community";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for updating a community's privacy setting.

@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { deleteDoc, doc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Removes a previously saved post from a user's personal collection.

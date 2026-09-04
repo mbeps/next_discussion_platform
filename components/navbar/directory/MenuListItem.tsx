@@ -1,7 +1,7 @@
-import useDirectory from "@/hooks/useDirectory";
 import { Flex, Image, MenuItem } from "@chakra-ui/react";
-import React from "react";
-import { IconType } from "react-icons";
+import type React from "react";
+import type { IconType } from "react-icons";
+import useDirectory from "@/hooks/useDirectory";
 
 /**
  * @param {string} displayText - text to be displayed in the menu item
@@ -32,7 +32,7 @@ const MenuListItem: React.FC<MenuListItemProps> = ({
   displayText,
   link,
   icon,
-  iconColor,
+  iconColor: _iconColor,
   imageURL,
 }) => {
   const { onSelectMenuItem } = useDirectory();

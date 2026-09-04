@@ -1,15 +1,15 @@
-import { firestore } from "@/firebase/clientApp";
-import { Community } from "@/types/community";
 import {
   collection,
-  DocumentData,
+  type DocumentData,
   getDocs,
   limit,
   orderBy,
+  type QueryDocumentSnapshot,
   query,
-  QueryDocumentSnapshot,
   startAfter,
 } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { Community } from "@/types/community";
 
 /**
  * Fetches a paginated list of communities, ordered by the number of members in descending order.
@@ -20,21 +20,21 @@ import {
  */
 export const getCommunities = async (
   limitValue: number,
-  lastVisible?: QueryDocumentSnapshot<DocumentData> | null
+  lastVisible?: QueryDocumentSnapshot<DocumentData> | null,
 ) => {
   let communityQuery;
   if (!lastVisible) {
     communityQuery = query(
       collection(firestore, "communities"),
       orderBy("numberOfMembers", "desc"),
-      limit(limitValue)
+      limit(limitValue),
     );
   } else {
     communityQuery = query(
       collection(firestore, "communities"),
       orderBy("numberOfMembers", "desc"),
       startAfter(lastVisible),
-      limit(limitValue)
+      limit(limitValue),
     );
   }
 

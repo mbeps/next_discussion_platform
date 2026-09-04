@@ -1,15 +1,16 @@
 "use client";
 
+import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
+import type React from "react";
+import { useMemo } from "react";
 import CommunityItem from "@/components/community/community-item/CommunityItem";
 import PersonalHome from "@/components/community/PersonalHome";
 import PageContent from "@/components/layout/PageContent";
 import CommunityLoader from "@/components/loaders/CommunityLoader";
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
-import useCommunityState from "@/hooks/community/useCommunityState";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
-import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
-import React, { useMemo } from "react";
-import { Community } from "@/types/community";
+import useCommunityState from "@/hooks/community/useCommunityState";
+import type { Community } from "@/types/community";
 
 /**
  * A page that displays a comprehensive list of all communities.
@@ -31,7 +32,7 @@ const Communities: React.FC = () => {
 
       communities.forEach((community) => {
         const snippet = communityStateValue.mySnippets.find(
-          (s) => s.communityId === community.id
+          (s) => s.communityId === community.id,
         );
         if (snippet) {
           if (snippet.isAdmin) {
@@ -48,98 +49,93 @@ const Communities: React.FC = () => {
     }, [communities, communityStateValue.mySnippets]);
 
   return (
-    <>
-      <PageContent>
-        <>
-          <Stack direction="column" borderRadius={10} gap={3}>
-            {loading && communities.length === 0 ? (
-              <Stack mt={2} p={3}>
-                {Array(5)
-                  .fill(0)
-                  .map((_, index) => (
-                    <CommunityLoader key={index} />
+    <PageContent>
+      <Stack direction="column" borderRadius={10} gap={3}>
+        {loading && communities.length === 0 ? (
+          <Stack mt={2} p={3}>
+            {Array(5)
+              .fill(0)
+              .map((_, index) => (
+                <CommunityLoader key={index} />
+              ))}
+          </Stack>
+        ) : (
+          <Stack gap={5}>
+            {adminCommunities.length > 0 && (
+              <Box>
+                <Heading fontSize="md" mb={2} px={2}>
+                  Moderating
+                </Heading>
+                <Stack gap={2}>
+                  {adminCommunities.map((community) => (
+                    <CommunityItem
+                      key={community.id}
+                      community={community}
+                      isJoined={true}
+                      onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
+                    />
                   ))}
-              </Stack>
-            ) : (
-              <Stack gap={5}>
-                {adminCommunities.length > 0 && (
-                  <Box>
-                    <Heading fontSize="md" mb={2} px={2}>
-                      Moderating
-                    </Heading>
-                    <Stack gap={2}>
-                      {adminCommunities.map((community) => (
-                        <CommunityItem
-                          key={community.id}
-                          community={community}
-                          isJoined={true}
-                          onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
-
-                {subscribedCommunities.length > 0 && (
-                  <Box>
-                    <Heading fontSize="md" mb={2} px={2}>
-                      My Communities
-                    </Heading>
-                    <Stack gap={2}>
-                      {subscribedCommunities.map((community) => (
-                        <CommunityItem
-                          key={community.id}
-                          community={community}
-                          isJoined={true}
-                          onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
-
-                {notSubscribedCommunities.length > 0 && (
-                  <Box>
-                    <Heading fontSize="md" mb={2} px={2}>
-                      Discover Communities
-                    </Heading>
-                    <Stack gap={2}>
-                      {notSubscribedCommunities.map((community) => (
-                        <CommunityItem
-                          key={community.id}
-                          community={community}
-                          isJoined={false}
-                          onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
-              </Stack>
+                </Stack>
+              </Box>
             )}
-            {!noMoreCommunities ? (
-              <Button
-                onClick={() => fetchCommunities(false)}
-                loading={loading}
-                variant="outline"
-                width="100%"
-                my={4}
-              >
-                Load More
-              </Button>
-            ) : (
-              <Text textAlign="center" p={2} fontSize="sm" color="gray.500">
-                No more communities
-              </Text>
+
+            {subscribedCommunities.length > 0 && (
+              <Box>
+                <Heading fontSize="md" mb={2} px={2}>
+                  My Communities
+                </Heading>
+                <Stack gap={2}>
+                  {subscribedCommunities.map((community) => (
+                    <CommunityItem
+                      key={community.id}
+                      community={community}
+                      isJoined={true}
+                      onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+            )}
+
+            {notSubscribedCommunities.length > 0 && (
+              <Box>
+                <Heading fontSize="md" mb={2} px={2}>
+                  Discover Communities
+                </Heading>
+                <Stack gap={2}>
+                  {notSubscribedCommunities.map((community) => (
+                    <CommunityItem
+                      key={community.id}
+                      community={community}
+                      isJoined={false}
+                      onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
+                    />
+                  ))}
+                </Stack>
+              </Box>
             )}
           </Stack>
-        </>
-        <Stack gap={2}>
-          <PersonalHome />
-        </Stack>
-        <></>
-      </PageContent>
-    </>
+        )}
+        {!noMoreCommunities ? (
+          <Button
+            onClick={() => fetchCommunities(false)}
+            loading={loading}
+            variant="outline"
+            width="100%"
+            my={4}
+          >
+            Load More
+          </Button>
+        ) : (
+          <Text textAlign="center" p={2} fontSize="sm" color="gray.500">
+            No more communities
+          </Text>
+        )}
+      </Stack>
+      <Stack gap={2}>
+        <PersonalHome />
+      </Stack>
+    </PageContent>
   );
 };
 export default Communities;

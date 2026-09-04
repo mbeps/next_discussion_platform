@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, useAtomValue, useSetAtom, createStore } from "jotai";
+import { createStore, Provider, useAtomValue, useSetAtom } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -14,7 +14,7 @@ vi.mock("@/lib/community/removeCommunityAdmin", () => ({
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import useRemoveAdmin from "@/hooks/admin/useRemoveAdmin";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
 
 const makeWrapper =
   (store = createStore()) =>

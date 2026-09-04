@@ -1,5 +1,3 @@
-import useDirectory from "@/hooks/useDirectory";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   Flex,
   Icon,
@@ -11,9 +9,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import Communities from "./Communities";
+import type React from "react";
+import { useState } from "react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import CreateCommunityModal from "@/components/modal/create-community/CreateCommunityModal";
+import useDirectory from "@/hooks/useDirectory";
+import Communities from "./Communities";
 
 /**
  * Component for displaying the directory menu.

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { Post } from "@/types/post";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Comment } from "../../types/comment";
 import { getComments as getCommentsLib } from "@/lib/comments/getComments";
+import type { Post } from "@/types/post";
+import type { Comment } from "../../types/comment";
 
 /**
  * A custom hook that manages the retrieval and state of comments for a specific post.

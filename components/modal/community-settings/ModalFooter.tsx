@@ -1,5 +1,5 @@
 import { Button, DialogFooter, Stack } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 type ModalFooterProps = {
   onCancel: () => void;

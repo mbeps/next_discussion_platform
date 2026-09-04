@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { postStateAtom } from "@/atoms/postsAtom";
 import { useSetAtom } from "jotai";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import { postStateAtom } from "@/atoms/postsAtom";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Comment } from "../../types/comment";
 import { deleteComment } from "@/lib/comments/deleteComment";
+import type { Comment } from "../../types/comment";
 
 /**
  * A custom hook that provides functionality for deleting comments and their threaded replies.
@@ -14,7 +14,7 @@ import { deleteComment } from "@/lib/comments/deleteComment";
  */
 const useDeleteComment = (
   comments: Comment[],
-  setComments: Dispatch<SetStateAction<Comment[]>>
+  setComments: Dispatch<SetStateAction<Comment[]>>,
 ) => {
   const setPostState = useSetAtom(postStateAtom);
   const showToast = useCustomToast();
@@ -38,7 +38,7 @@ const useDeleteComment = (
       await deleteComment(comment.id, comment.postId, descendantIds);
 
       setComments((prev) =>
-        prev.filter((item) => !allIdsToDelete.includes(item.id))
+        prev.filter((item) => !allIdsToDelete.includes(item.id)),
       );
       setPostState((prev) => ({
         ...prev,

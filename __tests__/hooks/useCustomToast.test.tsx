@@ -30,11 +30,11 @@ describe("useCustomToast", () => {
     ["error", "error"],
     ["warning", "warning"],
     ["info", "info"],
-  ] as const)("maps status %s to type %s", (status) => {
+  ] as const)("maps status %s to type %s", (status, expectedType) => {
     const { result } = renderHook(() => useCustomToast());
     result.current({ title: "T", status });
     expect(mocks.create).toHaveBeenCalledWith(
-      expect.objectContaining({ title: "T", type: status }),
+      expect.objectContaining({ title: "T", type: expectedType }),
     );
   });
 

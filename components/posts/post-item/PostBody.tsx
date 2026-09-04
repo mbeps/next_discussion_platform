@@ -1,6 +1,6 @@
-import React from "react";
-import { Text, Flex, Skeleton, Image } from "@chakra-ui/react";
-import { Post } from "@/types/post";
+import { Flex, Image, Skeleton, Text } from "@chakra-ui/react";
+import type React from "react";
+import type { Post } from "@/types/post";
 
 type PostBodyProps = {
   post: Post;

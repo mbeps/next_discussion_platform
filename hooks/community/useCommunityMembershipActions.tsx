@@ -1,10 +1,10 @@
-import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { useSetAtom } from "jotai";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
+import type { Community } from "@/types/community";
 import useJoinCommunity from "./useJoinCommunity";
 import useLeaveCommunity from "./useLeaveCommunity";
-import { Community } from "@/types/community";
 
 /**
  * A custom hook that centralizes the logic for joining and leaving communities.
@@ -20,7 +20,7 @@ const useCommunityMembershipActions = () => {
 
   const onJoinOrLeaveCommunity = (
     communityData: Community,
-    isJoined: boolean
+    isJoined: boolean,
   ) => {
     if (!user) {
       setAuthModalState({ open: true, view: "login" });

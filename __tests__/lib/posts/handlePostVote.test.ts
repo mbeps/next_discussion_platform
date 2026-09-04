@@ -13,7 +13,7 @@ vi.mock("firebase/firestore", async () => {
 });
 
 import { handlePostVote } from "@/lib/posts/handlePostVote";
-import { Post, PostVote } from "@/types/post";
+import type { Post, PostVote } from "@/types/post";
 
 const post = (voteStatus = 5): Post =>
   ({ id: "p1", voteStatus, communityId: "react" }) as Post;

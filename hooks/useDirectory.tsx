@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
-import { DirectoryMenuItem } from "@/types/directoryMenu";
 import { useAtom, useAtomValue } from "jotai";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
+import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**
  * A custom hook that manages the state and behavior of the navigation directory menu.
@@ -55,6 +54,7 @@ const useDirectory = () => {
    * If the user is currently in a community, then the directory menu will be set to the community menu item.
    * This is done to ensure that the user can navigate back to the community page from any page.
    */
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Sync directory menu with community and route
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 

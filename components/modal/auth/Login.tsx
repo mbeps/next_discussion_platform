@@ -1,17 +1,17 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import React from "react";
+import type React from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { PasswordInput } from "@/components/ui/password-input";
+import { type LoginInput, loginSchema } from "@/schema/auth";
 import { authModalStateAtom } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import InputField from "./InputField";
-import { PasswordInput } from "@/components/ui/password-input";
-import { loginSchema, LoginInput } from "@/schema/auth";
 
-type LoginProps = {};
+type LoginProps = Record<string, never>;
 
 /**
  * Allows the user to input the log in credentials (email and password) to log into the site.
@@ -28,7 +28,7 @@ type LoginProps = {};
  */
 const Login: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetAtom(authModalStateAtom); // Set global state
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, _user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
   const {
@@ -92,7 +92,9 @@ const Login: React.FC<LoginProps> = () => {
         fontWeight="800"
         mt={2}
       >
-        {error && (FIREBASE_ERRORS[error.code as keyof typeof FIREBASE_ERRORS] || error.message)}
+        {error &&
+          (FIREBASE_ERRORS[error.code as keyof typeof FIREBASE_ERRORS] ||
+            error.message)}
       </Text>
 
       <Button

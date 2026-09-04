@@ -1,5 +1,3 @@
-import { firestore, storage } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
 import {
   collection,
   deleteDoc,
@@ -10,6 +8,8 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
 
 /**
  * Deletes a post and all its associated data, including the image in Storage and all comments in Firestore.
@@ -28,7 +28,7 @@ export const deletePost = async (post: Post) => {
 
   const commentsQuery = query(
     collection(firestore, "comments"),
-    where("postId", "==", post.id)
+    where("postId", "==", post.id),
   );
   const commentDocs = await getDocs(commentsQuery);
   const batch = writeBatch(firestore);

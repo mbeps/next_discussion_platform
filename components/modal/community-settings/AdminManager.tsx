@@ -1,10 +1,3 @@
-import { Community } from "@/types/community";
-import { auth } from "@/firebase/clientApp";
-import useCustomToast from "@/hooks/useCustomToast";
-import useAddAdmin from "@/hooks/admin/useAddAdmin";
-import useAdminList from "@/hooks/admin/useAdminList";
-import useAdminSearch from "@/hooks/admin/useAdminSearch";
-import useRemoveAdmin from "@/hooks/admin/useRemoveAdmin";
 import {
   Box,
   Button,
@@ -14,13 +7,21 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { AdminUser } from "@/types/adminUser";
-import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addAdminSchema, AddAdminInput } from "@/schema/admin";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useForm } from "react-hook-form";
+import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import { auth } from "@/firebase/clientApp";
+import useAddAdmin from "@/hooks/admin/useAddAdmin";
+import useAdminList from "@/hooks/admin/useAdminList";
+import useAdminSearch from "@/hooks/admin/useAdminSearch";
+import useRemoveAdmin from "@/hooks/admin/useRemoveAdmin";
+import useCustomToast from "@/hooks/useCustomToast";
+import { type AddAdminInput, addAdminSchema } from "@/schema/admin";
+import type { AdminUser } from "@/types/adminUser";
+import type { Community } from "@/types/community";
 
 type AdminManagerProps = {
   communityData: Community;
@@ -61,15 +62,13 @@ const AdminManager: React.FC<AdminManagerProps> = ({ communityData }) => {
   const [removingAdmin, setRemovingAdmin] = useState(false);
 
   useEffect(() => {
-    loadAdmins(communityData.creatorId, communityData.adminIds).catch(
-      (error) => {
-        showToast({
-          title: "Error",
-          description: "Could not fetch admins",
-          status: "error",
-        });
-      }
-    );
+    loadAdmins(communityData.creatorId, communityData.adminIds).catch(() => {
+      showToast({
+        title: "Error",
+        description: "Could not fetch admins",
+        status: "error",
+      });
+    });
   }, [communityData, loadAdmins, showToast]);
 
   const onAddAdmin = async (data: AddAdminInput) => {
@@ -104,7 +103,7 @@ const AdminManager: React.FC<AdminManagerProps> = ({ communityData }) => {
         communityData.id,
         newUser,
         communityData.imageURL,
-        setAdmins
+        setAdmins,
       );
 
       reset();
@@ -162,7 +161,7 @@ const AdminManager: React.FC<AdminManagerProps> = ({ communityData }) => {
         const results = await searchUsers(emailValue);
         // Filter out existing admins
         const filtered = results.filter(
-          (u) => !admins.some((a) => a.uid === u.uid)
+          (u) => !admins.some((a) => a.uid === u.uid),
         );
         setSearchResults(filtered);
         setShowResults(true);

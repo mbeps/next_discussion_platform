@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
-import { PostVote } from "@/types/post";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { PostVote } from "@/types/post";
 
 /**
  * Retrieves the voting status for a specific set of posts for a given user.
@@ -19,7 +19,7 @@ export const getPostVotes = async (userId: string, postIds: string[]) => {
   const promises = chunks.map((chunk) => {
     const postVotesQuery = query(
       collection(firestore, `users/${userId}/postVotes`),
-      where("postId", "in", chunk)
+      where("postId", "in", chunk),
     );
     return getDocs(postVotesQuery);
   });
@@ -30,7 +30,7 @@ export const getPostVotes = async (userId: string, postIds: string[]) => {
     snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }))
+    })),
   );
 
   return postVotes as PostVote[];

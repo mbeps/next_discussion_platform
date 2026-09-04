@@ -1,5 +1,5 @@
-import React from "react";
 import { Button, Image } from "@chakra-ui/react";
+import type React from "react";
 
 interface AuthButtonProps {
   provider: string;

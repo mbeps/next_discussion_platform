@@ -41,12 +41,10 @@ class MockImage {
 const createFile = (sizeInMb: number, type: string) =>
   new File([new Uint8Array(sizeInMb * 1024 * 1024)], "upload", { type });
 
-const createChangeEvent = (
-  file: File
-): React.ChangeEvent<HTMLInputElement> =>
+const createChangeEvent = (file: File): React.ChangeEvent<HTMLInputElement> =>
   ({
     target: { files: [file] },
-  } as unknown as React.ChangeEvent<HTMLInputElement>);
+  }) as unknown as React.ChangeEvent<HTMLInputElement>;
 
 describe("useSelectFile", () => {
   beforeAll(() => {
@@ -54,7 +52,7 @@ describe("useSelectFile", () => {
     vi.stubGlobal("Image", MockImage as any);
     HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
       drawImage: vi.fn(),
-    })) as typeof HTMLCanvasElement.prototype.getContext;
+    })) as unknown as typeof HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.toDataURL = vi
       .fn()
       .mockReturnValue("data:image/jpeg;base64,mocked");
@@ -122,7 +120,7 @@ describe("useSelectFile", () => {
         title: "Image dimensions are too large",
         description: "Maximum dimensions are 500x500.",
         status: "error",
-      })
+      }),
     );
     expect(result.current.selectedFile).toBeUndefined();
   });
@@ -150,7 +148,7 @@ describe("useSelectFile", () => {
     });
 
     await waitFor(() =>
-      expect(result.current.selectedFile).toBe("data:image/jpeg;base64,mocked")
+      expect(result.current.selectedFile).toBe("data:image/jpeg;base64,mocked"),
     );
     expect(mockToast).not.toHaveBeenCalled();
   });

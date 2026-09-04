@@ -1,8 +1,8 @@
-import useCustomToast from "@/hooks/useCustomToast";
-import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Community } from "@/types/community";
+import useCustomToast from "@/hooks/useCustomToast";
 import { getCommunities as getCommunitiesLib } from "@/lib/community/getCommunities";
+import type { Community } from "@/types/community";
 
 type UseCommunitiesFeedProps = {
   limitValue?: number;
@@ -45,7 +45,7 @@ const useCommunitiesFeed = ({
       setCommunities((prev) =>
         initial
           ? (fetchedCommunities as Community[])
-          : [...prev, ...(fetchedCommunities as Community[])]
+          : [...prev, ...(fetchedCommunities as Community[])],
       );
     } catch (error) {
       console.log("Error: fetchCommunities", error);
@@ -59,9 +59,9 @@ const useCommunitiesFeed = ({
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Initial fetch on mount
   useEffect(() => {
     fetchCommunities(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

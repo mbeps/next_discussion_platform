@@ -1,4 +1,3 @@
-import { useCreateCommunity } from "@/hooks/community/useCreateCommunity";
 import {
   Box,
   Button,
@@ -15,17 +14,18 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { FC } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type React from "react";
+import { useForm } from "react-hook-form";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import CommunityTypeOptions from "./CommunityTypeOptions";
-import CommunityNameSection from "./CommunityNameSection";
+import { useCreateCommunity } from "@/hooks/community/useCreateCommunity";
 import {
+  type CreateCommunityInput,
   createCommunitySchema,
-  CreateCommunityInput,
 } from "@/schema/community";
+import CommunityNameSection from "./CommunityNameSection";
+import CommunityTypeOptions from "./CommunityTypeOptions";
 
 const COMMUNITY_TYPE_OPTIONS = [
   {

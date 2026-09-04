@@ -1,7 +1,7 @@
-import { Community } from "@/types/community";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FiCheck } from "react-icons/fi";
+import type { Community } from "@/types/community";
 
 type PrivacySettingsProps = {
   currentCommunity: Community | null;

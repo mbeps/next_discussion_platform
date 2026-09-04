@@ -1,9 +1,9 @@
-import { Community } from "@/types/community";
 import { Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React from "react";
-import CommunityItemNameIconSection from "./CommunityItemNameIconSection";
+import type React from "react";
+import type { Community } from "@/types/community";
 import CommunityItemButtonMembersSection from "./CommunityItemButtonMembersSection";
+import CommunityItemNameIconSection from "./CommunityItemNameIconSection";
 
 /**
  * @param {Community} community - community object

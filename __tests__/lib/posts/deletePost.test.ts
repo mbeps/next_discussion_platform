@@ -22,9 +22,9 @@ vi.mock("firebase/storage", () => ({
   deleteObject: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { deletePost } from "@/lib/posts/deletePost";
 import { deleteObject } from "firebase/storage";
-import { Post } from "@/types/post";
+import { deletePost } from "@/lib/posts/deletePost";
+import type { Post } from "@/types/post";
 
 const post = (imageURL?: string) => ({ id: "p1", imageURL }) as Post;
 

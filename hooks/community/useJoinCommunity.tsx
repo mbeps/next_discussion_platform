@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { Community } from "@/types/community";
-import { auth } from "@/firebase/clientApp";
 import { useSetAtom } from "jotai";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useCustomToast from "../useCustomToast";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { auth } from "@/firebase/clientApp";
 import { joinCommunity } from "@/lib/community/joinCommunity";
+import type { Community } from "@/types/community";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for a user to join a community.
@@ -29,7 +29,7 @@ const useJoinCommunity = () => {
         communityData.id,
         communityData.imageURL || "",
         user.uid === communityData.creatorId ||
-          (communityData.adminIds?.includes(user.uid || "") ?? false)
+          (communityData.adminIds?.includes(user.uid || "") ?? false),
       );
 
       setCommunityStateValue((prev) => ({

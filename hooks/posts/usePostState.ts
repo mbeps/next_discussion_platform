@@ -1,5 +1,5 @@
-import { postStateAtom } from "@/atoms/postsAtom";
 import { useAtom } from "jotai";
+import { postStateAtom } from "@/atoms/postsAtom";
 
 /**
  * A custom hook that provides access to the global post state managed by Jotai.

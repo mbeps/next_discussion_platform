@@ -1,20 +1,20 @@
 "use client";
 
-import { authModalStateAtom } from "@/atoms/authModalAtom";
+import { Box, Stack, Text } from "@chakra-ui/react";
+import { useAtom } from "jotai";
+import type React from "react";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import About from "@/components/community/about/About";
+import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
 import PageContent from "@/components/layout/PageContent";
+import PostLoader from "@/components/loaders/post-loader/PostLoader";
 import AuthButtons from "@/components/navbar/right-content/AuthButtons";
 import NewPostForm from "@/components/posts/new-post-form/NewPostForm";
 import { auth } from "@/firebase/clientApp";
-import { Community } from "@/types/community";
-import { Box, Stack, Text } from "@chakra-ui/react";
-import { useAtom, useSetAtom } from "jotai";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
-import RestrictedCommunityBanner from "@/components/community/RestrictedCommunityBanner";
-import PostLoader from "@/components/loaders/post-loader/PostLoader";
+import type { Community } from "@/types/community";
 
 type SubmitPostPageProps = {
   communityData: Community;
@@ -31,7 +31,6 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
   const [user] = useAuthState(auth);
   const [communityStateValue, setCommunityStateValue] =
     useAtom(communityStateAtom);
-  const setAuthModalState = useSetAtom(authModalStateAtom);
 
   useEffect(() => {
     setCommunityStateValue((prev) => ({
@@ -48,7 +47,7 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
     return (
       <PageContent>
         <PostLoader />
-        <></>
+        {null}
       </PageContent>
     );
   }
@@ -67,7 +66,7 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
 
   return (
     <PageContent>
-      <>
+      <Stack gap={4}>
         <Box p="14px 0px">
           <Text
             fontSize="20pt"
@@ -97,8 +96,8 @@ const SubmitPostPage: React.FC<SubmitPostPageProps> = ({ communityData }) => {
             </Stack>
           </Stack>
         )}
-      </>
-      <>{currentCommunity && <About communityData={currentCommunity} />}</>
+      </Stack>
+      {currentCommunity && <About communityData={currentCommunity} />}
     </PageContent>
   );
 };

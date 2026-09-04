@@ -1,13 +1,14 @@
-import { Button, Flex, Icon, Image, Input, Text, Box } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Image, Input, Text } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { BsDot } from "react-icons/bs";
+import { type ResetPasswordInput, resetPasswordSchema } from "@/schema/auth";
 import { authModalStateAtom } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
-import { resetPasswordSchema, ResetPasswordInput } from "@/schema/auth";
 
 const ResetPassword: React.FC = () => {
   const setAuthModalState = useSetAtom(authModalStateAtom);
@@ -38,12 +39,23 @@ const ResetPassword: React.FC = () => {
       {success ? (
         <Text mb={4}>Check your email</Text>
       ) : (
-        <Box width="100%" display="flex" flexDirection="column" alignItems="center">
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
           <Text fontSize="sm" textAlign="center" mb={2}>
             Enter the email associated with your account and we will send you a
             reset link
           </Text>
-          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(onSubmit)(e); }} style={{ width: "100%" }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(onSubmit)(e);
+            }}
+            style={{ width: "100%" }}
+          >
             <Input
               placeholder="Email"
               type="email"
@@ -76,7 +88,7 @@ const ResetPassword: React.FC = () => {
             >
               {error?.message}
             </Text>
-              <Button
+            <Button
               width="100%"
               height="36px"
               mb={2}

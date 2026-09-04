@@ -90,6 +90,3 @@ describe("useCommunityMembers", () => {
     expect(result.current.members).toEqual([{ userId: "u2" }]);
   });
 });
-
-import { act } from "@testing-library/react";
-import { beforeEach } from "vitest";

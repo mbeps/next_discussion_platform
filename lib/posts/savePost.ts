@@ -1,7 +1,7 @@
-import { firestore } from "@/firebase/clientApp";
-import { Post } from "@/types/post";
-import { SavedPost } from "@/types/savedPost";
 import { doc, setDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import type { Post } from "@/types/post";
+import type { SavedPost } from "@/types/savedPost";
 
 /**
  * Saves a post to a user's personal collection for later viewing.

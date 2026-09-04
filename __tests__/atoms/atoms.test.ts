@@ -1,14 +1,15 @@
 /// <reference types="vitest" />
-import { describe, expect, it } from "vitest";
+
 import { createStore } from "jotai";
+import { describe, expect, it } from "vitest";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import {
   communityStateAtom,
   defaultCommunityState,
 } from "@/atoms/communitiesAtom";
+import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
 import { postStateAtom } from "@/atoms/postsAtom";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
-import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
-import { authModalStateAtom } from "@/atoms/authModalAtom";
 
 describe("communityStateAtom", () => {
   it("defaults to empty snippets and snippetFetched false", () => {
@@ -27,7 +28,7 @@ describe("communityStateAtom", () => {
     const store = createStore();
     const next = {
       mySnippets: [{ communityId: "react", isAdmin: false }],
-      currentCommunity: { id: "react" },
+      currentCommunity: { id: "react" } as unknown as import("@/types/community").Community,
       snippetFetched: true,
     };
     store.set(communityStateAtom, next);

@@ -14,14 +14,14 @@ vi.mock("firebase/storage", () => ({
   deleteObject: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { uploadProfileImage } from "@/lib/user-profile/uploadProfileImage";
-import { deleteProfileImage } from "@/lib/user-profile/deleteProfileImage";
 import {
+  deleteObject,
   getDownloadURL,
   ref,
   uploadString,
-  deleteObject,
 } from "firebase/storage";
+import { deleteProfileImage } from "@/lib/user-profile/deleteProfileImage";
+import { uploadProfileImage } from "@/lib/user-profile/uploadProfileImage";
 
 beforeEach(resetFsMocks);
 

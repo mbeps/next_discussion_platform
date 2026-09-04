@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, increment, writeBatch } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Deletes a comment and all its threaded descendants, then updates the post's comment count.
@@ -13,7 +13,7 @@ import { doc, increment, writeBatch } from "firebase/firestore";
 export const deleteComment = async (
   commentId: string,
   postId: string,
-  descendantIds: string[]
+  descendantIds: string[],
 ) => {
   const batch = writeBatch(firestore);
   const allIdsToDelete = [commentId, ...descendantIds];

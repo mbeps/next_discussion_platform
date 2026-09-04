@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, useAtomValue, useSetAtom, createStore } from "jotai";
+import { createStore, Provider, useAtomValue, useSetAtom } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -25,7 +25,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import useCommunityImage from "@/hooks/community/useCommunityImage";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
 
 // One shared store per test so writes from the hook are visible to readers.
 let store: ReturnType<typeof createStore>;

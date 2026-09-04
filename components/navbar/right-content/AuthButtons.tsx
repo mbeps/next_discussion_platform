@@ -1,7 +1,7 @@
-import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { Button } from "@chakra-ui/react";
 import { useSetAtom } from "jotai";
-import React from "react";
+import type React from "react";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 
 /**
  * Displays 2 authentication buttons which open the authentication modal when clicked:

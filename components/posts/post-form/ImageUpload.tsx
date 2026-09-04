@@ -1,5 +1,6 @@
 import { Button, Flex, Image, Stack } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import type React from "react";
+import { useRef } from "react";
 
 /**
  * Interface for the ImageUpload component properties.

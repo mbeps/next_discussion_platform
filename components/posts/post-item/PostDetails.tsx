@@ -1,8 +1,8 @@
-import React from "react";
-import { Stack, Image, Icon, Link, Text } from "@chakra-ui/react";
-import { IoPeopleCircleOutline } from "react-icons/io5";
+import { Icon, Image, Link, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
-import { Post } from "@/types/post";
+import type React from "react";
+import { IoPeopleCircleOutline } from "react-icons/io5";
+import type { Post } from "@/types/post";
 
 type PostDetailsProps = {
   showCommunityImage?: boolean;
@@ -20,7 +20,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({
   post,
 }) => {
   const topText: string = `By ${post.creatorUsername} ${moment(
-    new Date(post.createTime.seconds * 1000)
+    new Date(post.createTime.seconds * 1000),
   ).fromNow()}`;
 
   return (

@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, createStore, useAtomValue } from "jotai";
+import { createStore, Provider, useAtomValue } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -20,6 +20,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
 
 import { postStateAtom } from "@/atoms/postsAtom";
 import useDeleteComment from "@/hooks/comments/useDeleteComment";
+import type { Comment as AppComment } from "@/types/comment";
 import { CommentFixture, Post } from "../posts/helpers";
 
 let store: ReturnType<typeof createStore>;
@@ -46,9 +47,18 @@ function render(comments: ReturnType<typeof CommentFixture>[]) {
       return current;
     },
   );
-  const { result } = renderHook(() => useDeleteComment(current, setComments), {
-    wrapper,
-  });
+  const { result } = renderHook(
+    () =>
+      useDeleteComment(
+        current,
+        setComments as unknown as React.Dispatch<
+          React.SetStateAction<AppComment[]>
+        >,
+      ),
+    {
+      wrapper,
+    },
+  );
   return { result, setComments, getComments: () => current };
 }
 

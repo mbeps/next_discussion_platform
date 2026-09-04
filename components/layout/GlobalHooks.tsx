@@ -1,9 +1,10 @@
 "use client";
+import type React from "react";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
 import { useCommunitySnippets } from "@/hooks/community/useCommunitySnippets";
 import useSavedPosts from "@/hooks/posts/useSavedPosts";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 /**
  * A headless component that initializes global data based on the user's authentication state.
@@ -15,6 +16,7 @@ const GlobalHooks: React.FC = () => {
   const { fetchSavedPosts, setSavedPostState } = useSavedPosts();
   const [user] = useAuthState(auth);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Only run effect when user authentication state changes
   useEffect(() => {
     if (user) {
       fetchSavedPosts();
@@ -25,7 +27,6 @@ const GlobalHooks: React.FC = () => {
         fetched: false,
       }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return null;

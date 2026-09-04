@@ -1,5 +1,5 @@
-import { Post, PostVote } from "@/types/post";
 import { useRouter } from "next/navigation";
+import type { Post, PostVote } from "@/types/post";
 
 /**
  * A custom hook that handles the selection of a post and navigation to its detailed comment view.
@@ -14,7 +14,7 @@ const usePostSelection = (
       posts: Post[];
       postVotes: PostVote[];
     }>
-  >
+  >,
 ) => {
   const router = useRouter();
 

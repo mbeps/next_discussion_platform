@@ -1,8 +1,7 @@
 "use client";
 
-import { ThemeProvider, useTheme } from "next-themes";
 import type { ThemeProviderProps } from "next-themes";
-import * as React from "react";
+import { ThemeProvider, useTheme } from "next-themes";
 
 /**
  * A provider component that integrates `next-themes` with Chakra UI.

@@ -1,26 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Post } from "@/types/post";
-import { Comment } from "@/types/comment";
-import useCommentList from "@/hooks/comments/useCommentList";
-import useCreateComment from "@/hooks/comments/useCreateComment";
-import useDeleteComment from "@/hooks/comments/useDeleteComment";
-import useCommunityState from "@/hooks/community/useCommunityState";
-import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 import {
   Box,
+  createTreeCollection,
   Flex,
   SkeletonCircle,
   SkeletonText,
   Stack,
   Text,
-  createTreeCollection,
   TreeView,
 } from "@chakra-ui/react";
-import { User } from "firebase/auth";
-import React, { useState, useMemo } from "react";
+import type { User } from "firebase/auth";
+import type React from "react";
+import { useMemo } from "react";
+import { LuChevronRight } from "react-icons/lu";
+import useCommentList from "@/hooks/comments/useCommentList";
+import useCreateComment from "@/hooks/comments/useCreateComment";
+import useDeleteComment from "@/hooks/comments/useDeleteComment";
+import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
+import useCommunityState from "@/hooks/community/useCommunityState";
+import type { Comment } from "@/types/comment";
+import type { Post } from "@/types/post";
 import CommentInput from "./CommentInput";
 import CommentItem from "./CommentItem";
-import { LuChevronRight } from "react-icons/lu";
 
 type CommentsProps = {
   user?: User;
@@ -40,22 +40,22 @@ type CommentsProps = {
 const Comments: React.FC<CommentsProps> = ({
   user,
   selectedPost,
-  communityId,
+  communityId: _communityId,
   isCommunityAdmin,
 }) => {
   const { comments, setComments, commentFetchLoading } =
     useCommentList(selectedPost);
   const { createComment, createLoading } = useCreateComment(
     selectedPost,
-    setComments
+    setComments,
   );
   const { deleteComment, deleteLoadingId } = useDeleteComment(
     comments,
-    setComments
+    setComments,
   );
   const { communityStateValue } = useCommunityState();
   const { canComment } = useCommunityPermissions(
-    communityStateValue.currentCommunity
+    communityStateValue.currentCommunity,
   );
 
   const handleCreateComment = async (text: string) => {
@@ -76,7 +76,9 @@ const Comments: React.FC<CommentsProps> = ({
       children: [],
     })) as CommentNode[];
 
-    nodes.forEach((node) => commentMap.set(node.id, node));
+    nodes.forEach((node) => {
+      commentMap.set(node.id, node);
+    });
 
     nodes.forEach((node) => {
       if (node.parentId && commentMap.has(node.parentId)) {
@@ -124,96 +126,90 @@ const Comments: React.FC<CommentsProps> = ({
       </Flex>
       <Stack gap={4} m={4} ml={10}>
         {commentFetchLoading ? (
-          <>
-            {[0, 1, 2, 3].map((item) => (
-              <Box
-                key={item}
-                padding="6"
-                bg={{ base: "white", _dark: "gray.800" }}
-              >
-                <SkeletonCircle size="10" />
-                <SkeletonText mt="4" noOfLines={3} rootProps={{ gap: 4 }} />
-              </Box>
-            ))}
-          </>
+          [0, 1, 2, 3].map((item) => (
+            <Box
+              key={item}
+              padding="6"
+              bg={{ base: "white", _dark: "gray.800" }}
+            >
+              <SkeletonCircle size="10" />
+              <SkeletonText mt="4" noOfLines={3} rootProps={{ gap: 4 }} />
+            </Box>
+          ))
+        ) : comments.length === 0 ? (
+          <Flex direction="column" justify="center" align="center" p={20}>
+            <Text fontWeight={600} opacity={0.3}>
+              {" "}
+              No Comments
+            </Text>
+          </Flex>
         ) : (
-          <>
-            {comments.length === 0 ? (
-              <Flex direction="column" justify="center" align="center" p={20}>
-                <Text fontWeight={600} opacity={0.3}>
-                  {" "}
-                  No Comments
-                </Text>
-              </Flex>
-            ) : (
-              <TreeView.Root
-                collection={collection}
-                width="100%"
-                expandOnClick={false}
-                defaultExpandedValue={comments.map((c) => c.id)}
-              >
-                <TreeView.Tree>
-                  <TreeView.Node
-                    render={({ node, nodeState }) => {
-                      const comment = node as unknown as Comment;
-                      return nodeState.isBranch ? (
-                        <TreeView.BranchControl
-                          width="100%"
-                          py={2}
-                          _hover={{ bg: "transparent" }}
-                          _selected={{ bg: "transparent" }}
-                          cursor="default"
-                        >
-                          <Flex width="100%" gap={2}>
-                            <Box pt={2}>
-                              <TreeView.BranchTrigger>
-                                <TreeView.BranchIndicator asChild>
-                                  <LuChevronRight />
-                                </TreeView.BranchIndicator>
-                              </TreeView.BranchTrigger>
-                            </Box>
-                            <Box flex={1}>
-                              <CommentItem
-                                comment={comment}
-                                onDeleteComment={deleteComment}
-                                loadingDelete={deleteLoadingId === comment.id}
-                                userId={user?.uid}
-                                isCommunityAdmin={isCommunityAdmin}
-                                onCreateComment={createComment}
-                                user={user}
-                                canComment={canComment}
-                              />
-                            </Box>
-                          </Flex>
-                        </TreeView.BranchControl>
-                      ) : (
-                        <TreeView.Item
-                          width="100%"
-                          py={2}
-                          _hover={{ bg: "transparent" }}
-                          _selected={{ bg: "transparent" }}
-                          cursor="default"
-                        >
-                          <Box pl={6} width="100%">
-                            <CommentItem
-                              comment={comment}
-                              onDeleteComment={deleteComment}
-                              loadingDelete={deleteLoadingId === comment.id}
-                              userId={user?.uid}
-                              isCommunityAdmin={isCommunityAdmin}
-                              onCreateComment={createComment}
-                              user={user}
-                              canComment={canComment}
-                            />
-                          </Box>
-                        </TreeView.Item>
-                      );
-                    }}
-                  />
-                </TreeView.Tree>
-              </TreeView.Root>
-            )}
-          </>
+          <TreeView.Root
+            collection={collection}
+            width="100%"
+            expandOnClick={false}
+            defaultExpandedValue={comments.map((c) => c.id)}
+          >
+            <TreeView.Tree>
+              <TreeView.Node
+                render={({ node, nodeState }) => {
+                  const comment = node as unknown as Comment;
+                  return nodeState.isBranch ? (
+                    <TreeView.BranchControl
+                      width="100%"
+                      py={2}
+                      _hover={{ bg: "transparent" }}
+                      _selected={{ bg: "transparent" }}
+                      cursor="default"
+                    >
+                      <Flex width="100%" gap={2}>
+                        <Box pt={2}>
+                          <TreeView.BranchTrigger>
+                            <TreeView.BranchIndicator asChild>
+                              <LuChevronRight />
+                            </TreeView.BranchIndicator>
+                          </TreeView.BranchTrigger>
+                        </Box>
+                        <Box flex={1}>
+                          <CommentItem
+                            comment={comment}
+                            onDeleteComment={deleteComment}
+                            loadingDelete={deleteLoadingId === comment.id}
+                            userId={user?.uid}
+                            isCommunityAdmin={isCommunityAdmin}
+                            onCreateComment={createComment}
+                            user={user}
+                            canComment={canComment}
+                          />
+                        </Box>
+                      </Flex>
+                    </TreeView.BranchControl>
+                  ) : (
+                    <TreeView.Item
+                      width="100%"
+                      py={2}
+                      _hover={{ bg: "transparent" }}
+                      _selected={{ bg: "transparent" }}
+                      cursor="default"
+                    >
+                      <Box pl={6} width="100%">
+                        <CommentItem
+                          comment={comment}
+                          onDeleteComment={deleteComment}
+                          loadingDelete={deleteLoadingId === comment.id}
+                          userId={user?.uid}
+                          isCommunityAdmin={isCommunityAdmin}
+                          onCreateComment={createComment}
+                          user={user}
+                          canComment={canComment}
+                        />
+                      </Box>
+                    </TreeView.Item>
+                  );
+                }}
+              />
+            </TreeView.Tree>
+          </TreeView.Root>
         )}
       </Stack>
     </Flex>

@@ -1,5 +1,5 @@
-import React from "react";
-import { Flex, Text, Icon } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
+import type React from "react";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 interface AboutHeaderBarProps {

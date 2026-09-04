@@ -1,13 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { User } from "firebase/auth";
-import { postStateAtom } from "@/atoms/postsAtom";
-import { Post } from "@/types/post";
+import type { User } from "firebase/auth";
 import { useSetAtom } from "jotai";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import { postStateAtom } from "@/atoms/postsAtom";
 import useCustomToast from "@/hooks/useCustomToast";
-import { Comment } from "../../types/comment";
 import { createComment } from "@/lib/comments/createComment";
-import useCommunityState from "../community/useCommunityState";
 import { checkCommunityPermission } from "@/lib/community/communityPermissions";
+import type { Post } from "@/types/post";
+import type { Comment } from "../../types/comment";
+import useCommunityState from "../community/useCommunityState";
 
 /**
  * A custom hook that provides functionality for creating new comments and replies.
@@ -18,7 +18,7 @@ import { checkCommunityPermission } from "@/lib/community/communityPermissions";
  */
 const useCreateComment = (
   selectedPost: Post | null,
-  setComments: Dispatch<SetStateAction<Comment[]>>
+  setComments: Dispatch<SetStateAction<Comment[]>>,
 ) => {
   const setPostState = useSetAtom(postStateAtom);
   const showToast = useCustomToast();
@@ -29,7 +29,7 @@ const useCreateComment = (
     user: User,
     commentText: string,
     parentId?: string,
-    depth: number = 0
+    depth: number = 0,
   ) => {
     if (!selectedPost) return;
     setCreateLoading(true);
@@ -39,7 +39,7 @@ const useCreateComment = (
     if (currentCommunity?.id === selectedPost.communityId) {
       const hasPermission = checkCommunityPermission(
         currentCommunity,
-        communityStateValue.mySnippets
+        communityStateValue.mySnippets,
       );
 
       if (!hasPermission) {
@@ -61,7 +61,7 @@ const useCreateComment = (
         selectedPost.title,
         commentText,
         depth,
-        parentId
+        parentId,
       );
 
       setComments((prev) => [newComment, ...prev]);

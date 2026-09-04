@@ -1,9 +1,9 @@
-import React from "react";
-import { MenuTrigger, Flex, Icon, Image, Text } from "@chakra-ui/react";
-import { User } from "firebase/auth";
+import { Flex, Icon, Image, MenuTrigger, Text } from "@chakra-ui/react";
+import type { User } from "firebase/auth";
+import type React from "react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { MdAccountCircle } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 
 interface UserMenuButtonProps {
   user: User | null | undefined;

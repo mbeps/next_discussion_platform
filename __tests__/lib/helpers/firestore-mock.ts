@@ -14,19 +14,23 @@ import { vi } from "vitest";
  *   }));
  */
 
+const batch = {
+  set: vi.fn(),
+  update: vi.fn(),
+  delete: vi.fn(),
+  commit: vi.fn(),
+};
+
+const tx = {
+  get: vi.fn(),
+  set: vi.fn(),
+  update: vi.fn(),
+  delete: vi.fn(),
+};
+
 export const fsMocks = {
-  batch: {
-    set: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-    commit: vi.fn(),
-  },
-  tx: {
-    get: vi.fn(),
-    set: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-  },
+  batch,
+  tx,
   // Drop the leading db handle; keep string segments and collection refs.
   doc: vi.fn((...args: unknown[]) => ({
     __docRef: args.filter(
@@ -52,9 +56,9 @@ export const fsMocks = {
   orderBy: (field: string, dir?: string) => ({ kind: "orderBy", field, dir }),
   limit: (n: number) => ({ kind: "limit", n }),
   startAfter: (cursor: unknown) => ({ kind: "startAfter", cursor }),
-  writeBatch: vi.fn(() => fsMocks.batch),
+  writeBatch: vi.fn(() => batch),
   runTransaction: vi.fn(async (_db: unknown, fn: (tx: unknown) => unknown) =>
-    fn(fsMocks.tx),
+    fn(tx),
   ),
   getDocs: vi.fn(),
   getDoc: vi.fn(),

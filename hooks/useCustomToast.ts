@@ -1,5 +1,5 @@
-import { toaster } from "@/components/ui/toaster";
 import { useCallback } from "react";
+import { toaster } from "@/components/ui/toaster";
 
 interface CustomToastOptions {
   title: string;
@@ -27,7 +27,7 @@ const useCustomToast = () => {
         console.error("Toast error:", error);
       }
     },
-    []
+    [],
   );
 
   return showToast;

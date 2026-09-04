@@ -1,5 +1,5 @@
 import { Box, Skeleton, SkeletonText } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 type PostLoaderItemProps = {
   height: string;

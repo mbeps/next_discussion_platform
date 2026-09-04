@@ -1,5 +1,5 @@
-import { storage } from "@/firebase/clientApp";
 import { deleteObject, ref } from "firebase/storage";
+import { storage } from "@/firebase/clientApp";
 
 /**
  * Deletes a user's profile image from Firebase Storage.

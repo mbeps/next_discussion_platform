@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { TiHome } from "react-icons/ti";
-import { DirectoryMenuItem } from "@/types/directoryMenu";
+import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**
  * Interface which describes the state of the directory menu.

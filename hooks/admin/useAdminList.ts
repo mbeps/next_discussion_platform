@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { AdminUser } from "@/types/adminUser";
 import { fetchCommunityAdmins } from "@/lib/community/fetchCommunityAdmins";
+import type { AdminUser } from "@/types/adminUser";
 
 /**
  * A custom hook that manages the retrieval and storage of a community's administrator list.
@@ -25,7 +25,7 @@ const useAdminList = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { admins, setAdmins, loading, loadAdmins };

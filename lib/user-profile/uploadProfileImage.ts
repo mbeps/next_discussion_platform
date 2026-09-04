@@ -1,5 +1,5 @@
-import { storage } from "@/firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { storage } from "@/firebase/clientApp";
 
 /**
  * Uploads a new profile image for a user to Firebase Storage.
@@ -10,7 +10,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
  */
 export const uploadProfileImage = async (
   userId: string,
-  selectedFile: string
+  selectedFile: string,
 ) => {
   const imageRef = ref(storage, `users/${userId}/profileImage`);
   await uploadString(imageRef, selectedFile, "data_url");

@@ -1,5 +1,3 @@
-import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
-import useSavedPosts from "@/hooks/posts/useSavedPosts";
 import {
   DialogBackdrop,
   DialogBody,
@@ -17,9 +15,11 @@ import {
 } from "@chakra-ui/react";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import React from "react";
-import { LuTrash } from "react-icons/lu";
+import type React from "react";
 import { FaReddit } from "react-icons/fa";
+import { LuTrash } from "react-icons/lu";
+import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
+import useSavedPosts from "@/hooks/posts/useSavedPosts";
 
 /**
  * Modal listing saved posts with quick navigation and remove controls.

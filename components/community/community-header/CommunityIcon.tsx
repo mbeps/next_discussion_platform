@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, Icon } from "@chakra-ui/react";
+import { Icon, Image } from "@chakra-ui/react";
+import type React from "react";
 import { HiArrowCircleUp } from "react-icons/hi";
 
 type CommunityIconProps = {

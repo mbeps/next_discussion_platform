@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import safeJsonStringify from "safe-json-stringify";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Retrieves community data by id with JSON-safe serialization.
@@ -17,7 +17,7 @@ export async function getCommunityData(communityId: string) {
     }
 
     return JSON.parse(
-      safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
+      safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() }),
     );
   } catch (error) {
     console.log("Error: getCommunityData", error);

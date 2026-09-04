@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, increment, writeBatch } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Removes a user from a community by deleting their membership snippet and decrementing the member count.
@@ -12,7 +12,7 @@ export const leaveCommunity = async (userId: string, communityId: string) => {
   const batch = writeBatch(firestore);
 
   batch.delete(
-    doc(firestore, `users/${userId}/communitySnippets`, communityId)
+    doc(firestore, `users/${userId}/communitySnippets`, communityId),
   );
 
   batch.update(doc(firestore, "communities", communityId), {

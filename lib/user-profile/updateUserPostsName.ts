@@ -1,4 +1,3 @@
-import { firestore } from "@/firebase/clientApp";
 import {
   collection,
   doc,
@@ -7,6 +6,7 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Updates the creator's username across all their existing posts.
@@ -18,11 +18,11 @@ import {
  */
 export const updateUserPostsName = async (
   userId: string,
-  newUserName: string
+  newUserName: string,
 ) => {
   const postsQuery = query(
     collection(firestore, "posts"),
-    where("creatorId", "==", userId)
+    where("creatorId", "==", userId),
   );
   const postsSnapshot = await getDocs(postsQuery);
 

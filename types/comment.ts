@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 
 /**
  * Comment document for a post, including optional parent for threaded replies.

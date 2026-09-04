@@ -1,19 +1,18 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSetAtom } from "jotai";
-import React from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { PasswordInput } from "@/components/ui/password-input";
+import { type SignUpInput, signUpSchema } from "@/schema/auth";
 import { authModalStateAtom } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
 import InputField from "./InputField";
-import { PasswordInput } from "@/components/ui/password-input";
-import { signUpSchema, SignUpInput } from "@/schema/auth";
 
 const SignUp = () => {
   const setAuthModalState = useSetAtom(authModalStateAtom);
-  const [createUserWithEmailAndPassword, user, loading, userError] =
+  const [createUserWithEmailAndPassword, _user, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
 
   const {
@@ -104,7 +103,8 @@ const SignUp = () => {
         mt={2}
       >
         {userError &&
-          (FIREBASE_ERRORS[userError.code as keyof typeof FIREBASE_ERRORS] || userError.message)}
+          (FIREBASE_ERRORS[userError.code as keyof typeof FIREBASE_ERRORS] ||
+            userError.message)}
       </Text>
 
       <Button

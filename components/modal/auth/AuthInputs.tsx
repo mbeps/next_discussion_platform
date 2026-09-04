@@ -1,11 +1,11 @@
-import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { Flex } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
-import React from "react";
+import type React from "react";
+import { authModalStateAtom } from "@/atoms/authModalAtom";
 import Login from "./Login";
 import Signup from "./Signup";
 
-type AuthInputsProps = {};
+type AuthInputsProps = Record<string, never>;
 
 /**
  * Checks what the current view of the authentication modal state is.

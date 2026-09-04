@@ -1,9 +1,9 @@
+import { useAtom, useSetAtom } from "jotai";
+import type React from "react";
 import { postStateAtom } from "@/atoms/postsAtom";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
-import { Post, PostVote } from "@/types/post";
-import { useAtom, useSetAtom } from "jotai";
-import React from "react";
 import { deletePost } from "@/lib/posts/deletePost";
+import type { Post, PostVote } from "@/types/post";
 
 /**
  * A custom hook that provides functionality for deleting a post and its associated data.
@@ -18,7 +18,7 @@ const usePostDeletion = (
       posts: Post[];
       postVotes: PostVote[];
     }>
-  >
+  >,
 ) => {
   const [postStateValue] = useAtom(postStateAtom);
   const setSavedPostState = useSetAtom(savedPostStateAtom);

@@ -1,11 +1,11 @@
-import { Community } from "@/types/community";
-import { auth } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useCommunityState from "./useCommunityState";
+import { auth } from "@/firebase/clientApp";
 import {
   checkCommunityPermission,
   checkCommunityViewPermission,
 } from "@/lib/community/communityPermissions";
+import type { Community } from "@/types/community";
+import useCommunityState from "./useCommunityState";
 
 /**
  * A custom hook that calculates various permission flags for the current user within a specific community.
@@ -38,12 +38,12 @@ const useCommunityPermissions = (communityData?: Community) => {
 
   const hasPermission = checkCommunityPermission(
     communityData,
-    communityStateValue.mySnippets
+    communityStateValue.mySnippets,
   );
 
   const canView = checkCommunityViewPermission(
     communityData,
-    communityStateValue.mySnippets
+    communityStateValue.mySnippets,
   );
 
   return {

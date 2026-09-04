@@ -1,4 +1,4 @@
-import { MenuItem, Flex, Icon } from "@chakra-ui/react";
+import { Flex, Icon, MenuItem } from "@chakra-ui/react";
 
 interface CustomMenuButtonProps {
   icon: React.ReactElement;

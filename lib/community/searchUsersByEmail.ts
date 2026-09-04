@@ -1,7 +1,7 @@
-import { firestore } from "@/firebase/clientApp";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
-import { AdminUser } from "../../types/adminUser";
+import type { AdminUser } from "../../types/adminUser";
 
 /**
  * Performs a prefix search for users by their email address.
@@ -10,7 +10,7 @@ import { AdminUser } from "../../types/adminUser";
  * @returns A promise that resolves to an array of up to 5 matching user objects.
  */
 export const searchUsersByEmail = async (
-  emailQuery: string
+  emailQuery: string,
 ): Promise<AdminUser[]> => {
   if (emailQuery.length < 3) {
     return [];
@@ -19,12 +19,12 @@ export const searchUsersByEmail = async (
   const usersQuery = query(
     collection(firestore, "users"),
     where("email", ">=", emailQuery),
-    where("email", "<=", emailQuery + "\uf8ff"),
-    limit(5)
+    where("email", "<=", `${emailQuery}\uf8ff`),
+    limit(5),
   );
 
   const snapshot = await getDocs(usersQuery);
   return snapshot.docs.map(
-    (doc) => ({ uid: doc.id, ...doc.data() } as AdminUser)
+    (doc) => ({ uid: doc.id, ...doc.data() }) as AdminUser,
   );
 };

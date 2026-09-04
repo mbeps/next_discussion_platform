@@ -1,4 +1,3 @@
-import { firestore } from "@/firebase/clientApp";
 import {
   collection,
   doc,
@@ -7,6 +6,7 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Updates the display name of the creator across all their existing comments.
@@ -18,11 +18,11 @@ import {
  */
 export const updateUserCommentsName = async (
   userId: string,
-  newUserName: string
+  newUserName: string,
 ) => {
   const commentsQuery = query(
     collection(firestore, "comments"),
-    where("creatorId", "==", userId)
+    where("creatorId", "==", userId),
   );
   const commentsSnapshot = await getDocs(commentsQuery);
 

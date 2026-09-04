@@ -1,7 +1,7 @@
-import React from "react";
-import { Community } from "@/types/community";
 import { Flex, Text } from "@chakra-ui/react";
 import moment from "moment";
+import type React from "react";
+import type { Community } from "@/types/community";
 
 interface AboutCommunityProps {
   communityData: Community;
@@ -24,7 +24,7 @@ const AboutCommunity: React.FC<AboutCommunityProps> = ({ communityData }) => (
       <Text>
         {communityData.createdAt &&
           moment(new Date(communityData.createdAt.seconds * 1000)).format(
-            "MMM DD, YYYY"
+            "MMM DD, YYYY",
           )}
       </Text>
     </Flex>

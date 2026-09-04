@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import type { Timestamp } from "firebase/firestore";
 
 /**
  * Firestore community document used to render pages and determine permissions.

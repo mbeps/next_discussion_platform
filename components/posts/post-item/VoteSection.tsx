@@ -1,12 +1,12 @@
-import React from "react";
 import { Icon, Text } from "@chakra-ui/react";
+import type React from "react";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
   IoArrowUpCircleOutline,
   IoArrowUpCircleSharp,
 } from "react-icons/io5";
-import { Post } from "@/types/post";
+import type { Post } from "@/types/post";
 
 type VoteSectionProps = {
   userVoteValue?: number;
@@ -14,7 +14,7 @@ type VoteSectionProps = {
     event: React.MouseEvent<SVGElement, MouseEvent>,
     post: Post,
     vote: number,
-    communityId: string
+    communityId: string,
   ) => void;
   post: Post;
   votingDisabled?: boolean;
@@ -42,8 +42,8 @@ const VoteSection: React.FC<VoteSectionProps> = ({
           votingDisabled
             ? "gray.300"
             : userVoteValue === 1
-            ? "red.500"
-            : "gray.500"
+              ? "red.500"
+              : "gray.500"
         }
         fontSize={22}
         cursor={votingDisabled ? "not-allowed" : "pointer"}
@@ -65,8 +65,8 @@ const VoteSection: React.FC<VoteSectionProps> = ({
           votingDisabled
             ? "gray.300"
             : userVoteValue === -1
-            ? "red.500"
-            : "gray.500"
+              ? "red.500"
+              : "gray.500"
         }
         _hover={votingDisabled ? undefined : { color: "red.300" }}
         fontSize={22}

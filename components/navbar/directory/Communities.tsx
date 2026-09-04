@@ -1,13 +1,13 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import CustomMenuButton from "@/components/ui/CustomMenuButton";
-import useDirectory from "@/hooks/useDirectory";
 import { Box, Text } from "@chakra-ui/react";
 import { useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
-import React from "react";
+import type React from "react";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import CustomMenuButton from "@/components/ui/CustomMenuButton";
+import useDirectory from "@/hooks/useDirectory";
 import MenuListItem from "./MenuListItem";
 
 type CommunitiesProps = {

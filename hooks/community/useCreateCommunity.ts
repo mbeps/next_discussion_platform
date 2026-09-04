@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "@/firebase/clientApp";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useCustomToast from "../useCustomToast";
+import { auth } from "@/firebase/clientApp";
 import { createCommunity } from "@/lib/community/createCommunity";
+import useCustomToast from "../useCustomToast";
 
 /**
  * A custom hook that provides functionality for creating a new community.
@@ -19,11 +19,11 @@ export const useCreateCommunity = () => {
 
   const onCreateCommunity = async (
     communityName: string,
-    communityType: string
+    communityType: string,
   ) => {
     if (error) setError("");
     // prevents community from being created if it has special characters
-    const format: RegExp = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const format: RegExp = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     if (format.test(communityName)) {
       setError("Community name can only contain letters and numbers");
       return false;
@@ -37,7 +37,7 @@ export const useCreateCommunity = () => {
     setLoading(true);
 
     try {
-      await createCommunity(communityName, communityType, user?.uid!);
+      await createCommunity(communityName, communityType, user?.uid ?? "");
 
       router.push(`/community/${communityName}`);
       return true;

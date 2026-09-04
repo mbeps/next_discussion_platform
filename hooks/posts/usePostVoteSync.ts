@@ -1,10 +1,11 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { useAtomValue } from "jotai";
-import React, { useEffect } from "react";
+import type React from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
-import { Post, PostVote } from "@/types/post";
 import { getCommunityPostVotes as getCommunityPostVotesLib } from "@/lib/posts/getCommunityPostVotes";
+import type { Post, PostVote } from "@/types/post";
 
 type SetPostState = React.Dispatch<
   React.SetStateAction<{
@@ -24,21 +25,20 @@ const usePostVoteSync = (setPostStateValue: SetPostState) => {
   const [user] = useAuthState(auth);
   const currentCommunity = useAtomValue(communityStateAtom).currentCommunity;
 
-  const getCommunityPostVotes = async (communityId: string) => {
-    if (!user) return;
-    const postVotes = await getCommunityPostVotesLib(user.uid, communityId);
-    setPostStateValue((prev) => ({
-      ...prev,
-      postVotes: postVotes as PostVote[],
-    }));
-  };
-
   useEffect(() => {
     if (!user || !currentCommunity?.id) {
       return;
     }
-    getCommunityPostVotes(currentCommunity?.id);
-  }, [user, currentCommunity]);
+    const getCommunityPostVotes = async (communityId: string) => {
+      const postVotes = await getCommunityPostVotesLib(user.uid, communityId);
+      setPostStateValue((prev) => ({
+        ...prev,
+        postVotes: postVotes as PostVote[],
+      }));
+    };
+
+    getCommunityPostVotes(currentCommunity.id);
+  }, [user, currentCommunity, setPostStateValue]);
 
   useEffect(() => {
     if (!user) {

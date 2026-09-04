@@ -1,5 +1,5 @@
 import { Box, Stack } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import {
   useSignInWithGithub,
   useSignInWithGoogle,
@@ -19,9 +19,9 @@ import AuthenticationErrorMessage from "./ErrorMessage";
  * @see https://github.com/CSFrequency/react-firebase-hooks/tree/master/auth
  */
 const OAuthButtons: React.FC = () => {
-  const [signInWithGoogle, userGoogle, loadingGoogle, errorGoogle] =
+  const [signInWithGoogle, _userGoogle, loadingGoogle, errorGoogle] =
     useSignInWithGoogle(auth);
-  const [signInWithGithub, userGitHub, loadingGitHub, errorGitHub] =
+  const [signInWithGithub, _userGitHub, loadingGitHub, errorGitHub] =
     useSignInWithGithub(auth);
 
   return (
@@ -45,10 +45,8 @@ const OAuthButtons: React.FC = () => {
       </Stack>
 
       {/* If there is error than the error is shown */}
-      <>
-        <AuthenticationErrorMessage error={errorGoogle} />
-        <AuthenticationErrorMessage error={errorGitHub} />
-      </>
+      <AuthenticationErrorMessage error={errorGoogle} />
+      <AuthenticationErrorMessage error={errorGitHub} />
     </Box>
   );
 };

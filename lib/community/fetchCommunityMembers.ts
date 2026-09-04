@@ -1,6 +1,6 @@
-import { firestore } from "@/firebase/clientApp";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { CommunityMember } from "@/types/communityMember";
+import { firestore } from "@/firebase/clientApp";
+import type { CommunityMember } from "@/types/communityMember";
 
 /**
  * Retrieves a list of all members belonging to a specific community.
@@ -10,14 +10,14 @@ import { CommunityMember } from "@/types/communityMember";
  * @returns A promise that resolves to a sorted array of community member objects.
  */
 export const fetchCommunityMembers = async (
-  communityId: string
+  communityId: string,
 ): Promise<CommunityMember[]> => {
   const usersSnapshot = await getDocs(collection(firestore, "users"));
 
   const members = await Promise.all(
     usersSnapshot.docs.map(async (userDoc) => {
       const snippetDoc = await getDoc(
-        doc(firestore, "users", userDoc.id, "communitySnippets", communityId)
+        doc(firestore, "users", userDoc.id, "communitySnippets", communityId),
       );
 
       if (!snippetDoc.exists()) {
@@ -34,11 +34,11 @@ export const fetchCommunityMembers = async (
         email: data.email || "Unknown email",
         displayName: data.displayName ?? null,
       } satisfies CommunityMember;
-    })
+    }),
   );
 
   const filteredMembers = members.filter(
-    (member): member is CommunityMember => !!member
+    (member): member is CommunityMember => !!member,
   );
 
   filteredMembers.sort((a, b) => {

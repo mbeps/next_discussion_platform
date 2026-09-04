@@ -1,9 +1,9 @@
-import { communityStateAtom } from "@/atoms/communitiesAtom";
-import { AdminUser } from "@/types/adminUser";
-import { removeCommunityAdmin } from "@/lib/community/removeCommunityAdmin";
 import { useSetAtom } from "jotai";
-import { Dispatch, SetStateAction, useCallback } from "react";
-import { Community } from "@/types/community";
+import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { communityStateAtom } from "@/atoms/communitiesAtom";
+import { removeCommunityAdmin } from "@/lib/community/removeCommunityAdmin";
+import type { AdminUser } from "@/types/adminUser";
+import type { Community } from "@/types/community";
 
 /**
  * A custom hook that provides functionality for removing an administrator from a community.
@@ -17,7 +17,7 @@ const useRemoveAdmin = () => {
     async (
       communityId: string,
       userId: string,
-      updateAdmins?: Dispatch<SetStateAction<AdminUser[]>>
+      updateAdmins?: Dispatch<SetStateAction<AdminUser[]>>,
     ) => {
       await removeCommunityAdmin(communityId, userId);
 
@@ -30,12 +30,12 @@ const useRemoveAdmin = () => {
         currentCommunity: {
           ...prev.currentCommunity!,
           adminIds: (prev.currentCommunity?.adminIds || []).filter(
-            (id) => id !== userId
+            (id) => id !== userId,
           ),
         } as Community,
       }));
     },
-    [setCommunityStateValue]
+    [setCommunityStateValue],
   );
 
   return { handleRemoveAdmin };

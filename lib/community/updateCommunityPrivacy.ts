@@ -1,5 +1,5 @@
-import { firestore } from "@/firebase/clientApp";
 import { doc, updateDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 /**
  * Updates the privacy setting for a community.
@@ -10,7 +10,7 @@ import { doc, updateDoc } from "firebase/firestore";
  */
 export const updateCommunityPrivacy = async (
   communityId: string,
-  privacyType: string
+  privacyType: string,
 ) => {
   await updateDoc(doc(firestore, "communities", communityId), {
     privacyType,

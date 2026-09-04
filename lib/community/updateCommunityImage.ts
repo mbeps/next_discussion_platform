@@ -1,4 +1,3 @@
-import { firestore, storage } from "@/firebase/clientApp";
 import {
   collectionGroup,
   doc,
@@ -9,6 +8,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { firestore, storage } from "@/firebase/clientApp";
 
 /**
  * Uploads a new profile image for a community and updates all associated references.
@@ -19,7 +19,7 @@ import { getDownloadURL, ref, uploadString } from "firebase/storage";
  */
 export const updateCommunityImage = async (
   communityId: string,
-  selectedFile: string
+  selectedFile: string,
 ) => {
   const imageRef = ref(storage, `communities/${communityId}/image`);
   await uploadString(imageRef, selectedFile, "data_url");
@@ -32,7 +32,7 @@ export const updateCommunityImage = async (
 
   const snippetsQuery = query(
     collectionGroup(firestore, "communitySnippets"),
-    where("communityId", "==", communityId)
+    where("communityId", "==", communityId),
   );
   const snippetsSnapshot = await getDocs(snippetsQuery);
 

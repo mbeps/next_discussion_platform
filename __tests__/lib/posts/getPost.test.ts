@@ -12,8 +12,8 @@ vi.mock("firebase/firestore", async () => {
   return { ...fsMocks };
 });
 
-import { getPost as getClientPost } from "@/lib/posts/getPost";
 import { getPost as getSsrPost } from "@/lib/post/getPost";
+import { getPost as getClientPost } from "@/lib/posts/getPost";
 
 beforeEach(resetFsMocks);
 

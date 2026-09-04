@@ -1,5 +1,5 @@
-import { Flex, SkeletonCircle, Skeleton } from "@chakra-ui/react";
-import React from "react";
+import { Flex, Skeleton, SkeletonCircle } from "@chakra-ui/react";
+import type React from "react";
 
 /**
  * Loading component while the communities are being loaded.

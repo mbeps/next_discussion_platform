@@ -1,4 +1,3 @@
-import { firestore, storage } from "@/firebase/clientApp";
 import {
   collectionGroup,
   doc,
@@ -9,6 +8,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "@/firebase/clientApp";
 
 /**
  * Deletes the community's profile image from Firebase Storage and updates all references.
@@ -27,7 +27,7 @@ export const deleteCommunityImage = async (communityId: string) => {
 
   const snippetsQuery = query(
     collectionGroup(firestore, "communitySnippets"),
-    where("communityId", "==", communityId)
+    where("communityId", "==", communityId),
   );
   const snippetsSnapshot = await getDocs(snippetsQuery);
 

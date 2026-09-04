@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { act, renderHook } from "@testing-library/react";
-import { Provider, useAtomValue, useSetAtom, createStore } from "jotai";
+import { createStore, Provider, useAtomValue, useSetAtom } from "jotai";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -14,7 +14,8 @@ vi.mock("@/lib/community/addCommunityAdmin", () => ({
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import useAddAdmin from "@/hooks/admin/useAddAdmin";
-import { Community } from "@/types/community";
+import type { Community } from "@/types/community";
+import type { AdminUser } from "@/types/adminUser";
 
 const makeWrapper =
   (store = createStore()) =>
@@ -22,6 +23,12 @@ const makeWrapper =
     <Provider store={store}>{children}</Provider>
   );
 const wrapper = makeWrapper();
+
+const adminUser: AdminUser = {
+  uid: "u2",
+  email: "u2@test.com",
+  displayName: "User 2",
+};
 
 const community: Community = {
   id: "c1",
@@ -45,7 +52,7 @@ describe("useAddAdmin", () => {
   it("calls the lib with community id, new uid and image url", async () => {
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await act(async () => {
-      await result.current.handleAddAdmin("c1", { uid: "u2" }, "img.png");
+      await result.current.handleAddAdmin("c1", adminUser, "img.png");
     });
     expect(mocks.addCommunityAdmin).toHaveBeenCalledWith("c1", "u2", "img.png");
   });
@@ -58,7 +65,7 @@ describe("useAddAdmin", () => {
     await act(async () => {
       await result.current.handleAddAdmin(
         "c1",
-        { uid: "u2" },
+        adminUser,
         undefined,
         updateAdmins as never,
       );
@@ -69,7 +76,7 @@ describe("useAddAdmin", () => {
   it("does not call updateAdmins when not provided", async () => {
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await act(async () => {
-      await result.current.handleAddAdmin("c1", { uid: "u2" });
+      await result.current.handleAddAdmin("c1", adminUser);
     });
     expect(mocks.addCommunityAdmin).toHaveBeenCalled();
   });
@@ -82,7 +89,7 @@ describe("useAddAdmin", () => {
     });
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await act(async () => {
-      await result.current.handleAddAdmin("c1", { uid: "u2" });
+      await result.current.handleAddAdmin("c1", adminUser);
     });
     const state = renderHook(() => useAtomValue(communityStateAtom), {
       wrapper,
@@ -98,7 +105,7 @@ describe("useAddAdmin", () => {
     });
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await act(async () => {
-      await result.current.handleAddAdmin("c1", { uid: "u2" });
+      await result.current.handleAddAdmin("c1", adminUser);
     });
     const state = renderHook(() => useAtomValue(communityStateAtom), {
       wrapper,
@@ -111,7 +118,7 @@ describe("useAddAdmin", () => {
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await expect(
       act(async () => {
-        await result.current.handleAddAdmin("c1", { uid: "u2" });
+        await result.current.handleAddAdmin("c1", adminUser);
       }),
     ).rejects.toThrow("denied");
   });
@@ -125,7 +132,7 @@ describe("useAddAdmin", () => {
     const { result } = renderHook(() => useAddAdmin(), { wrapper });
     await act(async () => {
       try {
-        await result.current.handleAddAdmin("c1", { uid: "u2" });
+        await result.current.handleAddAdmin("c1", adminUser);
       } catch {
         /* expected */
       }
