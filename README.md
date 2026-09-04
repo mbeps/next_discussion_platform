@@ -11,7 +11,7 @@ Authentication supports email/password plus Google and GitHub. Profile edits syn
 
 # **Requirements**
 These are the requirements needed to run the project:
-- Node.js 20+
+- Node.js 22+
 - Yarn 1.22+
 - Firebase project with Auth, Firestore, and Storage
 - Firebase CLI for deploying functions

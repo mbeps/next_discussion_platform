@@ -2,9 +2,6 @@
   "name": "next_discussion_platform",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": ">=20.9.0"
-  },
   "scripts": {
     "run": "npm run dev",
     "dev": "next dev",
