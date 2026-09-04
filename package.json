@@ -51,6 +51,7 @@
     "@vitest/coverage-v8": "^5.0.0",
     "baseline-browser-mapping": "^2.11.21",
     "jsdom": "^30.0.1",
+    "vite": "^8.2.2",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^5.0.0"
   },
