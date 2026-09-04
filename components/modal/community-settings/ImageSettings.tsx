@@ -5,7 +5,7 @@ import type { Community } from "@/types/community";
 type ImageSettingsProps = {
   selectedFile: string;
   onSelectFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  selectFileRef: React.RefObject<HTMLInputElement>;
+  selectFileRef: React.RefObject<HTMLInputElement | null>;
   currentCommunity: Community | null;
   deleteImage: boolean;
   setDeleteImage: (value: boolean) => void;

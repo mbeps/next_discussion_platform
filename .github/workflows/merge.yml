@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node (v22)
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "26"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -77,7 +77,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "26"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -116,7 +116,7 @@ jobs:
       - name: Setup Node (v22)
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "26"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
