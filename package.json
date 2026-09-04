@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=26.0.0"
+    "node": ">=20.9.0"
   },
   "scripts": {
     "run": "npm run dev",
