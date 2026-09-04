@@ -7,7 +7,11 @@ on:
 
 jobs:
   lint:
+    name: Lint - Node ${{ matrix.node-version }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x', '24.x']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,10 +34,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node (v22)
+      - name: Setup Node (Node ${{ matrix.node-version }})
         uses: actions/setup-node@v4
         with:
-          node-version: "26"
+          node-version: ${{ matrix.node-version }}
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -43,8 +47,12 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} biome ci .
 
   build:
+    name: Build - Node ${{ matrix.node-version }}
     needs: lint
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x', '24.x']
     env:
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
@@ -74,10 +82,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node
+      - name: Setup Node (Node ${{ matrix.node-version }})
         uses: actions/setup-node@v4
         with:
-          node-version: "26"
+          node-version: ${{ matrix.node-version }}
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -87,10 +95,14 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
   test:
+    name: Test - Node ${{ matrix.node-version }}
     needs:
       - build
       - docker
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x', '24.x']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -113,10 +125,10 @@ jobs:
             exit 1
           fi
 
-      - name: Setup Node (v22)
+      - name: Setup Node (Node ${{ matrix.node-version }})
         uses: actions/setup-node@v4
         with:
-          node-version: "26"
+          node-version: ${{ matrix.node-version }}
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Install dependencies
@@ -126,6 +138,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} vitest run --coverage
 
   docker:
+    name: Docker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
