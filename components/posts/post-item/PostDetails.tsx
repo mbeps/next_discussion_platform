@@ -2,6 +2,7 @@ import { Icon, Image, Link, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import { ROUTES } from "@/constants/routes";
 import type { Post } from "@/types/post";
 
 type PostDetailsProps = {
@@ -52,7 +53,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({
               color="red.500"
             />
           )}
-          <Link href={`/community/${post.communityId}`}>
+          <Link href={ROUTES.COMMUNITY.detail(post.communityId)}>
             <Text
               fontWeight={700}
               _hover={{ textDecoration: "underline" }}

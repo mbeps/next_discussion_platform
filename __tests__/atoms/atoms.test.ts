@@ -10,6 +10,7 @@ import {
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
 import { postStateAtom } from "@/atoms/postsAtom";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
+import { ROUTES } from "@/constants/routes";
 
 describe("communityStateAtom", () => {
   it("defaults to empty snippets and snippetFetched false", () => {
@@ -86,7 +87,7 @@ describe("directoryMenuAtom", () => {
     const state = store.get(directoryMenuAtom);
     expect(state.isOpen).toBe(false);
     expect(state.selectedMenuItem.displayText).toBe("Home");
-    expect(state.selectedMenuItem.link).toBe("/");
+    expect(state.selectedMenuItem.link).toBe(ROUTES.HOME.path);
   });
 
   it("defaultMenuItem has an icon and iconColor", () => {

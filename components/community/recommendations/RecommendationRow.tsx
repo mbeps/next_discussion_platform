@@ -2,6 +2,7 @@ import { Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
+import { ROUTES } from "@/constants/routes";
 import type { Community } from "@/types/community";
 
 type RecommendationRowProps = {
@@ -26,7 +27,7 @@ const RecommendationRow: React.FC<RecommendationRowProps> = ({
   onJoinOrLeaveCommunity,
 }) => {
   return (
-    <Link key={item.id} href={`/community/${item.id}`}>
+    <Link key={item.id} href={ROUTES.COMMUNITY.detail(item.id)}>
       <Flex
         align="center"
         justify="space-between"

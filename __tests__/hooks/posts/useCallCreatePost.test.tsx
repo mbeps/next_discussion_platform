@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   useAuthState: vi.fn(),
   push: vi.fn(),
   toggleMenuOpen: vi.fn(),
+  params: vi.fn<() => Record<string, string | undefined>>(() => ({})),
 }));
 
 vi.mock("react-firebase-hooks/auth", () => ({
@@ -22,7 +23,7 @@ vi.mock("@/firebase/clientApp", () => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: mocks.push }),
-  useParams: () => ({}),
+  useParams: () => mocks.params(),
   usePathname: () => "/",
 }));
 
@@ -31,6 +32,7 @@ vi.mock("@/hooks/useDirectory", () => ({
 }));
 
 import { authModalStateAtom } from "@/atoms/authModalAtom";
+import { ROUTES } from "@/constants/routes";
 import useCallCreatePost from "@/hooks/posts/useCallCreatePost";
 
 let store: ReturnType<typeof createStore>;
@@ -41,6 +43,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 beforeEach(() => {
   vi.clearAllMocks();
   store = createStore();
+  mocks.params.mockReturnValue({});
 });
 
 describe("useCallCreatePost", () => {
@@ -66,5 +69,16 @@ describe("useCallCreatePost", () => {
     });
     expect(mocks.toggleMenuOpen).toHaveBeenCalled();
     expect(store.get(authModalStateAtom).open).toBe(false);
+  });
+
+  it("navigates to community submit page when logged in with communityId", () => {
+    mocks.useAuthState.mockReturnValue([{ uid: "u1" }, false, undefined]);
+    mocks.params.mockReturnValue({ communityId: "c1" });
+    const { result } = renderHook(() => useCallCreatePost(), { wrapper });
+    act(() => {
+      result.current.onClick();
+    });
+    expect(mocks.push).toHaveBeenCalledWith(ROUTES.COMMUNITY.submit("c1"));
+    expect(mocks.toggleMenuOpen).not.toHaveBeenCalled();
   });
 });

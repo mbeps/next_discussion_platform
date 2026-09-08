@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { ROUTES } from "@/constants/routes";
 import useSearch from "@/hooks/useSearch";
 import type { Post } from "@/types/post";
 
@@ -46,12 +47,12 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   };
 
   const onSelectCommunity = (communityId: string) => {
-    router.push(`/community/${communityId}`);
+    router.push(ROUTES.COMMUNITY.detail(communityId));
     handleClose();
   };
 
   const onSelectPost = (post: Post) => {
-    router.push(`/community/${post.communityId}/comments/${post.id}`);
+    router.push(ROUTES.COMMUNITY.post(post.communityId, post.id));
     handleClose();
   };
 

@@ -1,6 +1,7 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
+import { ROUTES } from "@/constants/routes";
 import type { Community } from "@/types/community";
 import CommunityItemButtonMembersSection from "./CommunityItemButtonMembersSection";
 import CommunityItemNameIconSection from "./CommunityItemNameIconSection";
@@ -49,7 +50,7 @@ const CommunityItem: React.FC<CommunityItemProps> = ({
       }}
       cursor="pointer"
       onClick={() => {
-        router.push(`/community/${community.id}`);
+        router.push(ROUTES.COMMUNITY.detail(community.id));
       }}
       shadow="md"
     >

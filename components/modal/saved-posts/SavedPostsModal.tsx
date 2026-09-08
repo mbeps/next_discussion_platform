@@ -19,6 +19,7 @@ import type React from "react";
 import { FaReddit } from "react-icons/fa";
 import { LuTrash } from "react-icons/lu";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
+import { ROUTES } from "@/constants/routes";
 import useSavedPosts from "@/hooks/posts/useSavedPosts";
 
 /**
@@ -88,7 +89,10 @@ const SavedPostsModal: React.FC = () => {
                       )}
                       <Stack gap={0}>
                         <Link
-                          href={`/community/${item.communityId}/comments/${item.postId}`}
+                          href={ROUTES.COMMUNITY.post(
+                            item.communityId,
+                            item.postId,
+                          )}
                           onClick={handleClose}
                         >
                           <Text
@@ -100,7 +104,7 @@ const SavedPostsModal: React.FC = () => {
                           </Text>
                         </Link>
                         <Link
-                          href={`/community/${item.communityId}`}
+                          href={ROUTES.COMMUNITY.detail(item.communityId)}
                           onClick={handleClose}
                         >
                           <Text

@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import { ROUTES } from "@/constants/routes";
 import useSavedPosts from "@/hooks/posts/useSavedPosts";
 import useCustomToast from "@/hooks/useCustomToast";
 import type { Post } from "@/types/post";
@@ -96,9 +97,9 @@ const PostItem: React.FC<PostItemProps> = ({
       if (singlePostPage) {
         // if the post is on the single post page
         if (post.communityId) {
-          router.push(`/community/${post.communityId}`); // redirect to the community page
+          router.push(ROUTES.COMMUNITY.detail(post.communityId)); // redirect to the community page
         } else {
-          router.push("/"); // redirect to home if communityId is missing
+          router.push(ROUTES.HOME.path); // redirect to home if communityId is missing
         }
       }
     } catch (error: any) {
@@ -116,7 +117,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
   const getPostLink = () => {
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    return `${baseUrl}/community/${post.communityId}/comments/${post.id}`;
+    return `${baseUrl}${ROUTES.COMMUNITY.post(post.communityId, post.id)}`;
   };
 
   const handleSave = async (

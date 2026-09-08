@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
+import { ROUTES } from "@/constants/routes";
 import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**
@@ -58,31 +59,35 @@ const useDirectory = () => {
   useEffect(() => {
     const { currentCommunity } = communityStateValue;
 
-    if (currentCommunity && pathname !== "/" && pathname !== "/communities") {
+    if (
+      currentCommunity &&
+      pathname !== ROUTES.HOME.path &&
+      pathname !== ROUTES.COMMUNITIES.path
+    ) {
       // if the user is currently in a community and not on the home page
       setDirectoryState((prev) => ({
         ...prev,
         selectedMenuItem: {
           displayText: currentCommunity?.id,
-          link: `community/${currentCommunity?.id}`,
+          link: ROUTES.COMMUNITY.detail(currentCommunity?.id),
           imageURL: currentCommunity?.imageURL,
           icon: IoPeopleCircleOutline,
           iconColor: { base: "red.500", _dark: "red.400" },
         },
       }));
-    } else if (pathname === "/communities") {
+    } else if (pathname === ROUTES.COMMUNITIES.path) {
       // if the user is on the communities page
       setDirectoryState((prev) => ({
         ...prev,
         selectedMenuItem: {
           displayText: "Communities",
-          link: "/communities",
+          link: ROUTES.COMMUNITIES.path,
           imageURL: "",
           icon: IoPeopleCircleOutline,
           iconColor: { base: "red.500", _dark: "red.400" },
         },
       }));
-    } else if (pathname === "/") {
+    } else if (pathname === ROUTES.HOME.path) {
       setDirectoryState((prev) => ({
         ...prev,
         selectedMenuItem: defaultMenuItem,

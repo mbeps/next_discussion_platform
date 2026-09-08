@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
+import { ROUTES } from "@/constants/routes";
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
 import useCommunityState from "@/hooks/community/useCommunityState";
@@ -69,7 +70,7 @@ const Recommendations: React.FC = () => {
             height="30px"
             width="100%"
             onClick={() => {
-              router.push(`/communities`);
+              router.push(ROUTES.COMMUNITIES.path);
             }}
           >
             View All

@@ -35,6 +35,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
   default: () => mocks.toast,
 }));
 
+import { ROUTES } from "@/constants/routes";
 import { useCreateCommunity } from "@/hooks/community/useCreateCommunity";
 
 const wrapper = ({ children }: { children: ReactNode }) => (
@@ -87,7 +88,9 @@ describe("useCreateCommunity", () => {
     await act(async () => {
       await result.current.createCommunity("ValidName", "restricted");
     });
-    expect(mocks.push).toHaveBeenCalledWith("/community/ValidName");
+    expect(mocks.push).toHaveBeenCalledWith(
+      ROUTES.COMMUNITY.detail("ValidName"),
+    );
   });
 
   it("clears a previous error on next attempt", async () => {

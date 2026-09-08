@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ROUTES } from "@/constants/routes";
 import { deleteCommunity } from "@/lib/community/deleteCommunity";
 import type { Community } from "@/types/community";
 import useCustomToast from "../useCustomToast";
@@ -26,7 +27,7 @@ const useDeleteCommunity = (communityData: Community) => {
         status: "success",
       });
 
-      router.push("/");
+      router.push(ROUTES.HOME.path);
     } catch (error) {
       console.log("Error: deleteCommunity", error);
       showToast({

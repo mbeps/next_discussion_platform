@@ -24,6 +24,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
   default: () => mocks.toast,
 }));
 
+import { ROUTES } from "@/constants/routes";
 import useDeleteCommunity from "@/hooks/community/useDeleteCommunity";
 import type { Community } from "@/types/community";
 
@@ -67,7 +68,7 @@ describe("useDeleteCommunity", () => {
         title: "Community Deleted",
       }),
     );
-    expect(mocks.push).toHaveBeenCalledWith("/");
+    expect(mocks.push).toHaveBeenCalledWith(ROUTES.HOME.path);
   });
 
   it("shows an error toast and does not redirect on failure", async () => {
