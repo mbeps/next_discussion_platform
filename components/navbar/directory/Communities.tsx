@@ -7,6 +7,7 @@ import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import CustomMenuButton from "@/components/ui/CustomMenuButton";
+import { ROUTES } from "@/constants/routes";
 import useDirectory from "@/hooks/useDirectory";
 import MenuListItem from "./MenuListItem";
 
@@ -44,7 +45,7 @@ const Communities: React.FC<CommunitiesProps> = ({ handleCreateCommunity }) => {
         icon={<BsFillPeopleFill />}
         text="View All Communities"
         onClick={() => {
-          router.push("/communities");
+          router.push(ROUTES.COMMUNITIES.path);
           toggleMenuOpen();
         }}
       />
@@ -66,7 +67,7 @@ const Communities: React.FC<CommunitiesProps> = ({ handleCreateCommunity }) => {
               key={snippet.communityId}
               icon={IoPeopleCircleOutline}
               displayText={snippet.communityId}
-              link={`/community/${snippet.communityId}`}
+              link={ROUTES.COMMUNITY.detail(snippet.communityId)}
               iconColor={"red.500"}
               imageURL={snippet.imageURL}
             />
@@ -88,7 +89,7 @@ const Communities: React.FC<CommunitiesProps> = ({ handleCreateCommunity }) => {
             key={snippet.communityId}
             icon={IoPeopleCircleOutline}
             displayText={snippet.communityId}
-            link={`/community/${snippet.communityId}`}
+            link={ROUTES.COMMUNITY.detail(snippet.communityId)}
             iconColor={"red.500"}
             imageURL={snippet.imageURL}
           />

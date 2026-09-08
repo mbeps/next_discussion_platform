@@ -16,6 +16,7 @@ vi.mock("next/navigation", () => ({
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
+import { ROUTES } from "@/constants/routes";
 import useDirectory from "@/hooks/useDirectory";
 import type { Community } from "@/types/community";
 
@@ -49,7 +50,7 @@ function useSeeds() {
 
 const menuItem = {
   displayText: "Home",
-  link: "/",
+  link: ROUTES.HOME.path,
   icon: expect.anything(),
   iconColor: expect.anything(),
 };
@@ -58,7 +59,7 @@ describe("useDirectory", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     store = createStore();
-    mocks.pathname.mockReturnValue("/");
+    mocks.pathname.mockReturnValue(ROUTES.HOME.path);
   });
 
   it("starts with the default menu state", () => {
@@ -85,10 +86,10 @@ describe("useDirectory", () => {
 
   it("onSelectMenuItem sets the item and pushes its link", () => {
     const { result } = renderHook(() => useDirectory(), { wrapper });
-    const item = { ...menuItem, link: "/communities" };
+    const item = { ...menuItem, link: ROUTES.COMMUNITIES.path };
     act(() => result.current.onSelectMenuItem(item));
     expect(result.current.directoryState.selectedMenuItem).toEqual(item);
-    expect(mocks.push).toHaveBeenCalledWith("/communities");
+    expect(mocks.push).toHaveBeenCalledWith(ROUTES.COMMUNITIES.path);
   });
 
   it("onSelectMenuItem closes the menu when it was open", () => {
@@ -106,19 +107,19 @@ describe("useDirectory", () => {
   });
 
   it("syncs selected item to the community when inside one on a community page", () => {
-    mocks.pathname.mockReturnValue("/community/c1");
+    mocks.pathname.mockReturnValue(ROUTES.COMMUNITY.detail("c1"));
     const seeds = renderHook(() => useSeeds(), { wrapper }).result.current;
     act(() => seeds.setCurrent(community({ imageURL: "img.png" })));
     const { result } = renderHook(() => useDirectory(), { wrapper });
     expect(result.current.directoryState.selectedMenuItem).toMatchObject({
       displayText: "c1",
-      link: "community/c1",
+      link: ROUTES.COMMUNITY.detail("c1"),
       imageURL: "img.png",
     });
   });
 
   it("resets to the default item on the home page even with a current community", () => {
-    mocks.pathname.mockReturnValue("/");
+    mocks.pathname.mockReturnValue(ROUTES.HOME.path);
     const seeds = renderHook(() => useSeeds(), { wrapper }).result.current;
     act(() => seeds.selectItem("Other"));
     act(() => seeds.setCurrent(community()));
@@ -129,25 +130,25 @@ describe("useDirectory", () => {
   });
 
   it("sets Communities item when on /communities even with a current community", () => {
-    mocks.pathname.mockReturnValue("/communities");
+    mocks.pathname.mockReturnValue(ROUTES.COMMUNITIES.path);
     const seeds = renderHook(() => useSeeds(), { wrapper }).result.current;
     act(() => seeds.setCurrent(community()));
     const { result } = renderHook(() => useDirectory(), { wrapper });
     expect(result.current.directoryState.selectedMenuItem).toMatchObject({
       displayText: "Communities",
-      link: "/communities",
+      link: ROUTES.COMMUNITIES.path,
     });
   });
 
   it("resets to defaultMenuItem when navigating back home", () => {
-    mocks.pathname.mockReturnValue("/communities");
+    mocks.pathname.mockReturnValue(ROUTES.COMMUNITIES.path);
     const seeds = renderHook(() => useSeeds(), { wrapper }).result.current;
     act(() => seeds.selectItem("Other"));
     const { result, rerender } = renderHook(() => useDirectory(), { wrapper });
     expect(result.current.directoryState.selectedMenuItem.displayText).toBe(
       "Communities",
     );
-    mocks.pathname.mockReturnValue("/");
+    mocks.pathname.mockReturnValue(ROUTES.HOME.path);
     rerender();
     expect(result.current.directoryState.selectedMenuItem).toEqual(
       defaultMenuItem,

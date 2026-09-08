@@ -13,6 +13,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { postStateAtom } from "@/atoms/postsAtom";
+import { ROUTES } from "@/constants/routes";
 import usePostSelection from "@/hooks/posts/usePostSelection";
 import { Post, Timestamp } from "./helpers";
 
@@ -39,7 +40,7 @@ describe("usePostSelection", () => {
       result.current.onSelectPost(post);
     });
     expect(store.get(postStateAtom).selectedPost?.id).toBe("p1");
-    expect(mocks.push).toHaveBeenCalledWith("/community/c1/comments/p1");
+    expect(mocks.push).toHaveBeenCalledWith(ROUTES.COMMUNITY.post("c1", "p1"));
   });
 
   it("preserves other state when selecting", () => {

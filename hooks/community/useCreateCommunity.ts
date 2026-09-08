@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { ROUTES } from "@/constants/routes";
 import { auth } from "@/firebase/clientApp";
 import { createCommunity } from "@/lib/community/createCommunity";
 import useCustomToast from "../useCustomToast";
@@ -39,7 +40,7 @@ export const useCreateCommunity = () => {
     try {
       await createCommunity(communityName, communityType, user?.uid ?? "");
 
-      router.push(`/community/${communityName}`);
+      router.push(ROUTES.COMMUNITY.detail(communityName));
       return true;
     } catch (error: any) {
       console.log("Error: handleCreateCommunity", error);

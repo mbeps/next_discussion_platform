@@ -1,6 +1,7 @@
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
+import { ROUTES } from "@/constants/routes";
 
 /**
  * Friendly empty state shown when a community id is invalid.
@@ -22,12 +23,12 @@ const CommunityNotFound: React.FC = () => {
         Sorry, this community does not exist!
       </Text>
       <Stack direction="row" gap={4} mt={4}>
-        <Link href="/">
+        <Link href={ROUTES.HOME.path}>
           <Button mt={4} width="150px">
             Home
           </Button>
         </Link>
-        <Link href="/communities">
+        <Link href={ROUTES.COMMUNITIES.path}>
           <Button mt={4} width="150px">
             All Communities
           </Button>

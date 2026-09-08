@@ -2,6 +2,7 @@ import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
+import { ROUTES } from "@/constants/routes";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 import useCommunityState from "@/hooks/community/useCommunityState";
 import type { Community } from "@/types/community";
@@ -70,7 +71,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             <Button
               width="100%"
               onClick={() => {
-                router.push(`/community/${communityData.id}/submit`);
+                router.push(ROUTES.COMMUNITY.submit(communityData.id));
               }}
             >
               Create Post

@@ -41,8 +41,9 @@ next-env.d.ts
 AGENTS.md
 
 # ai
-.github/agents/**
-.github/copilot-instructions.md
+.github/**
+!.github/workflows/**
 graphify-out
 GEMINI.md
 AGENTS.md
+wiki/**

@@ -2,6 +2,7 @@ import { useSetAtom } from "jotai";
 import { useParams, useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
+import { ROUTES } from "@/constants/routes";
 import { auth } from "@/firebase/clientApp";
 import useDirectory from "../useDirectory";
 
@@ -26,7 +27,7 @@ const useCallCreatePost = () => {
     const communityId = params?.communityId;
 
     if (communityId) {
-      router.push(`/community/${communityId}/submit`);
+      router.push(ROUTES.COMMUNITY.submit(communityId as string));
       return;
     } else {
       toggleMenuOpen();

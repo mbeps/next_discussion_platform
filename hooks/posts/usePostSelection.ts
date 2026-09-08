@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 import type { Post, PostVote } from "@/types/post";
 
 /**
@@ -23,7 +24,7 @@ const usePostSelection = (
       ...prev,
       selectedPost: post,
     }));
-    router.push(`/community/${post.communityId}/comments/${post.id}`);
+    router.push(ROUTES.COMMUNITY.post(post.communityId, post.id));
   };
 
   return { onSelectPost };

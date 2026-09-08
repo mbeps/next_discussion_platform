@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { TiHome } from "react-icons/ti";
+import { ROUTES } from "@/constants/routes";
 import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**
@@ -14,7 +15,7 @@ interface DirectoryMenuState {
 
 export const defaultMenuItem = {
   displayText: "Home",
-  link: "/",
+  link: ROUTES.HOME.path,
   icon: TiHome,
   iconColor: { base: "black", _dark: "white" },
 };
