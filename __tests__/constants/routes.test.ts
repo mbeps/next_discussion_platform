@@ -5,6 +5,7 @@ describe("ROUTES", () => {
   it("returns the correct static routes", () => {
     expect(ROUTES.HOME.path).toBe("/");
     expect(ROUTES.COMMUNITIES.path).toBe("/communities");
+    expect(ROUTES.ADMIN.path).toBe("/admin");
     expect(ROUTES.COMMUNITY.path).toBe("/community");
   });
 
