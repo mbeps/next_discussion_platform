@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { Post, PostVote } from "@/types/post";
 
 /**

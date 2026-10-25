@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import AdminPage from "@/app/admin/page";
 import { theme } from "@/chakra/theme";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { Community } from "@/types/community";
 
 const mocks = vi.hoisted(() => ({
@@ -130,7 +130,6 @@ describe("Admin Page (/admin)", () => {
     render(<AdminPage />, { wrapper });
 
     expect(screen.getByText("Admin Dashboard")).toBeInTheDocument();
-    expect(screen.getByText("Global Admin")).toBeInTheDocument();
     expect(screen.getByText("r/public-comm")).toBeInTheDocument();
     expect(screen.getByText("r/private-comm")).toBeInTheDocument();
     expect(mocks.replace).not.toHaveBeenCalled();

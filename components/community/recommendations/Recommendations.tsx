@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
 import useCommunityState from "@/hooks/community/useCommunityState";

@@ -2,7 +2,7 @@ import { Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { Community } from "@/types/community";
 
 type RecommendationRowProps = {

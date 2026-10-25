@@ -19,7 +19,7 @@ import type React from "react";
 import { FaReddit } from "react-icons/fa";
 import { LuTrash } from "react-icons/lu";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useSavedPosts from "@/hooks/posts/useSavedPosts";
 
 /**

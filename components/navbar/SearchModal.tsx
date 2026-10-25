@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useSearch from "@/hooks/useSearch";
 import type { Post } from "@/types/post";
 

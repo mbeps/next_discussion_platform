@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { theme } from "@/chakra/theme";
 import UserMenuList from "@/components/navbar/right-content/user-menu/UserMenuList";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 
 const mocks = vi.hoisted(() => ({
   push: vi.fn(),

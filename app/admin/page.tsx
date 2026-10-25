@@ -32,7 +32,7 @@ import {
 import PageContent from "@/components/layout/PageContent";
 import CommunityLoader from "@/components/loaders/CommunityLoader";
 import CommunitySettingsModal from "@/components/modal/community-settings/CommunitySettings";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import { auth } from "@/firebase/clientApp";
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
 import { isSuperAdmin } from "@/lib/community/communityPermissions";

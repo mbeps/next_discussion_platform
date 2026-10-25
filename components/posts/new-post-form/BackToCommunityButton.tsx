@@ -2,7 +2,7 @@ import { Button, Icon } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 
 interface BackToCommunityButtonProps {
   communityId?: string;

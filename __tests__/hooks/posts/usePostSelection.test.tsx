@@ -13,7 +13,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 import { postStateAtom } from "@/atoms/postsAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import usePostSelection from "@/hooks/posts/usePostSelection";
 import { Post, Timestamp } from "./helpers";
 

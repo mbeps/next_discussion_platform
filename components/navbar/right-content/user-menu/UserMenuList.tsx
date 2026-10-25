@@ -7,7 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineAdminPanelSettings, MdOutlineLogin } from "react-icons/md";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import CustomMenuButton from "@/components/ui/CustomMenuButton";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import { auth } from "@/firebase/clientApp";
 import { isSuperAdmin } from "@/lib/community/communityPermissions";
 

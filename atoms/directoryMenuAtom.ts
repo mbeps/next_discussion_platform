@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { TiHome } from "react-icons/ti";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**

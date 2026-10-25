@@ -24,7 +24,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
   default: () => mocks.toast,
 }));
 
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useDeleteCommunity from "@/hooks/community/useDeleteCommunity";
 import type { Community } from "@/types/community";
 

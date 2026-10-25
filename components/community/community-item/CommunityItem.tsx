@@ -1,7 +1,7 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { Community } from "@/types/community";
 import CommunityItemButtonMembersSection from "./CommunityItemButtonMembersSection";
 import CommunityItemNameIconSection from "./CommunityItemNameIconSection";
