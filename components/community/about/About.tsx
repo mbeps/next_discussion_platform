@@ -2,7 +2,7 @@ import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 import useCommunityState from "@/hooks/community/useCommunityState";
 import type { Community } from "@/types/community";

@@ -35,7 +35,7 @@ vi.mock("@/hooks/useCustomToast", () => ({
   default: () => mocks.toast,
 }));
 
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import { useCreateCommunity } from "@/hooks/community/useCreateCommunity";
 
 const wrapper = ({ children }: { children: ReactNode }) => (

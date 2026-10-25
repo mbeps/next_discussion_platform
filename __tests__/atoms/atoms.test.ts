@@ -10,7 +10,7 @@ import {
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
 import { postStateAtom } from "@/atoms/postsAtom";
 import { savedPostStateAtom } from "@/atoms/savedPostsAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 
 describe("communityStateAtom", () => {
   it("defaults to empty snippets and snippetFetched false", () => {

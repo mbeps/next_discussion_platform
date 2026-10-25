@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { DirectoryMenuItem } from "@/types/directoryMenu";
 
 /**

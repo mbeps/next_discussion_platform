@@ -16,7 +16,7 @@ vi.mock("next/navigation", () => ({
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { defaultMenuItem, directoryMenuAtom } from "@/atoms/directoryMenuAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useDirectory from "@/hooks/useDirectory";
 import type { Community } from "@/types/community";
 

@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 
 describe("ROUTES", () => {
   it("returns the correct static routes", () => {
     expect(ROUTES.HOME.path).toBe("/");
     expect(ROUTES.COMMUNITIES.path).toBe("/communities");
+    expect(ROUTES.ADMIN.path).toBe("/admin");
     expect(ROUTES.COMMUNITY.path).toBe("/community");
   });
 

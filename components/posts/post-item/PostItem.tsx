@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useSavedPosts from "@/hooks/posts/useSavedPosts";
 import useCustomToast from "@/hooks/useCustomToast";
 import type { Post } from "@/types/post";

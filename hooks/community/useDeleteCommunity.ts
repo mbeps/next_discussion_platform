@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import { deleteCommunity } from "@/lib/community/deleteCommunity";
 import type { Community } from "@/types/community";
 import useCustomToast from "../useCustomToast";

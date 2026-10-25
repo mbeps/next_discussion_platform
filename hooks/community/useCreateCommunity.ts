@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import { auth } from "@/firebase/clientApp";
 import { createCommunity } from "@/lib/community/createCommunity";
 import useCustomToast from "../useCustomToast";

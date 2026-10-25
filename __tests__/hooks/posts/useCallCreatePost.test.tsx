@@ -32,7 +32,7 @@ vi.mock("@/hooks/useDirectory", () => ({
 }));
 
 import { authModalStateAtom } from "@/atoms/authModalAtom";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useCallCreatePost from "@/hooks/posts/useCallCreatePost";
 
 let store: ReturnType<typeof createStore>;

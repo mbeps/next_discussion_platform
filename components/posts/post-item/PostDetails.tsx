@@ -2,7 +2,7 @@ import { Icon, Image, Link, Stack, Text } from "@chakra-ui/react";
 import moment from "moment";
 import type React from "react";
 import { IoPeopleCircleOutline } from "react-icons/io5";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import type { Post } from "@/types/post";
 
 type PostDetailsProps = {

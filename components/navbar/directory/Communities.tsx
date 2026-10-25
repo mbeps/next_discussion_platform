@@ -7,7 +7,7 @@ import { GrAdd } from "react-icons/gr";
 import { IoPeopleCircleOutline } from "react-icons/io5";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import CustomMenuButton from "@/components/ui/CustomMenuButton";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 import useDirectory from "@/hooks/useDirectory";
 import MenuListItem from "./MenuListItem";
 

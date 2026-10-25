@@ -1,6 +1,7 @@
 const HOME_BASE = "/" as const;
 const COMMUNITIES_BASE = "/communities" as const;
 const COMMUNITY_BASE = "/community" as const;
+const ADMIN_BASE = "/admin" as const;
 
 export const ROUTES = {
   HOME: {
@@ -8,6 +9,9 @@ export const ROUTES = {
   },
   COMMUNITIES: {
     path: COMMUNITIES_BASE,
+  },
+  ADMIN: {
+    path: ADMIN_BASE,
   },
   COMMUNITY: {
     path: COMMUNITY_BASE,

@@ -1,12 +1,15 @@
 import { Flex, MenuContent, Stack } from "@chakra-ui/react";
 import { signOut, type User } from "firebase/auth";
 import { useSetAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import type React from "react";
 import { CgProfile } from "react-icons/cg";
-import { MdOutlineLogin } from "react-icons/md";
+import { MdOutlineAdminPanelSettings, MdOutlineLogin } from "react-icons/md";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import CustomMenuButton from "@/components/ui/CustomMenuButton";
+import { ROUTES } from "@/config/routes";
 import { auth } from "@/firebase/clientApp";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 
 interface UserMenuListProps {
   user: User | null | undefined;
@@ -23,6 +26,7 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
   user,
   setProfileModalOpen,
 }) => {
+  const router = useRouter();
   const setAuthModalState = useSetAtom(authModalStateAtom);
 
   const logout = async () => {
@@ -40,6 +44,14 @@ const UserMenuList: React.FC<UserMenuListProps> = ({
                 text="Profile"
                 onClick={() => setProfileModalOpen(true)}
               />
+
+              {isSuperAdmin(user.uid) && (
+                <CustomMenuButton
+                  icon={<MdOutlineAdminPanelSettings />}
+                  text="Admin"
+                  onClick={() => router.push(ROUTES.ADMIN.path)}
+                />
+              )}
 
               <CustomMenuButton
                 icon={<MdOutlineLogin />}

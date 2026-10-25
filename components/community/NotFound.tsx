@@ -1,7 +1,7 @@
 import { Button, Flex, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import type React from "react";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/config/routes";
 
 /**
  * Friendly empty state shown when a community id is invalid.
