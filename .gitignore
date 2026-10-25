@@ -41,9 +41,8 @@ next-env.d.ts
 AGENTS.md
 
 # ai
-.github/**
-!.github/workflows/**
-graphify-out
-GEMINI.md
 AGENTS.md
+.agents/**
+graphify-out/**
 wiki/**
+.mcp.json

@@ -17,7 +17,8 @@
       "!coverage",
       "!public",
       "!functions",
-      "!__tests__"
+      "!__tests__",
+      "!pnpm-lock.yaml"
     ],
     "maxSize": 1048576,
     "ignoreUnknown": true

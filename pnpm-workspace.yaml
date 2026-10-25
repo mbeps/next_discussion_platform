@@ -1,0 +1,9 @@
+packages:
+  - '.'
+
+overrides:
+  baseline-browser-mapping: '^2.11.21'
+
+allowBuilds:
+  '@firebase/util': true
+  protobufjs: true
