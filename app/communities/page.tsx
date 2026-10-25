@@ -3,13 +3,16 @@
 import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react";
 import type React from "react";
 import { useMemo } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import CommunityItem from "@/components/community/community-item/CommunityItem";
 import PersonalHome from "@/components/community/PersonalHome";
 import PageContent from "@/components/layout/PageContent";
 import CommunityLoader from "@/components/loaders/CommunityLoader";
+import { auth } from "@/firebase/clientApp";
 import useCommunitiesFeed from "@/hooks/community/useCommunitiesFeed";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
 import useCommunityState from "@/hooks/community/useCommunityState";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import type { Community } from "@/types/community";
 
 /**
@@ -19,6 +22,7 @@ import type { Community } from "@/types/community";
  * @returns The communities directory page.
  */
 const Communities: React.FC = () => {
+  const [user] = useAuthState(auth);
   const { communityStateValue } = useCommunityState();
   const { onJoinOrLeaveCommunity } = useCommunityMembershipActions();
   const { communities, loading, fetchCommunities, noMoreCommunities } =
@@ -29,6 +33,10 @@ const Communities: React.FC = () => {
       const admin: Community[] = [];
       const subscribed: Community[] = [];
       const notSubscribed: Community[] = [];
+
+      if (isSuperAdmin(user?.uid)) {
+        return [communities, [], []];
+      }
 
       communities.forEach((community) => {
         const snippet = communityStateValue.mySnippets.find(
@@ -46,7 +54,7 @@ const Communities: React.FC = () => {
       });
 
       return [admin, subscribed, notSubscribed];
-    }, [communities, communityStateValue.mySnippets]);
+    }, [communities, communityStateValue.mySnippets, user?.uid]);
 
   return (
     <PageContent>
@@ -71,7 +79,9 @@ const Communities: React.FC = () => {
                     <CommunityItem
                       key={community.id}
                       community={community}
-                      isJoined={true}
+                      isJoined={communityStateValue.mySnippets.some(
+                        (s) => s.communityId === community.id,
+                      )}
                       onJoinOrLeaveCommunity={onJoinOrLeaveCommunity}
                     />
                   ))}

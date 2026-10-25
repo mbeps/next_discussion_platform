@@ -8,6 +8,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   createComment: vi.fn(),
   checkCommunityPermission: vi.fn(),
+  isSuperAdmin: vi.fn(),
   toast: vi.fn(),
 }));
 
@@ -17,6 +18,7 @@ vi.mock("@/lib/comments/createComment", () => ({
 
 vi.mock("@/lib/community/communityPermissions", () => ({
   checkCommunityPermission: mocks.checkCommunityPermission,
+  isSuperAdmin: mocks.isSuperAdmin,
 }));
 
 vi.mock("@/hooks/useCustomToast", () => ({
@@ -42,6 +44,7 @@ function useHarness(selectedPost: ReturnType<typeof Post>) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.isSuperAdmin.mockReturnValue(false);
   vi.spyOn(console, "log").mockImplementation(() => {});
   store = createStore();
   store.set(postStateAtom, {
@@ -124,7 +127,24 @@ describe("useCreateComment", () => {
     expect(mocks.checkCommunityPermission).toHaveBeenCalledWith(
       CommunityFixture({ privacyType: "restricted" }),
       [Snippet()],
+      "u1",
     );
+  });
+
+  it("allows super admin to comment in restricted community without snippet", async () => {
+    store.set(communityStateAtom, (prev) => ({
+      ...prev,
+      currentCommunity: CommunityFixture({ privacyType: "restricted" }),
+      mySnippets: [],
+    }));
+    mocks.isSuperAdmin.mockReturnValue(true);
+    mocks.checkCommunityPermission.mockReturnValue(false);
+    mocks.createComment.mockResolvedValue({ id: "cm-admin" });
+    const { result } = renderHook(() => useHarness(Post()), { wrapper });
+    await act(async () => {
+      await result.current.createComment(user, "admin comment");
+    });
+    expect(mocks.createComment).toHaveBeenCalled();
   });
 
   it("skips permission check when commenting outside the viewed community", async () => {

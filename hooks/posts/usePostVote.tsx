@@ -3,6 +3,7 @@ import type React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { authModalStateAtom } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import { getCommunityData } from "@/lib/community/getCommunityData";
 import { getPost as getPostLib } from "@/lib/posts/getPost";
 import { getPostVotes as getPostVotesLib } from "@/lib/posts/getPostVotes";
@@ -58,7 +59,7 @@ const usePostVote = (
       (snippet) => snippet.communityId === communityId,
     );
 
-    if (!isMember) {
+    if (!isSuperAdmin(user.uid) && !isMember) {
       let community = communityStateValue.currentCommunity;
 
       if (!community || community.id !== communityId) {

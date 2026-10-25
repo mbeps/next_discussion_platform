@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import { joinCommunity } from "@/lib/community/joinCommunity";
 import type { Community } from "@/types/community";
 import useCustomToast from "../useCustomToast";
@@ -28,7 +29,8 @@ const useJoinCommunity = () => {
         user.uid,
         communityData.id,
         communityData.imageURL || "",
-        user.uid === communityData.creatorId ||
+        isSuperAdmin(user.uid) ||
+          user.uid === communityData.creatorId ||
           (communityData.adminIds?.includes(user.uid || "") ?? false),
       );
 

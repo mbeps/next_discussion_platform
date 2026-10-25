@@ -23,6 +23,7 @@ export const clientEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_APP_ID: z
     .string()
     .min(1, "NEXT_PUBLIC_FIREBASE_APP_ID is required"),
+  NEXT_PUBLIC_SUPER_ADMIN_UID: z.string().optional(),
 });
 
 /**

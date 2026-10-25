@@ -47,6 +47,20 @@ describe("getSearchData", () => {
     });
   });
 
+  it("includes all communities when includeAllCommunities is true", async () => {
+    fsMocks.getDocs.mockResolvedValue(querySnap([]));
+    await getSearchData(true);
+
+    const communitiesQ = fsMocks.getDocs.mock.calls[0][0];
+    expect(communitiesQ.__query[0]).toEqual({ __collection: ["communities"] });
+    expect(communitiesQ.__query.slice(1)).not.toContainEqual({
+      kind: "where",
+      field: "privacyType",
+      op: "==",
+      value: "public",
+    });
+  });
+
   it("limits posts to the 100 most recent by createTime desc", async () => {
     fsMocks.getDocs.mockResolvedValue(querySnap([]));
     await getSearchData();

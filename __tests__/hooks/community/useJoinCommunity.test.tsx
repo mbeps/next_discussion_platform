@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   useAuthState: vi.fn(),
   joinCommunity: vi.fn(),
+  isSuperAdmin: vi.fn(),
 }));
 
 vi.mock("react-firebase-hooks/auth", () => ({
@@ -21,6 +22,10 @@ vi.mock("@/firebase/clientApp", () => ({
 
 vi.mock("@/lib/community/joinCommunity", () => ({
   joinCommunity: mocks.joinCommunity,
+}));
+
+vi.mock("@/lib/community/communityPermissions", () => ({
+  isSuperAdmin: mocks.isSuperAdmin,
 }));
 
 import { communityStateAtom } from "@/atoms/communitiesAtom";
@@ -53,6 +58,7 @@ describe("useJoinCommunity", () => {
     store = createStore();
     mocks.useAuthState.mockReturnValue([{ uid: "u1" }, false, undefined]);
     mocks.joinCommunity.mockResolvedValue({ communityId: "c1", imageURL: "" });
+    mocks.isSuperAdmin.mockReturnValue(false);
   });
 
   it("does nothing when logged out", async () => {
@@ -90,6 +96,15 @@ describe("useJoinCommunity", () => {
     const { result } = renderHook(() => useJoinCommunity(), { wrapper });
     await act(async () => {
       await result.current.joinCommunity(community({ adminIds: ["u1"] }));
+    });
+    expect(mocks.joinCommunity).toHaveBeenCalledWith("u1", "c1", "", true);
+  });
+
+  it("passes isAdmin=true when user is super admin", async () => {
+    mocks.isSuperAdmin.mockReturnValue(true);
+    const { result } = renderHook(() => useJoinCommunity(), { wrapper });
+    await act(async () => {
+      await result.current.joinCommunity(community());
     });
     expect(mocks.joinCommunity).toHaveBeenCalledWith("u1", "c1", "", true);
   });

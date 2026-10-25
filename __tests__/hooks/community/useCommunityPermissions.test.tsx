@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   useAuthState: vi.fn(),
   checkCommunityPermission: vi.fn(),
   checkCommunityViewPermission: vi.fn(),
+  isSuperAdmin: vi.fn(),
 }));
 
 vi.mock("react-firebase-hooks/auth", () => ({
@@ -23,6 +24,7 @@ vi.mock("@/firebase/clientApp", () => ({
 vi.mock("@/lib/community/communityPermissions", () => ({
   checkCommunityPermission: mocks.checkCommunityPermission,
   checkCommunityViewPermission: mocks.checkCommunityViewPermission,
+  isSuperAdmin: mocks.isSuperAdmin,
 }));
 
 import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
@@ -46,6 +48,7 @@ describe("useCommunityPermissions", () => {
     mocks.useAuthState.mockReturnValue([{ uid: "u1" }, false, undefined]);
     mocks.checkCommunityPermission.mockReturnValue(true);
     mocks.checkCommunityViewPermission.mockReturnValue(true);
+    mocks.isSuperAdmin.mockReturnValue(false);
   });
 
   it("returns all-false flags for undefined community but keeps loading", () => {
@@ -59,6 +62,23 @@ describe("useCommunityPermissions", () => {
       canView: false,
       loading: true,
     });
+  });
+
+  it("elevates permissions for super admin while preserving creator attribution", () => {
+    mocks.isSuperAdmin.mockReturnValue(true);
+    mocks.checkCommunityPermission.mockReturnValue(false);
+    mocks.checkCommunityViewPermission.mockReturnValue(false);
+
+    const { result } = renderHook(() => useCommunityPermissions(community()), {
+      wrapper,
+    });
+
+    expect(result.current.isCreator).toBe(false);
+    expect(result.current.isAdmin).toBe(true);
+    expect(result.current.canManageAdmins).toBe(true);
+    expect(result.current.canPost).toBe(true);
+    expect(result.current.canComment).toBe(true);
+    expect(result.current.canView).toBe(true);
   });
 
   it("identifies the creator as admin and manager", () => {
@@ -100,6 +120,7 @@ describe("useCommunityPermissions", () => {
     expect(mocks.checkCommunityPermission).toHaveBeenCalledWith(
       community(),
       [],
+      "u1",
     );
   });
 

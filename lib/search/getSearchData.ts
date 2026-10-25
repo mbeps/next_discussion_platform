@@ -12,15 +12,18 @@ import type { Post } from "@/types/post";
 
 /**
  * Preloads a dataset of public communities and recent posts to facilitate client-side search.
- * This function retrieves all public communities and the 100 most recent posts to provide
- * a responsive search experience without frequent network requests.
+ * This function retrieves all public communities (or all communities if includeAllCommunities is true)
+ * and the 100 most recent posts to provide a responsive search experience without frequent network requests.
+ * @param includeAllCommunities - Whether to include private and restricted communities.
  * @returns A promise that resolves to an object containing arrays of communities and posts.
  */
-export const getSearchData = async () => {
-  const communitiesQuery = query(
-    collection(firestore, "communities"),
-    where("privacyType", "==", "public"),
-  );
+export const getSearchData = async (includeAllCommunities: boolean = false) => {
+  const communitiesQuery = includeAllCommunities
+    ? query(collection(firestore, "communities"))
+    : query(
+        collection(firestore, "communities"),
+        where("privacyType", "==", "public"),
+      );
   const communitiesSnap = await getDocs(communitiesQuery);
   const communities = communitiesSnap.docs.map(
     (doc) => ({ id: doc.id, ...doc.data() }) as Community,

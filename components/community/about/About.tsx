@@ -40,11 +40,13 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
     (item) => item.communityId === communityData.id,
   );
   const [isMembersModalOpen, setMembersModalOpen] = useState(false);
-  const { canView, canPost } = useCommunityPermissions(communityData);
+  const { canView, canPost, isAdmin } = useCommunityPermissions(communityData);
 
   if (!canView) {
     return null;
   }
+
+  const canViewSubscribers = isJoined || isAdmin;
 
   return (
     // sticky position for the about section
@@ -58,7 +60,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         bg={{ base: "white", _dark: "gray.800" }}
         borderRadius="0px 0px 10px 10px"
       >
-        {isJoined && (
+        {canViewSubscribers && (
           <CommunityMembersModal
             isOpen={isMembersModalOpen}
             onClose={() => setMembersModalOpen(false)}
@@ -77,7 +79,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               Create Post
             </Button>
           )}
-          {isJoined && (
+          {canViewSubscribers && (
             <Button
               width="100%"
               variant="outline"

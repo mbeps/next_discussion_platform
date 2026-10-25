@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
 import { auth } from "@/firebase/clientApp";
 import useCommunityMembershipActions from "@/hooks/community/useCommunityMembershipActions";
+import useCommunityPermissions from "@/hooks/community/useCommunityPermissions";
 import useCommunityState from "@/hooks/community/useCommunityState";
 import type { Community } from "@/types/community";
 import CommunityIcon from "./CommunityIcon";
@@ -37,6 +38,7 @@ type HeaderProps = {
 const CommunityHeader: React.FC<HeaderProps> = ({ communityData }) => {
   const { communityStateValue } = useCommunityState();
   const { onJoinOrLeaveCommunity, loading } = useCommunityMembershipActions();
+  const { isAdmin } = useCommunityPermissions(communityData);
   const [user, authLoading] = useAuthState(auth);
   const isJoined = !!communityStateValue.mySnippets.find(
     (item) => item.communityId === communityData.id,
@@ -84,7 +86,7 @@ const CommunityHeader: React.FC<HeaderProps> = ({ communityData }) => {
             >
               <CommunityMembersButton
                 communityId={communityData.id}
-                isJoined={isJoined}
+                isJoined={isJoined || isAdmin}
               />
               <CommunitySettings communityData={communityData} />
               <JoinOrLeaveButton

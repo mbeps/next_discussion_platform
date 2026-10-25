@@ -2,7 +2,10 @@ import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useCustomToast from "@/hooks/useCustomToast";
-import { checkCommunityPermission } from "@/lib/community/communityPermissions";
+import {
+  checkCommunityPermission,
+  isSuperAdmin,
+} from "@/lib/community/communityPermissions";
 import { createPost } from "@/lib/posts/createPost";
 import useCommunityState from "../community/useCommunityState";
 
@@ -31,10 +34,13 @@ const useCreatePost = () => {
     // Check for restricted community permissions
     const currentCommunity = communityStateValue.currentCommunity;
     if (currentCommunity?.id === communityId) {
-      const hasPermission = checkCommunityPermission(
-        currentCommunity,
-        communityStateValue.mySnippets,
-      );
+      const hasPermission =
+        isSuperAdmin(user.uid) ||
+        checkCommunityPermission(
+          currentCommunity,
+          communityStateValue.mySnippets,
+          user.uid,
+        );
 
       if (!hasPermission) {
         showToast({

@@ -24,6 +24,12 @@ vi.mock("@/hooks/useCustomToast", () => ({
   default: () => mocks.toast,
 }));
 
+vi.mock("@/lib/env", () => ({
+  env: {
+    NEXT_PUBLIC_SUPER_ADMIN_UID: "super-admin-uid-123",
+  },
+}));
+
 import { communityStateAtom } from "@/atoms/communitiesAtom";
 import useCreatePost from "@/hooks/posts/useCreatePost";
 import { CommunityFixture, Snippet } from "./helpers";
@@ -119,6 +125,28 @@ describe("useCreatePost", () => {
       });
     });
     expect(mocks.createPost).toHaveBeenCalled();
+  });
+
+  it("allows super admin to post in restricted communities without membership", async () => {
+    store.set(communityStateAtom, (prev) => ({
+      ...prev,
+      currentCommunity: CommunityFixture({ privacyType: "restricted" }),
+      mySnippets: [],
+    }));
+    mocks.createPost.mockResolvedValue({});
+    const superAdminUser = {
+      uid: "super-admin-uid-123",
+      email: "admin@test.com",
+    } as unknown as User;
+    const { result } = renderHook(() => useCreatePost(), { wrapper });
+    await act(async () => {
+      await result.current.handleCreatePost(superAdminUser, "c1", undefined, {
+        title: "Admin Post",
+        body: "",
+      });
+    });
+    expect(mocks.createPost).toHaveBeenCalled();
+    expect(mocks.back).toHaveBeenCalled();
   });
 
   it("skips permission check when posting outside the viewed community", async () => {

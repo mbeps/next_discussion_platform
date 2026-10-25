@@ -3,6 +3,7 @@ import { auth } from "@/firebase/clientApp";
 import {
   checkCommunityPermission,
   checkCommunityViewPermission,
+  isSuperAdmin,
 } from "@/lib/community/communityPermissions";
 import type { Community } from "@/types/community";
 import useCommunityState from "./useCommunityState";
@@ -32,19 +33,28 @@ const useCommunityPermissions = (communityData?: Community) => {
     };
   }
 
+  const superAdmin = isSuperAdmin(user?.uid);
   const isCreator = user?.uid === communityData.creatorId;
   const isAdmin =
-    isCreator || communityData.adminIds?.includes(user?.uid || "");
+    superAdmin ||
+    isCreator ||
+    Boolean(communityData.adminIds?.includes(user?.uid || ""));
 
-  const hasPermission = checkCommunityPermission(
-    communityData,
-    communityStateValue.mySnippets,
-  );
+  const hasPermission =
+    superAdmin ||
+    checkCommunityPermission(
+      communityData,
+      communityStateValue.mySnippets,
+      user?.uid,
+    );
 
-  const canView = checkCommunityViewPermission(
-    communityData,
-    communityStateValue.mySnippets,
-  );
+  const canView =
+    superAdmin ||
+    checkCommunityViewPermission(
+      communityData,
+      communityStateValue.mySnippets,
+      user?.uid,
+    );
 
   return {
     isCreator,
