@@ -12,7 +12,7 @@ Authentication supports email/password plus Google and GitHub. Profile edits syn
 # **Requirements**
 These are the requirements needed to run the project:
 - Node.js 22+
-- Yarn 1.22+
+- pnpm 10+ (v12 recommended)
 - Firebase project with Auth, Firestore, and Storage
 - Firebase CLI for deploying functions
 
@@ -87,7 +87,7 @@ git clone https://github.com/mbeps/next_discussion_platform.git
 
 ## 2. **Install Dependencies**
 ```sh
-yarn install
+pnpm install
 ```
 
 ## 3. **Set Up Environment**
@@ -123,7 +123,7 @@ These support feed and comments queries.
 
 ## 5. **Run Project**
 ```sh
-yarn dev
+pnpm dev
 ```
 This should run the project on `localhost:3000`
 
