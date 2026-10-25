@@ -11,13 +11,13 @@ import PostLoader from "@/components/loaders/post-loader/PostLoader";
 import PostItem from "@/components/posts/post-item/PostItem";
 import { auth } from "@/firebase/clientApp";
 import useCommunityState from "@/hooks/community/useCommunityState";
-import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import usePostDeletion from "@/hooks/posts/usePostDeletion";
 import usePostSelection from "@/hooks/posts/usePostSelection";
 import usePostState from "@/hooks/posts/usePostState";
 import usePostsFeed from "@/hooks/posts/usePostsFeed";
 import usePostVote from "@/hooks/posts/usePostVote";
 import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 
 /**
  * The main landing page of the application.
