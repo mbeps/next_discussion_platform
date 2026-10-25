@@ -20,6 +20,18 @@ describe("clientEnvSchema", () => {
     }
   });
 
+  it("accepts optional NEXT_PUBLIC_SUPER_ADMIN_UID", () => {
+    const withSuperAdmin = {
+      ...validClientEnv,
+      NEXT_PUBLIC_SUPER_ADMIN_UID: "super-admin-uid-123",
+    };
+    const result = clientEnvSchema.safeParse(withSuperAdmin);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.NEXT_PUBLIC_SUPER_ADMIN_UID).toBe("super-admin-uid-123");
+    }
+  });
+
   it("rejects when required variables are missing", () => {
     const keys: (keyof typeof validClientEnv)[] = [
       "NEXT_PUBLIC_FIREBASE_API_KEY",

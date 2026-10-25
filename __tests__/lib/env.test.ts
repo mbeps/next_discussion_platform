@@ -20,6 +20,17 @@ describe("lib/env", () => {
       expect(validated.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN).toBe("mock-domain");
     });
 
+    it("passes through optional NEXT_PUBLIC_SUPER_ADMIN_UID", () => {
+      const validated = validateEnv(
+        {
+          ...mockValidEnv,
+          NEXT_PUBLIC_SUPER_ADMIN_UID: "super-admin-uid-123",
+        },
+        false,
+      );
+      expect(validated.NEXT_PUBLIC_SUPER_ADMIN_UID).toBe("super-admin-uid-123");
+    });
+
     it("validates server environment correctly when isServerEnv is true", () => {
       const validated = validateEnv(mockValidEnv, true);
       expect(validated.NEXT_PUBLIC_FIREBASE_PROJECT_ID).toBe("mock-project");

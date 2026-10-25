@@ -4,7 +4,10 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 import { postStateAtom } from "@/atoms/postsAtom";
 import useCustomToast from "@/hooks/useCustomToast";
 import { createComment } from "@/lib/comments/createComment";
-import { checkCommunityPermission } from "@/lib/community/communityPermissions";
+import {
+  checkCommunityPermission,
+  isSuperAdmin,
+} from "@/lib/community/communityPermissions";
 import type { Post } from "@/types/post";
 import type { Comment } from "../../types/comment";
 import useCommunityState from "../community/useCommunityState";
@@ -37,10 +40,13 @@ const useCreateComment = (
     // Check for restricted community permissions
     const currentCommunity = communityStateValue.currentCommunity;
     if (currentCommunity?.id === selectedPost.communityId) {
-      const hasPermission = checkCommunityPermission(
-        currentCommunity,
-        communityStateValue.mySnippets,
-      );
+      const hasPermission =
+        isSuperAdmin(user.uid) ||
+        checkCommunityPermission(
+          currentCommunity,
+          communityStateValue.mySnippets,
+          user.uid,
+        );
 
       if (!hasPermission) {
         showToast({

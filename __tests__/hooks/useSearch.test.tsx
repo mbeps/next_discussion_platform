@@ -4,6 +4,22 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   getSearchData: vi.fn(),
+  useAuthState: vi.fn(),
+  isSuperAdmin: vi.fn(),
+}));
+
+vi.mock("react-firebase-hooks/auth", () => ({
+  useAuthState: mocks.useAuthState,
+}));
+
+vi.mock("@/firebase/clientApp", () => ({
+  auth: {},
+  firestore: {},
+  storage: {},
+}));
+
+vi.mock("@/lib/community/communityPermissions", () => ({
+  isSuperAdmin: mocks.isSuperAdmin,
 }));
 
 vi.mock("@/lib/search/getSearchData", () => ({
@@ -48,7 +64,22 @@ const data = {
 describe("useSearch", () => {
   beforeEach(() => {
     mocks.getSearchData.mockReset().mockResolvedValue(data);
+    mocks.useAuthState.mockReturnValue([null, false, undefined]);
+    mocks.isSuperAdmin.mockReturnValue(false);
     vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  it("passes includeAllCommunities=true to getSearchData when user is super admin", async () => {
+    mocks.useAuthState.mockReturnValue([
+      { uid: "super-admin-uid-123" },
+      false,
+      undefined,
+    ]);
+    mocks.isSuperAdmin.mockReturnValue(true);
+    const { result } = renderHook(() => useSearch(""));
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(mocks.isSuperAdmin).toHaveBeenCalledWith("super-admin-uid-123");
+    expect(mocks.getSearchData).toHaveBeenCalledWith(true);
   });
 
   it("preloads search data once on mount and reports loading until ready", async () => {

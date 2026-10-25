@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
   getPost: vi.fn(),
   getCommunityData: vi.fn(),
   toast: vi.fn(),
+  isSuperAdmin: vi.fn(),
 }));
 
 vi.mock("react-firebase-hooks/auth", () => ({
@@ -21,6 +22,10 @@ vi.mock("@/firebase/clientApp", () => ({
   auth: {},
   firestore: {},
   storage: {},
+}));
+
+vi.mock("@/lib/community/communityPermissions", () => ({
+  isSuperAdmin: mocks.isSuperAdmin,
 }));
 
 vi.mock("@/lib/posts/handlePostVote", () => ({
@@ -69,6 +74,7 @@ beforeEach(() => {
   vi.spyOn(console, "log").mockImplementation(() => {});
   store = createStore();
   mocks.useAuthState.mockReturnValue([{ uid: "u1" }, false, undefined]);
+  mocks.isSuperAdmin.mockReturnValue(false);
 });
 
 describe("usePostVote.onVote — auth gating", () => {
@@ -134,6 +140,25 @@ describe("usePostVote.onVote — permission checks", () => {
       await result.current.onVote(fakeEvent(), Post(), 1, "c1");
     });
     expect(mocks.handlePostVote).toHaveBeenCalled();
+  });
+
+  it("allows super admin to vote in restricted communities without membership", async () => {
+    mocks.isSuperAdmin.mockReturnValue(true);
+    store.set(communityStateAtom, (prev) => ({
+      ...prev,
+      currentCommunity: CommunityFixture({ privacyType: "restricted" }),
+      mySnippets: [],
+    }));
+    mocks.handlePostVote.mockResolvedValue({
+      voteChange: 1,
+      newVote: Vote(),
+    });
+    const { result } = renderHook(() => useLiveHarness(), { wrapper });
+    await act(async () => {
+      await result.current.onVote(fakeEvent(), Post(), 1, "c1");
+    });
+    expect(mocks.handlePostVote).toHaveBeenCalled();
+    expect(mocks.toast).not.toHaveBeenCalled();
   });
 
   it("allows non-members to vote in public communities without fetching", async () => {

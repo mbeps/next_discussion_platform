@@ -13,6 +13,7 @@ import { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { LuPencil, LuReply, LuTrash } from "react-icons/lu";
 import ConfirmationDialog from "@/components/modal/ConfirmationDialog";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import type { Comment } from "@/types/comment";
 import CommentInput from "./CommentInput";
 
@@ -135,7 +136,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
               Edit
             </Button>
           )}
-          {(userId === comment.creatorId || isCommunityAdmin) && (
+          {(userId === comment.creatorId ||
+            isCommunityAdmin ||
+            isSuperAdmin(userId)) && (
             <Button
               size="sm"
               variant="ghost"

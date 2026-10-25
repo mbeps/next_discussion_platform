@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 import { getSearchData } from "@/lib/search/getSearchData";
 import type { Community } from "@/types/community";
 import type { Post } from "@/types/post";
 
 /**
  * A custom hook that handles client-side search logic for communities and posts.
- * It preloads a subset of public data and provides filtered results based on the user's search term.
+ * It preloads a subset of public data (or all data for super admins) and provides filtered results based on the user's search term.
  * @param searchTerm - The current string being searched for.
  * @returns An object containing the filtered search results and a loading state indicator.
  */
 const useSearch = (searchTerm: string) => {
+  const [user] = useAuthState(auth);
   const [results, setResults] = useState<{
     communities: Community[];
     posts: Post[];
@@ -27,7 +31,9 @@ const useSearch = (searchTerm: string) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { communities, posts } = await getSearchData();
+        const { communities, posts } = await getSearchData(
+          isSuperAdmin(user?.uid),
+        );
         setAllData({ communities, posts });
       } catch (error) {
         console.error("Error fetching search data", error);
@@ -37,7 +43,7 @@ const useSearch = (searchTerm: string) => {
     };
 
     fetchData();
-  }, []);
+  }, [user?.uid]);
 
   useEffect(() => {
     if (!allData || !searchTerm) {

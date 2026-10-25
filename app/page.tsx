@@ -17,6 +17,7 @@ import usePostState from "@/hooks/posts/usePostState";
 import usePostsFeed from "@/hooks/posts/usePostsFeed";
 import usePostVote from "@/hooks/posts/usePostVote";
 import usePostVoteSync from "@/hooks/posts/usePostVoteSync";
+import { isSuperAdmin } from "@/lib/community/communityPermissions";
 
 /**
  * The main landing page of the application.
@@ -109,6 +110,7 @@ export default function Home() {
                 }
                 userIsCreator={user?.uid === post.creatorId}
                 userIsAdmin={
+                  isSuperAdmin(user?.uid) ||
                   !!communityStateValue.mySnippets.find(
                     (snippet) => snippet.communityId === post.communityId,
                   )?.isAdmin
