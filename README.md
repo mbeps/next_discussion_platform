@@ -35,6 +35,7 @@ The system has several key community management features designed to promote eng
 - Admins can remove members from a community
 - Users can view and paginate public and restricted communities, grouped by moderating, joined, or discover
 - Admins can delete a community with cascade cleanup of posts, comments, votes, snippets, and images
+- Global super administrator can view, participate in, and moderate all communities without membership
 
 ## **Posts**
 The system has several key features designed to make it easy for users to create and view posts within communities:
@@ -91,8 +92,20 @@ pnpm install
 ```
 
 ## 3. **Set Up Environment**
-1. Copy the `.env.example` file and call it `.env.local`
-2. Populate the `.env.local` with the required Firebase secrets 
+1. Copy the `.env.example` file and call it `.env.local`:
+   ```sh
+   cp .env.example .env.local
+   ```
+2. Populate `.env.local` with your configuration:
+   - `NEXT_PUBLIC_FIREBASE_API_KEY`: Firebase web API key.
+   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`: Firebase authentication domain.
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`: Firebase project identifier.
+   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`: Firebase storage bucket name.
+   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`: Firebase Cloud Messaging sender ID.
+   - `NEXT_PUBLIC_FIREBASE_APP_ID`: Firebase web application ID.
+   - `NEXT_PUBLIC_SUPER_ADMIN_UID` (Optional): Firebase user UID granted global super administrator permissions across all communities, posts, and comments.
+   - `BROWSERSLIST_IGNORE_OLD_DATA` (Optional): Suppresses old caniuse database warnings.
+   - `BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA` (Optional): Suppresses old baseline browser mapping warnings. 
 
 ## 4. **Set Up Firebase**
 ### **Set Up Cloud Functions**
