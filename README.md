@@ -11,7 +11,7 @@ Authentication supports email/password plus Google and GitHub. Profile edits syn
 
 # **Requirements**
 These are the requirements needed to run the project:
-- Node.js 22+
+- Node.js 24+
 - pnpm 10+ (v12 recommended)
 - Firebase project with Auth, Firestore, and Storage
 - Firebase CLI for deploying functions
